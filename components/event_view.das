@@ -5,6 +5,9 @@ require event
 
 module event_view public
 
+let default_icon_color = make_color32(255, 255, 255, 255)
+var icon_to_render : ImageHandle
+
 class EventView
     _events : array<tuple<EventViewData; int2>>
 
@@ -46,4 +49,8 @@ class EventView
 
 
     def render_event(event_id: int; x, y : int)
-        fill_circle(x, y, 34, 0x84FFF5)
+        enable_premultiplied_alpha_blend()
+        icon_to_render <- create_managed_image("assets/icons/{event_id}.png")
+        icon_to_render |> premultiply_alpha()
+        icon_to_render |> draw_image(float(x) - 34.0, float(y) - 34.0, default_icon_color, 68.0)
+        disable_alpha_blend()

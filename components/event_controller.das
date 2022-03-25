@@ -184,6 +184,7 @@ class EventController
 
         return count
 
+
     def get_event_by_id(event_id : int) : Event?
 
         for event in _all_events
