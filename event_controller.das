@@ -53,7 +53,7 @@ class EventController
         game_is_paused = true
         var fit_description = is_success ? event_example._description.on_success : event_example._description.on_fail
         var fit_effect_description = is_success ? event_example._effect_description.on_success : event_example._effect_description.on_fail
-        _event_modal->show(event_example._name, fit_description, fit_effect_description, event_example._id)
+        _event_modal->show(event_example._name, fit_description, fit_effect_description, event_example._id, event_example._icon)
 
 
     def update_view()
@@ -115,7 +115,7 @@ class EventController
         if specific_event_id != 0
             var specific_event = try_get_event_to_spawn_by_id(specific_event_id)
 
-            var view_data : EventViewData = event_to_view_data(specific_event, screen_upper_date, spot)
+            var view_data : EventViewData = event_to_view_data(specific_event, screen_upper_date, spot, specific_event._icon)
             push(_spawned_events, view_data)
             update_available_events()
             return view_data //get by id from available
@@ -125,7 +125,7 @@ class EventController
         if to_spawn == null
             return [[EventViewData() id=0, spawned_at=current_date, spawn_spot=-1]]
 
-        var view_data : EventViewData = event_to_view_data(to_spawn, screen_upper_date, spot)
+        var view_data : EventViewData = event_to_view_data(to_spawn, screen_upper_date, spot, to_spawn._icon)
         push(_spawned_events, view_data)
         update_available_events()
         return view_data

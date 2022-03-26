@@ -1,10 +1,10 @@
+require daslib/media
 require components/event
 require components/effect
 require components/player_params
 require components/player_skills
 
 module baby_pack public
-
 
     // _id : int
     // _name : string
@@ -39,6 +39,7 @@ var e_0004 = new Event(4, "ПОЖАР!", EventGroup COMMON, false, 0, -1, 4, 4, 
 
 def init_baby_pack()
 
+
     e_0001 -> initialize_deps_and_effects( // СЕРДЕЧНЫЙ ПРИСТУП
         [{auto 0}], 
         [[PlayerParams() age=0]], 
@@ -52,7 +53,8 @@ def init_baby_pack()
         on_fail="Ваша сердечно-сосудистая система вас подводит и вы погибаете от сердечного приступа. Скорая помощь не успела вас спасти."]],
         [[EventDescription()
         on_success="Здоровье: -15",
-        on_fail="Игра окончена"]]
+        on_fail="Игра окончена"]],
+        create_managed_image("assets/icons/1.png")
     )
     
     e_0002 -> initialize_deps_and_effects( // СМЕРТЕЛЬНЫЙ ЯД
@@ -68,7 +70,8 @@ def init_baby_pack()
         on_fail="Всё произошло так быстро, что вы даже не успели осознать, что за смертоносное существо вас ужалило. Ядовитая змея? Может быть паук или ужасный листолаз? Впрочем, это уже неважно. Никто не был в силах вас спасти."]],
         [[EventDescription()
         on_success="Здоровье: -25",
-        on_fail="Игра окончена"]]
+        on_fail="Игра окончена"]],
+        create_managed_image("assets/icons/2.png")
     )
         
     e_0003 -> initialize_deps_and_effects( // ГНЕВ БОГОВ
@@ -84,14 +87,15 @@ def init_baby_pack()
         on_fail="Кажется вы чем-то разневали Тора, Перуна или Зевса. Внезапный удар молнии в мгновение обуглил ваше хрупкое тело и история вашей жизни подошла к концу."]],
         [[EventDescription()
         on_success="Здоровье: -35",
-        on_fail="Игра окончена"]]
+        on_fail="Игра окончена"]],
+        create_managed_image("assets/icons/3.png")
     )
 
     e_0004 -> initialize_deps_and_effects(
         [{auto 0}], 
         [[PlayerParams() age=0]], 
         [[PlayerParams() luck=4, perception=5]], 
-        [[PlayerSkills math=0]], 
+        [[PlayerSkills math=0]],
         [[PlayerSkills math=0]],
         [[Effect() is_onetime_effect=true, params=[[PlayerParams() money=-3000]]]],
         [[Effect() is_onetime_effect=true, params=[[PlayerParams() health=-999]]]],
@@ -100,6 +104,7 @@ def init_baby_pack()
         on_fail="В вашем доме начался пожар. К сожалению, вам неповезло. Вы не успели вовремя почувствовать запах дыма, а пожарные прибыли слишком поздно, чтобы успеть вас спасти."]],
         [[EventDescription()
         on_success="Деньги: -3000",
-        on_fail="Игра окончена"]]
+        on_fail="Игра окончена"]],
+        create_managed_image("assets/icons/4.png")
     )
 

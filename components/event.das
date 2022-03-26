@@ -1,3 +1,4 @@
+require daslib/media
 require player_params
 require player_skills
 require effect
@@ -16,14 +17,15 @@ struct EventViewData
     id : int = 0
     spawned_at : Date
     spawn_spot : int = 0
+    icon : ImageHandle
 
 struct EventDescription
     on_success : string = ""
     on_fail : string = ""
 
 
-def event_to_view_data(event : Event?; spawned_at : Date; spot : int) : EventViewData
-    return [[EventViewData() id=event._id, spawned_at=spawned_at, spawn_spot=spot]]
+def event_to_view_data(event : Event?; spawned_at : Date; spot : int; icon : ImageHandle) : EventViewData
+    return [[EventViewData() id=event._id, spawned_at=spawned_at, spawn_spot=spot, icon=icon]]
 
 
 class Event
@@ -53,6 +55,7 @@ class Event
 
     _description : EventDescription
     _effect_description : EventDescription
+    _icon : ImageHandle
 
 
     def Event(
@@ -70,7 +73,7 @@ class Event
     )
         Event`set(
             self, id, name, group, is_instant, min_age, max_age, happen_limit, spawn_limit, spawn_chance, can_be_paired, preferred_to_pair_event_id
-            )
+        )
 
     def set(
         id : int;
@@ -106,7 +109,8 @@ class Event
         effect : Effect;
         effect_on_fail : Effect;
         description : EventDescription;
-        effect_description : EventDescription
+        effect_description : EventDescription;
+        icon : ImageHandle
     )
         _required_events_ids := required_events_ids
         _required_params_for_spawn = required_params_for_spawn
@@ -117,4 +121,5 @@ class Event
         _effect_on_fail = effect_on_fail
         _description = description
         _effect_description = effect_description
+        _icon = icon
         return

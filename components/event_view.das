@@ -6,7 +6,6 @@ require event
 module event_view public
 
 let default_icon_color = make_color32(255, 255, 255, 255)
-var icon_to_render : ImageHandle
 
 class EventView
     _events : array<tuple<EventViewData; int2>>
@@ -46,12 +45,11 @@ class EventView
 
             if _events[i]._0.id != 0
                 _events[i]._1.y = int(float(_events[i]._1.y) + SCROLL_SPEED * get_delta_time())
-                render_icon(_events[i]._0.id, _events[i]._1.x, _events[i]._1.y, 68.0)
+                render_icon(_events[i]._0.icon, _events[i]._1.x, _events[i]._1.y, 68.0)
 
 
-def render_icon(event_id: int; x, y : int; size : float)
+def render_icon(icon: ImageHandle; x, y : int; size : float)
     enable_premultiplied_alpha_blend()
-    icon_to_render <- create_managed_image("assets/icons/{event_id}.png")
-    icon_to_render |> premultiply_alpha()
-    icon_to_render |> draw_image(float(x) - 34.0, float(y) - 34.0, default_icon_color, size)
-    disable_alpha_blend()
+    icon |> premultiply_alpha()
+    icon |> draw_image(float(x) - 34.0, float(y) - 34.0, default_icon_color, size)
+    disable_alpha_blend() 
