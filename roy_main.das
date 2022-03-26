@@ -106,9 +106,8 @@ def draw
         fill_rect(width/2 - 30 + player._offset, 1011, 25, 35, 0x114CCA)
         fill_rect(width/2 + 5 + player._offset, 1011, 25, 15, 0x1B346E)
 
-    if !event_modal._is_closed
-        var text = "For many people in Britain, the word “scouting” evokes images of boys in short trousers and girls in blue uniforms. Many people imagine that the Scout Association and its female counterpart the Guides Association are old-fashioned organisations from another age - associations for people who are more interested"
-        event_modal->render_event_modal(510, 100, 900, 900, "Random event", text)
+    if event_modal._is_enabled
+        event_modal->render_event_modal(510, 100, 900, 900)
 
     return
 

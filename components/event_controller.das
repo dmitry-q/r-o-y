@@ -34,15 +34,18 @@ class EventController
             var date = se.spawned_at
             if date.day == current_date.day && date.month == current_date.month && date.year == current_date.year
                 if sign(sign(_player._offset) + 1) == se.spawn_spot
-                    var event_example = get_event_by_id(se.id)
-                    _player->register_event(event_example, se.spawned_at)
-                    _event_view->remove_from_render(date)
-                    game_is_paused = true
-                    _event_modal._is_closed = false
-                    continue_button._is_closed = false
+                    on_event_happen(se)
                     return true
 
         return false
+
+
+    def on_event_happen(event : EventViewData)
+        var event_example = get_event_by_id(event.id)
+        _player->register_event(event_example, event.spawned_at)
+        _event_view->remove_from_render(event.spawned_at)
+        game_is_paused = true
+        _event_modal->show(event_example._name, event_example._description, event_example._effect_description)
 
 
     def update_view()

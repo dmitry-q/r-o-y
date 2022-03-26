@@ -22,7 +22,7 @@ def event_to_view_data(event : Event?; spawned_at : Date; spot : int) : EventVie
     return [[EventViewData() id=event._id, spawned_at=spawned_at, spawn_spot=spot]]
 
 
-var test_event = new Event(1, "Закрытый перелом", EventGroup COMMON, 0, 99, 99, 10, 99, false, 0, "Ты сломал руку. Пичалька. На восстановление уйдет пара месяцев.", "-5 HP")
+var test_event = new Event(1, "ЗАКРЫТЫЙ ПЕРЕЛОМ", EventGroup COMMON, 0, 99, 99, 10, 99, false, 0, "Ты сломал руку. Пичалька. На восстановление уйдет пара месяцев. Полежи в постельке и отдохни. Увидимся. Пока-пока.", "Здоровье: -5")
 
 def init_events()
     test_event->initialize_deps_and_effects([{auto 1; 2}], [[PlayerParams() health=0]], [[PlayerParams() health=0]], 

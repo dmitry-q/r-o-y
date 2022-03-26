@@ -5,7 +5,7 @@ module button public
 
 class Button
 
-    _is_closed : bool = false
+    _is_enabled : bool = false
 
     def render_button(x : int; y : int; width : int; height: int; text: string)
 
@@ -17,7 +17,7 @@ class Button
             color = 0x5FC2B5
             text_color = 0xFFFFFF
             if get_mouse_button_up(MB_LEFT)
-                _is_closed = true
+                _is_enabled = false
                 return
         else
             text_color = 0x000000

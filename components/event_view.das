@@ -25,6 +25,7 @@ class EventView
 
         push(_events, event_to_push)
 
+
     def remove_from_render(by_date : Date)
         for e in _events
             let date = e._0.spawned_at
@@ -45,12 +46,12 @@ class EventView
 
             if _events[i]._0.id != 0
                 _events[i]._1.y = int(float(_events[i]._1.y) + SCROLL_SPEED * get_delta_time())
-                render_event(_events[i]._0.id, _events[i]._1.x, _events[i]._1.y)
+                render_icon(_events[i]._0.id, _events[i]._1.x, _events[i]._1.y, 68.0)
 
 
-    def render_event(event_id: int; x, y : int)
-        enable_premultiplied_alpha_blend()
-        icon_to_render <- create_managed_image("assets/icons/{event_id}.png")
-        icon_to_render |> premultiply_alpha()
-        icon_to_render |> draw_image(float(x) - 34.0, float(y) - 34.0, default_icon_color, 68.0)
-        disable_alpha_blend()
+def render_icon(event_id: int; x, y : int; size : float)
+    enable_premultiplied_alpha_blend()
+    icon_to_render <- create_managed_image("assets/icons/{event_id}.png")
+    icon_to_render |> premultiply_alpha()
+    icon_to_render |> draw_image(float(x) - 34.0, float(y) - 34.0, default_icon_color, size)
+    disable_alpha_blend()
