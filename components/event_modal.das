@@ -7,7 +7,7 @@ require event_view
 
 module event_modal public
 
-let DESCRIPTION_ROW_LIMIT : int = 53
+let DESCRIPTION_ROW_LIMIT : int = 52
 
 var game_is_paused : bool = false
 

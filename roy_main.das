@@ -4,7 +4,7 @@ require time
 require random
 require components/player
 require components/event_view
-require components/ui/event_modal
+require components/event_modal
 require event_controller
 require event
 require content/start_effects

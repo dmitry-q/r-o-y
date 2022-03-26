@@ -1,7 +1,10 @@
+require sound_collection
 require daslib/media
 require math
 
+
 module button public
+
 
 class Button
 
@@ -18,6 +21,7 @@ class Button
             text_color = 0xFFFFFF
             if get_mouse_button_up(MB_LEFT)
                 _is_enabled = false
+                play_sound(click)
                 return
         else
             text_color = 0x000000

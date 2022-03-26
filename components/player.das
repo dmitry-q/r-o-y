@@ -9,6 +9,7 @@ require math
 
 module player public
 
+
 class Player
 
     _offset : int = -45
@@ -60,4 +61,4 @@ class Player
         apply_effect(is_successful ? event._effect : event._effect_on_fail)
 
     def check_is_event_successful(event : Event?) : bool
-        return false
+        return true

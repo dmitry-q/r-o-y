@@ -4,9 +4,10 @@ require event
 require player
 require random
 require time
-require event_view
-require ui/event_modal
+require components/event_view
+require components/event_modal
 require content/events/baby_pack
+require components/sound_collection
 
 
 module event_controller public
@@ -54,6 +55,11 @@ class EventController
         var fit_description = is_success ? event_example._description.on_success : event_example._description.on_fail
         var fit_effect_description = is_success ? event_example._effect_description.on_success : event_example._effect_description.on_fail
         _event_modal->show(event_example._name, fit_description, fit_effect_description, event_example._id, event_example._icon)
+        play_sound(click)
+        if is_success
+            play_sound(modal_open_neutral, 0.3)
+        else
+            play_sound(modal_open_fail, 0.3)
 
 
     def update_view()
