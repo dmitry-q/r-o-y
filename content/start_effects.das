@@ -1,5 +1,5 @@
-require effect
-require player_params
+require components/effect
+require components/player_params
 
 module start_effects public
 

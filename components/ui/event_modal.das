@@ -18,6 +18,7 @@ class EventModal
     _effect_description : string = "Random effect"
     _is_enabled : bool = false
     _continue_button : Button?
+    _icon_id : int
     _icon_to_render : ImageHandle
     
     def EventModal()
@@ -29,10 +30,11 @@ class EventModal
         _continue_button = continue_button
 
 
-    def show(title, description, effect_description : string)
+    def show(title, description, effect_description : string; icon_id : int)
         _title = to_upper(title)
         _description = description
         _effect_description = effect_description
+        _icon_id = icon_id
         _is_enabled = true
         _continue_button._is_enabled = true
         return
@@ -70,7 +72,7 @@ class EventModal
         fill_rect(x+30, y+180, width-58, height-290, border_color)
         fill_rect(x+32, y+182, width-62, height-294, 0x162523)
 
-        render_icon(1, x + 64, y + 72, 72.0)
+        render_icon(_icon_id, x + 64, y + 72, 72.0)
 
         _continue_button->render_button(x + width - 275, y + height - 80, 250, 55, "CONTINUE")
         
@@ -79,11 +81,6 @@ class EventModal
         var words : array<string> <- split(_description, " ")
         var new_row = ""
         var row_index = 0
-        var is_cyrillic = length(slice(words[0], 0, 1)) > 1 ? true : false
-
-        if is_cyrillic
-            text_out(x + 52, y + 200 + 32 * row_index, "CYRILLIC", 0xA9F5EB)
-            return
 
         for i in range(0, length(words) + 1) // Do smth with latin symbols length
             if i == length(words)

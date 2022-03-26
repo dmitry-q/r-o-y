@@ -1,11 +1,12 @@
 require daslib/media
-require utils/date
+require date
 require event
 require player
 require random
 require time
 require event_view
 require ui/event_modal
+require content/events/baby_pack
 
 
 module event_controller public
@@ -24,8 +25,12 @@ class EventController
 
 
     def initialize_all_events()
-        _all_events <- [{auto test_event}]
-        push(_available_events, test_event)
+        init_baby_pack()
+        _all_events <- [{auto e_0001; e_0002; e_0003; e_0004}]
+        push(_available_events, e_0001)
+        push(_available_events, e_0002)
+        push(_available_events, e_0003)
+        push(_available_events, e_0004)
         return
 
 
@@ -42,10 +47,13 @@ class EventController
 
     def on_event_happen(event : EventViewData)
         var event_example = get_event_by_id(event.id)
-        _player->register_event(event_example, event.spawned_at)
+        var is_success = _player->check_is_event_successful(event_example)
+        _player->register_event(event_example, event.spawned_at, is_success)
         _event_view->remove_from_render(event.spawned_at)
         game_is_paused = true
-        _event_modal->show(event_example._name, event_example._description, event_example._effect_description)
+        var fit_description = is_success ? event_example._description.on_success : event_example._description.on_fail
+        var fit_effect_description = is_success ? event_example._effect_description.on_success : event_example._effect_description.on_fail
+        _event_modal->show(event_example._name, fit_description, fit_effect_description, event_example._id)
 
 
     def update_view()

@@ -3,15 +3,14 @@ require utils/date
 require time
 require random
 require components/player
-require components/start_effects
-require components/event_controller
 require components/event_view
 require components/ui/event_modal
+require event_controller
 require event
+require content/start_effects
 
-
-// options debugger            // uncomment for debug in VS Code
-// require daslib/debug        // uncomment for debug in VS Code
+options debugger            // uncomment for debug in VS Code
+require daslib/debug        // uncomment for debug in VS Code
 
 let REGULAR_TEXT_COLOR: uint = 0xA9F5EB
 let UI_BG_COLOR: uint = 0x243D39
@@ -30,7 +29,6 @@ def initialize
     set_resolution(1920, 1080)
     randomize_seed(RAND_SEED)
     apply_start_effects()
-    init_events()
     event_controller->initialize_all_events()
     event_controller._event_view <- event_view
     event_controller._event_modal = event_modal

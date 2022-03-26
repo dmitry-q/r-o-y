@@ -51,10 +51,13 @@ class Player
         _player_params.health += effect.params.health
         _player_params.intelligence += effect.params.intelligence
 
-    def register_event(event : Event?; date : Date)
+    def register_event(event : Event?; date : Date; is_successful : bool)
         var event_happen : tuple<int; Date>
         event_happen._0 = event._id
         event_happen._1 = date
 
         push_clone(_events_happen, event_happen)
-        apply_effect(event._effect)
+        apply_effect(is_successful ? event._effect : event._effect_on_fail)
+
+    def check_is_event_successful(event : Event?) : bool
+        return false
