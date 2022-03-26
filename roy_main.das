@@ -72,6 +72,7 @@ def draw
     var width = get_screen_width()
     fill_rect(0, 0, 280, get_screen_height(), UI_BG_COLOR)
     fill_rect(280, 0, get_screen_width(), get_screen_height(), 0x3C6660)
+
     fill_rect(1640, 0, 279, get_screen_height(), UI_BG_COLOR)
     //line(280, 0, 280, 1080, REGULAR_TEXT_COLOR)
     //line(1640, 0, 1640, 1080, REGULAR_TEXT_COLOR)
@@ -80,15 +81,7 @@ def draw
     //render_rain()
     event_controller->update_view()
     render_dates()
-
-    set_font_size(24)
-    text_out(1670, 50, "Health: " + string(player._player_params.health) + "/100", REGULAR_TEXT_COLOR)
-    text_out(1670, 80, "Age: " + string(player->get_age()), REGULAR_TEXT_COLOR)
-    text_out(1670, 110, "Money: 2000", REGULAR_TEXT_COLOR)
-    text_out(1670, 140, "Date: " + format_date(current_date, DateFormat ENG), REGULAR_TEXT_COLOR)
-    //text_out(1640, 170, "Speed: " + string(SCROLL_SPEED), REGULAR_TEXT_COLOR)
-    //text_out(1500, 200, "Time Passed: " + string(TIME_SUM), 0xA1A1A1)
-    text_out(1670, 230, "Int: " + string(player._player_params.intelligence), REGULAR_TEXT_COLOR)
+    render_info()
 
     fill_circle(width/2  + player._offset, 920, 30, 0xCCCC92)
     //fill_circle(1075 + player_offset, 921, 13, 0xCCCC92)
@@ -111,7 +104,38 @@ def draw
 
 def render_dates()
     for i in range(0, 14)
-        text_out(80, get_screen_height() - 90 - i * 90 + int(date_scroll_out_timer * SCROLL_SPEED), format_date(dates[i], DateFormat ENG), REGULAR_TEXT_COLOR)
+        text_out(68, get_screen_height() - 90 - i * 90 + int(date_scroll_out_timer * SCROLL_SPEED), format_date(dates[i], DateFormat RU), REGULAR_TEXT_COLOR)
+
+def render_info()
+
+    let x = 1660
+    let anchors <- [{auto 955; 0; 395; 100}]
+    let y_offset = 32
+    let skills_start_y = 0
+
+    set_font_size(30)
+
+    text_out(x + 50, anchors[0], "Сегодня:", REGULAR_TEXT_COLOR)
+    text_out(x + 30, anchors[0] + 40, format_date(current_date, DateFormat RU), REGULAR_TEXT_COLOR)
+
+    set_font_size(24)
+
+    text_out(x, anchors[1] + y_offset * 1, "Здоровье: " + string(player._player_params.health) + "/100", REGULAR_TEXT_COLOR)
+    text_out(x, anchors[1] + y_offset * 2, "Психика:  " + string(player._player_params.mental_health) + "/100", REGULAR_TEXT_COLOR)
+    
+    text_out(x, anchors[2] + y_offset * 1, "Возраст:  " + string(player->get_age()), REGULAR_TEXT_COLOR)
+    text_out(x, anchors[2] + y_offset * 2, "Деньги:   " + string(player._player_params.money), REGULAR_TEXT_COLOR)
+    text_out(x, anchors[2] + y_offset * 3, "Влияние:  " + string(player._player_params.influence), REGULAR_TEXT_COLOR)
+    //text_out(1640, 170, "Speed: " + string(SCROLL_SPEED), REGULAR_TEXT_COLOR)
+    //text_out(1500, 200, "Time Passed: " + string(TIME_SUM), 0xA1A1A1)
+    text_out(x, anchors[3] + y_offset * 1, "Воля:          " + string(player._player_params.willpower), REGULAR_TEXT_COLOR)
+    text_out(x, anchors[3] + y_offset * 2, "Сила:          " + string(player._player_params.strength), REGULAR_TEXT_COLOR)
+    text_out(x, anchors[3] + y_offset * 3, "Восприятие:    " + string(player._player_params.perception), REGULAR_TEXT_COLOR)
+    text_out(x, anchors[3] + y_offset * 4, "Выносливость:  " + string(player._player_params.endurance), REGULAR_TEXT_COLOR)
+    text_out(x, anchors[3] + y_offset * 5, "Харизма:       " + string(player._player_params.charisma), REGULAR_TEXT_COLOR)
+    text_out(x, anchors[3] + y_offset * 6, "Интеллект:     " + string(player._player_params.intelligence), REGULAR_TEXT_COLOR)
+    text_out(x, anchors[3] + y_offset * 7, "Ловкость:      " + string(player._player_params.agility), REGULAR_TEXT_COLOR)
+    text_out(x, anchors[3] + y_offset * 8, "Удача:         " + string(player._player_params.luck + 0), REGULAR_TEXT_COLOR)
 
 def render_road()
     var width = get_screen_width()
