@@ -13,9 +13,9 @@ struct PlayerParams
 
     willpower : int = 0
     strength : int = 0
-    endurance: int = 0
     perception: int = 0
-    intelligence : int = 0
+    endurance: int = 0
     charisma : int = 0
+    intelligence : int = 0
     agility : int = 0
     luck : int = 0

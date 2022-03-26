@@ -25,9 +25,9 @@ class Button
         fill_rect(x, y, width, height, color)
 
         var font_size = get_current_font_size()
-        var w = int(float(font_size * length(text)) * 0.58)
+        var w = int(float(font_size * length(replace(text, " ", "")) / 2) * 0.58)
         var tx = clamp(width - w, 0, get_screen_width()) - 1
 
-        text_out(x +tx / 2, y + height/2 - font_size / 2, text, text_color)
+        text_out(x +tx / 2, y + height/2 - font_size / 2 - 2, text, text_color)
 
         return

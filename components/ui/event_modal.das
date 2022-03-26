@@ -74,7 +74,7 @@ class EventModal
 
         render_icon(_icon_id, x + 64, y + 72, 72.0)
 
-        _continue_button->render_button(x + width - 275, y + height - 80, 250, 55, "CONTINUE")
+        _continue_button->render_button(x + width - 275, y + height - 80, 250, 55, "ДАЛЕЕ")
         
         text_out(x + 52, y + height - 168, _effect_description, 0xA9F5EB)
 

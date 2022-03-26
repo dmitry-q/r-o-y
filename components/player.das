@@ -12,7 +12,7 @@ module player public
 class Player
 
     _offset : int = -45
-    _player_params : PlayerParams = [[PlayerParams() health=100]]
+    _player_params : PlayerParams = [[PlayerParams() health=100, mental_health=100]]
     _player_skills : PlayerSkills
     _events_happen : array<tuple<int; Date>>
     _active_effects : array<Effect>
