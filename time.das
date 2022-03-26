@@ -48,10 +48,12 @@ def update_dates(step: int)
 
 def format_date(date: Date; format: DateFormat)
     var result : string
+    let zero_day = date.day > 8 ? "" : "0"
+    let zero_month = date.month > 8 ? "" : "0"
 
     if format == DateFormat RU
-        result = string(date.day + 1) + "/" + string(date.month + 1) + "/" + string(date.year)
+        result = zero_day + string(date.day + 1) + "/" + zero_month + string(date.month + 1) + "/" + string(date.year)
     else
-        result = string(date.month + 1) + "/" + string(date.day + 1) + "/" + string(date.year)
+        result = zero_month + string(date.month + 1) + "/" + zero_day + string(date.day + 1) + "/" + string(date.year)
 
     return result
