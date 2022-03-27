@@ -16,8 +16,11 @@ var current_music : PcmSound
 var playing_music : PlayingSoundHandle
 
 def handle_music(current_date: Date; date_of_birth: Date; age : int)
+
     if current_date.day == date_of_birth.day && current_date.month == date_of_birth.month
+
         var track : int 
+        
         if age < 1
             track = 1
         elif age > 0 && age < 4
