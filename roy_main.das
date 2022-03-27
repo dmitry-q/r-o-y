@@ -5,6 +5,7 @@ require random
 require components/player
 require components/event_view
 require components/event_modal
+require components/sound_collection
 require event_controller
 require event
 require content/start_effects
@@ -33,6 +34,8 @@ def initialize
     event_controller._event_view <- event_view
     event_controller._event_modal = event_modal
     event_controller._player = player
+    player._date_of_birth = start_date
+    handle_music(current_date, player._date_of_birth, player->get_age())
     return
 
 // this function is called to update game data,
@@ -55,6 +58,7 @@ def act(dt: float)
         player->update_active_effects()
         animate_character()
         event_controller->detect_collision()
+        handle_music(current_date, player._date_of_birth, player->get_age())
         date_scroll_out_timer = 0.0
 
     if event_scroll_out_timer >= 1080.0 / SCROLL_SPEED
@@ -143,9 +147,9 @@ def render_road()
     var x1 = width / 2 - 140
     var x2 = width / 2 + 140
 
-    fill_rect(x1, 0, -5, get_screen_height(),  REGULAR_TEXT_COLOR)
-    fill_rect(x1, 0, 280, get_screen_height(),  0x6E564A)
-    fill_rect(x2, 0, 5, get_screen_height(),  REGULAR_TEXT_COLOR)
+    fill_rect(x1, 0, -5, get_screen_height(),  0xFCF6F4)
+    fill_rect(x1, 0, 280, get_screen_height(),  0x524A47) //0x6E564A
+    fill_rect(x2, 0, 5, get_screen_height(),  0xFCF6F4)
 
 def render_rain()
     for i in range(0, 255)

@@ -4,8 +4,11 @@ require button
 require strings
 require daslib/strings_boost
 require event_view
+require sound_collection
+
 
 module event_modal public
+
 
 let DESCRIPTION_ROW_LIMIT : int = 52
 
@@ -31,6 +34,7 @@ class EventModal
 
 
     def show(title, description, effect_description : string; icon_id : int; icon : ImageHandle)
+        set_sound_volume(playing_music, 0.03)
         _title = to_upper(title)
         _description = description
         _effect_description = effect_description
@@ -45,6 +49,7 @@ class EventModal
         if !_continue_button._is_enabled
             _is_enabled = false
             game_is_paused = false
+            set_sound_volume(playing_music, DEFAULT_MUSIC_VOLUME)
             return
         else
             game_is_paused = true

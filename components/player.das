@@ -1,5 +1,6 @@
 require utils/date
 require time
+require date
 require player_params
 require player_skills
 require event
@@ -12,6 +13,7 @@ module player public
 
 class Player
 
+    _date_of_birth : Date
     _offset : int = -45
     _player_params : PlayerParams = [[PlayerParams() health=100, mental_health=100]]
     _player_skills : PlayerSkills

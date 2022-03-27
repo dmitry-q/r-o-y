@@ -55,7 +55,7 @@ class EventController
         var fit_description = is_success ? event_example._description.on_success : event_example._description.on_fail
         var fit_effect_description = is_success ? event_example._effect_description.on_success : event_example._effect_description.on_fail
         _event_modal->show(event_example._name, fit_description, fit_effect_description, event_example._id, event_example._icon)
-        play_sound(click)
+        play_sound(collect)
         if is_success
             play_sound(modal_open_neutral, 0.3)
         else
