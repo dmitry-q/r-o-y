@@ -14,8 +14,8 @@ module player public
 class Player
 
     _date_of_birth : Date
-    _offset : int = -45
-    _player_params : PlayerParams = [[PlayerParams() health=100, mental_health=100]]
+    _offset : int = -60
+    _player_params : PlayerParams = [[PlayerParams() health=100, mental_health=100, luck=4 ]]
     _player_skills : PlayerSkills
     _events_happen : array<tuple<int; Date>>
     _active_effects : array<Effect>
@@ -50,9 +50,25 @@ class Player
                     apply_effect(_active_effects[i])
 
     def apply_effect(effect : Effect)
+
         time_jerk = effect.time_jerk_value
+
         _player_params.health += effect.params.health
+        _player_params.mental_health += effect.params.mental_health
+
+        _player_params.willpower += effect.params.willpower
+        _player_params.strength += effect.params.strength
+        _player_params.perception += effect.params.perception
+        _player_params.endurance += effect.params.endurance
+        _player_params.charisma += effect.params.charisma
         _player_params.intelligence += effect.params.intelligence
+        _player_params.agility += effect.params.agility
+        _player_params.luck += effect.params.luck
+
+        _player_params.health = _player_params.health > 100 ? 100 : _player_params.health
+        _player_params.health = _player_params.health < 0 ? 0 : _player_params.health
+        _player_params.mental_health = _player_params.mental_health > 100 ? 100 : _player_params.mental_health
+        _player_params.mental_health = _player_params.mental_health < 0 ? 0 : _player_params.mental_health
 
     def register_event(event : Event?; date : Date; is_successful : bool)
         var event_happen : tuple<int; Date>
