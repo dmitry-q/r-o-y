@@ -27,11 +27,17 @@ class EventController
 
     def initialize_all_events()
         init_baby_pack()
-        _all_events <- [{auto e_0001; e_0002; e_0003; e_0004}]
-        push(_available_events, e_0001)
+        _all_events <- [{auto e_0001; e_0002; e_0003; e_0004; e_0005; e_0006; e_0007; e_0009; e_0010}]
+
+        push(_available_events, e_0005)
         push(_available_events, e_0002)
+        push(_available_events, e_0010)
+        push(_available_events, e_0009)
         push(_available_events, e_0003)
         push(_available_events, e_0004)
+        push(_available_events, e_0007)
+        push(_available_events, e_0006)
+        push(_available_events, e_0001)
         return
 
 
@@ -148,8 +154,9 @@ class EventController
 
         var len = length() <| _available_events
         for i in range(0, len)
-            if _available_events[i] != null && _available_events[i]._spawn_chance >= x
-                var event_to_spawn : Event? := _available_events[i]
+            var chance = _available_events[i]._spawn_chance
+            if _available_events[i] != null && chance != 0 && chance >= x
+                var event_to_spawn : Event? = _available_events[i]
                 _available_events[i]._spawn_limit--
                 try_erase_event_from_available(i)
                 return event_to_spawn

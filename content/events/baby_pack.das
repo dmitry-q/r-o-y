@@ -32,19 +32,24 @@ module baby_pack public
     // _description : string = ""
     // _effect_description : string = ""
 
-var e_0001 = new Event(1, "СЕРДЕЧНЫЙ ПРИСТУП", EventGroup COMMON, false, 0, -1, 7, 90, 15, false, 0)
-var e_0002 = new Event(2, "СМЕРТЕЛЬНЫЙ ЯД", EventGroup COMMON, false, 0, -1, 4, 4, 2, false, 0)
-var e_0003 = new Event(3, "ГНЕВ БОГОВ", EventGroup COMMON, false, 0, -1, 4, 4, 1, false, 0)
-var e_0004 = new Event(4, "ПОЖАР!", EventGroup COMMON, false, 0, -1, 4, 4, 5, false, 0)
+var e_0001 = new Event(1, "СЕРДЕЧНЫЙ ПРИСТУП", EventGroup NO, false, 0, -1, 7, 90, 15, false, 0)
+var e_0002 = new Event(2, "СМЕРТЕЛЬНЫЙ ЯД", EventGroup NO, false, 0, -1, 4, 4, 2, false, 0)
+var e_0003 = new Event(3, "ГНЕВ БОГОВ", EventGroup NO, false, 0, -1, 4, 4, 1, false, 0)
+var e_0004 = new Event(4, "ПОЖАР!", EventGroup NO, false, 0, -1, 4, 4, 5, false, 0)
+var e_0005 = new Event(5, "ТИХИЙ РЕБЁНОК", EventGroup NO, false, 0, 0, 1, 1, 0, false, 0)
+var e_0006 = new Event(6, "ШУМНЫЙ РЕБЁНОК", EventGroup NO, false, 0, 0, 1, 1, 13, true, 5)
+var e_0007 = new Event(7, "ЮНЫЙ ГИМНАСТ", EventGroup NO, false, 0, 0, 1, 1, 10, false, 0)
+var e_0009 = new Event(9, "ПОТЕРЯ РОДИТЕЛЯ", EventGroup NO, false, 0, 17, 1, 1, 13, false, 0)
+var e_0010 = new Event(10, "ПОТЕРЯ РОДИТЕЛЕЙ", EventGroup NO, false, 0, 17, 1, 1, 12, false, 0)
 
 def init_baby_pack()
 
 
     e_0001 -> initialize_deps_and_effects( // СЕРДЕЧНЫЙ ПРИСТУП
-        [{auto 0}], 
-        [[PlayerParams() age=0]], 
-        [[PlayerParams() luck=5, health=-30]], 
-        [[PlayerSkills math=0]], 
+        [{auto 0}],
+        [[PlayerParams() health=-30]], 
+        [[PlayerParams() luck=5]],
+        [[PlayerSkills math=0]],
         [[PlayerSkills math=0]],
         [[Effect() is_onetime_effect=true, params=[[PlayerParams() health=-15]]]],
         [[Effect() is_onetime_effect=true, params=[[PlayerParams() health=-999]]]],
@@ -53,8 +58,12 @@ def init_baby_pack()
         on_fail="Ваша сердечно-сосудистая система вас подводит и вы погибаете от сердечного приступа. Скорая помощь не успела вас спасти."]],
         [[EventDescription()
         on_success="Здоровье: -15",
-        on_fail="Игра окончена"]],
-        create_managed_image("assets/icons/1.png")
+        on_fail="Здоровье: -100%"]],
+        create_managed_image("assets/icons/1.png"),
+        [{auto 0}],
+        [{auto 0}],
+        [{auto EventGroup NO}],
+        [{auto EventGroup NO}]
     )
     
     e_0002 -> initialize_deps_and_effects( // СМЕРТЕЛЬНЫЙ ЯД
@@ -66,12 +75,16 @@ def init_baby_pack()
         [[Effect() is_onetime_effect=true, params=[[PlayerParams() health=-25]]]],
         [[Effect() is_onetime_effect=true, params=[[PlayerParams() health=-999]]]],
         [[EventDescription() 
-        on_success="Всё произошло так быстро, что вы даже не успели осознать, что за смертоносное существо вас ужалило. Ядовитая змея? Может быть паук или ужасный листолаз? К величайшему удивлению всех вокруг, вы чудом сумели выкарабкаться с того света, хоть и не без вреда для здоровья.",
-        on_fail="Всё произошло так быстро, что вы даже не успели осознать, что за смертоносное существо вас ужалило. Ядовитая змея? Может быть паук или ужасный листолаз? Впрочем, это уже неважно. Никто не был в силах вас спасти."]],
+        on_success="Всё произошло так быстро, что вы даже не успели осознать, что за смертоносное существо вас отравило. Ядовитая змея? Может быть паук или ужасный листолаз? К величайшему удивлению всех вокруг, вы чудом сумели выкарабкаться с того света, хоть и не без вреда для здоровья.",
+        on_fail="Всё произошло так быстро, что вы даже не успели осознать, что за смертоносное существо вас отравило. Ядовитая змея? Может быть паук или ужасный листолаз? Впрочем, это уже неважно. Никто бы не смог вас спасти."]],
         [[EventDescription()
         on_success="Здоровье: -25",
-        on_fail="Игра окончена"]],
-        create_managed_image("assets/icons/2.png")
+        on_fail="Здоровье: -100%"]],
+        create_managed_image("assets/icons/2.png"),
+        [{auto 0}],
+        [{auto 0}],
+        [{auto EventGroup NO}],
+        [{auto EventGroup NO}]
     )
         
     e_0003 -> initialize_deps_and_effects( // ГНЕВ БОГОВ
@@ -87,8 +100,12 @@ def init_baby_pack()
         on_fail="Кажется вы чем-то разневали Тора, Перуна или Зевса. Внезапный удар молнии в мгновение обуглил ваше хрупкое тело и история вашей жизни подошла к концу."]],
         [[EventDescription()
         on_success="Здоровье: -35",
-        on_fail="Игра окончена"]],
-        create_managed_image("assets/icons/3.png")
+        on_fail="Здоровье: -100%"]],
+        create_managed_image("assets/icons/3.png"),
+        [{auto 0}],
+        [{auto 0}],
+        [{auto EventGroup NO}],
+        [{auto EventGroup NO}]
     )
 
     e_0004 -> initialize_deps_and_effects(
@@ -104,7 +121,115 @@ def init_baby_pack()
         on_fail="В вашем доме начался пожар. К сожалению, вам неповезло. Вы не успели вовремя почувствовать запах дыма, а пожарные прибыли слишком поздно, чтобы успеть вас спасти."]],
         [[EventDescription()
         on_success="Деньги: -3000",
-        on_fail="Игра окончена"]],
-        create_managed_image("assets/icons/4.png")
+        on_fail="Здоровье: -100%"]],
+        create_managed_image("assets/icons/4.png"),
+        [{auto 0}],
+        [{auto 0}],
+        [{auto EventGroup NO}],
+        [{auto EventGroup NO}]
     )
 
+    e_0005 -> initialize_deps_and_effects(
+        [{auto 0}], 
+        [[PlayerParams() age=0]], 
+        [[PlayerParams() age=0]], 
+        [[PlayerSkills math=0]],
+        [[PlayerSkills math=0]],
+        [[Effect() is_onetime_effect=true]],
+        [[Effect() is_onetime_effect=true]],
+        [[EventDescription() 
+        on_success="Проходят первые дни и недели вашей жизни, и вы проявляете себя, как весьма тихий и спокойный ребёнок. Пока рано делать выводы о вашем будущем характере, но многие психологи утверждают, что темперамент человека - это врождённая черта.",
+        on_fail=""]],
+        [[EventDescription()
+        on_success="Неизвестный эффект",
+        on_fail=""]],
+        create_managed_image("assets/icons/5.png"),
+        [{auto 0}],
+        [{auto 0}],
+        [{auto EventGroup NO}],
+        [{auto EventGroup NO}]
+    )
+
+    e_0006 -> initialize_deps_and_effects(
+        [{auto 0}], 
+        [[PlayerParams() age=0]], 
+        [[PlayerParams() age=0]], 
+        [[PlayerSkills math=0]],
+        [[PlayerSkills math=0]],
+        [[Effect() is_onetime_effect=true]],
+        [[Effect() is_onetime_effect=true]],
+        [[EventDescription() 
+        on_success="Поздравляю, вы не успели родиться на свет, а уже подпортили нервы всем вокруг. Бесконечный плач и крики по любому поводу, возможно, сигналиризуют о вашем взрывном темпераменте. Но выводы, конечно, пока делать рано.",
+        on_fail=""]],
+        [[EventDescription()
+        on_success="Неизвестный эффект",
+        on_fail=""]],
+        create_managed_image("assets/icons/6.png"),
+        [{auto 0}],
+        [{auto 0}],
+        [{auto EventGroup NO}],
+        [{auto EventGroup NO}]
+    )
+    
+    e_0007 -> initialize_deps_and_effects(
+        [{auto 0}], 
+        [[PlayerParams() agility=5]], 
+        [[PlayerParams() age=0]], 
+        [[PlayerSkills math=0]],
+        [[PlayerSkills math=0]],
+        [[Effect() is_onetime_effect=true, params=[[PlayerParams() agility=1]]]],
+        [[Effect() is_onetime_effect=true]],
+        [[EventDescription() 
+        on_success="В столь юном возрасте вы уже научились крутить сальто. Не без помощи взрослых, конечно, которые держат вас за руки :) Каждый раз, когда взрослые играют с вами подобным образом - вы приходите в величайший восторг и развиваете вашу гибкость и подвижность.",
+        on_fail=""]],
+        [[EventDescription()
+        on_success="Ловкость: +1, Атлетика: +1",
+        on_fail=""]],
+        create_managed_image("assets/icons/7.png"),
+        [{auto 0}],
+        [{auto 0}],
+        [{auto EventGroup NO}],
+        [{auto EventGroup NO}]
+    )
+        
+    e_0009 -> initialize_deps_and_effects(
+        [{auto 0}], 
+        [[PlayerParams() age=0]], 
+        [[PlayerParams() health=999]], 
+        [[PlayerSkills math=0]],
+        [[PlayerSkills math=0]],
+        [[Effect() is_onetime_effect=true]],
+        [[Effect() is_onetime_effect=true, params=[[PlayerParams() mental_health=-15]]]],
+        [[EventDescription() 
+        on_success="",
+        on_fail="К сожалению один из ваших родителей трагически погибает. Столь ранняя потеря непременно отразится на вашей психике."]],
+        [[EventDescription()
+        on_success="",
+        on_fail="Психическое здоровье: -15"]],
+        create_managed_image("assets/icons/9.png"),
+        [{auto 10}],
+        [{auto 0}],
+        [{auto EventGroup NO}],
+        [{auto EventGroup NO}]
+    )
+
+    e_0010 -> initialize_deps_and_effects(
+        [{auto 0}], 
+        [[PlayerParams() age=0]], 
+        [[PlayerParams() health=999]], 
+        [[PlayerSkills math=0]],
+        [[PlayerSkills math=0]],
+        [[Effect() is_onetime_effect=true]],
+        [[Effect() is_onetime_effect=true, params=[[PlayerParams() mental_health=-30]]]],
+        [[EventDescription() 
+        on_success="",
+        on_fail="Ваши родители трагически погибают в автокатастрофе. Горе съедает вас, но вы ничего не можете с этим поделать. Только время сможет как-то подлатать вашу душевную рану."]],
+        [[EventDescription()
+        on_success="",
+        on_fail="Психическое здоровье: -30"]],
+        create_managed_image("assets/icons/10.png"),
+        [{auto 9}],
+        [{auto 0}],
+        [{auto EventGroup NO}],
+        [{auto EventGroup NO}]
+    )

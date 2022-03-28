@@ -7,11 +7,11 @@ require utils/date
 module event public
 
 enum EventGroup
-    COMMON
+    NO
     SPORT
     CRIMINAL
     STUDY
-    PROFESSION
+    CAREER
 
 struct EventViewData
     id : int = 0
@@ -32,7 +32,7 @@ class Event
 
     _id : int = 0
     _name : string = "event_name"
-    _group : EventGroup = EventGroup COMMON
+    _group : EventGroup = EventGroup NO
     _is_instant : bool = false
 
     _min_age: int = 0
@@ -52,6 +52,11 @@ class Event
 
     _can_be_paired : bool = false
     _preferred_to_pair_event_id : int = 0
+
+    _block_events : array<int>
+    _unlock_events : array<int>
+    _block_event_groups : array<EventGroup>
+    _unlock_event_groups : array<EventGroup>
 
     _description : EventDescription
     _effect_description : EventDescription
@@ -110,7 +115,11 @@ class Event
         effect_on_fail : Effect;
         description : EventDescription;
         effect_description : EventDescription;
-        icon : ImageHandle
+        icon : ImageHandle;
+        block_events : array<int>;
+        unlock_events : array<int>;
+        block_event_groups : array<EventGroup>;
+        unlock_event_groups : array<EventGroup>
     )
         _required_events_ids := required_events_ids
         _required_params_for_spawn = required_params_for_spawn
@@ -122,4 +131,8 @@ class Event
         _description = description
         _effect_description = effect_description
         _icon = icon
+        _block_events := block_events
+        _unlock_events := unlock_events
+        _block_event_groups := block_event_groups
+        _unlock_event_groups := unlock_event_groups
         return

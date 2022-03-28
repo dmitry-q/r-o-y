@@ -64,7 +64,7 @@ def act(dt: float)
     if event_scroll_out_timer >= 1080.0 / SCROLL_SPEED
         event_scroll_out_timer = 0.0
 
-    if event_controller._timestep_timer >= 300.0 / SCROLL_SPEED
+    if event_controller._timestep_timer >= 360.0 / SCROLL_SPEED
         event_controller->on_timestep_pass()
 
     return

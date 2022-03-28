@@ -54,6 +54,10 @@ class EventModal
         else
             game_is_paused = true
 
+        if get_key_up(VK_RETURN)
+            _continue_button->disable()
+            return
+
         var border_color = 0xA9F5EB
         var color = 0x243D39
         var bg_color = make_color32(0, 0, 0, 155)
