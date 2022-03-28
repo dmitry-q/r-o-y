@@ -15,6 +15,7 @@ struct Effect
     duration : int = 0
     timestep : int = 0
     is_onetime_effect : bool = true
+    is_game_over : bool = false
     deactivate_effects : int[3]
 
     time_jerk_value : float = 0.0
