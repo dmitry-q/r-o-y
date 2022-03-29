@@ -60,6 +60,7 @@ class Event
 
     _description : EventDescription
     _effect_description : EventDescription
+    _log_message : EventDescription
     _icon : ImageHandle
 
 
@@ -115,6 +116,7 @@ class Event
         effect_on_fail : Effect;
         description : EventDescription;
         effect_description : EventDescription;
+        log_message : EventDescription;
         icon : ImageHandle;
         block_events : array<int>;
         unlock_events : array<int>;
@@ -130,6 +132,7 @@ class Event
         _effect_on_fail = effect_on_fail
         _description = description
         _effect_description = effect_description
+        _log_message = log_message
         _icon = icon
         _block_events := block_events
         _unlock_events := unlock_events
