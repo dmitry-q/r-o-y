@@ -58,7 +58,7 @@ var e_0020 = new Event(20, "ПИЩЕВОЕ ОТРАВЛЕНИЕ", EventGroup NO,
 def init_baby_pack()
 
     e_0001 -> initialize_deps_and_effects( // СЕРДЕЧНЫЙ ПРИСТУП
-        [{auto 0}],
+        [{auto 15}],
         [[PlayerParams() health=-30]], 
         [[PlayerParams() luck=5]],
         [[PlayerSkills math=0]],
@@ -357,8 +357,8 @@ def init_baby_pack()
         on_success="",
         on_fail="Вам не повезло родиться с генетической болезнью, которая непременно отразится на вашем психическом состоянии в будущем."]],
         [[EventDescription()
-        on_success="Психика: -2/год",
-        on_fail=""]],
+        on_success="",
+        on_fail="Психика: -2/год"]],
         [[EventDescription()
         on_success="",
         on_fail="Узнали о генетической болезни, влияющей на психику"]],
@@ -385,7 +385,7 @@ def init_baby_pack()
         on_fail="Здоровье: -35, Сила: -2, Выносливость: -2"]],
         [[EventDescription()
         on_success="",
-        on_fail="Узнали о генетической болезни, влияющей на здоровье"]],
+        on_fail="Узнали о генетической болезни, ухудшающей здоровье"]],
         create_managed_image("assets/icons/12.png"),
         [{auto 0}],
         [{auto 0}],
