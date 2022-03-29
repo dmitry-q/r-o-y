@@ -80,6 +80,7 @@ class EventController
 
 
     def update_available_events()
+        add_events_fit_by_age(_player->get_age())
         _available_events <- validate_available_events()
         order_available_events()
         update_timestep()
@@ -88,7 +89,9 @@ class EventController
     def add_events_fit_by_age(age : int)
         for event in _all_events
             if event._min_age <= age && (event._max_age >= age || event._max_age == -1)
-                _available_events |> push(event)
+                var i = find_index(_available_events, event)
+                if i < 0 
+                    _available_events |> push(event)
 
 
     def validate_available_events() : array<Event?>
@@ -121,6 +124,7 @@ class EventController
         push_event_to_render(spawned_event)
 
         let event_example = get_event_by_id(spawned_event.id)
+
         if event_example._can_be_paired == true
             var event_to_pair = try_get_event_to_spawn_by_id(event_example._preferred_to_pair_event_id)
 
@@ -143,44 +147,22 @@ class EventController
         var age = _player->get_age()
         var age_in_days = _player._player_params.age_in_days
         var count = get_possible_events_to_spawn_count()
-        var age_in_days_delta = 0
+        var distance = 365
 
-        if age < 1
-            age_in_days_delta = 365 - age_in_days
-        elif age < 4
-            age_in_days_delta = 365 * 4 - age_in_days
-        elif age < 7
-            age_in_days_delta = 365 * 7 - age_in_days
-        elif age < 13
-            age_in_days_delta = 365 * 13 - age_in_days
-        elif age < 20
-            age_in_days_delta = 365 * 20 - age_in_days
-        elif age < 23
-            age_in_days_delta = 365 * 13 - age_in_days
-        elif age < 35
-            age_in_days_delta = 365 * 35 - age_in_days
-        elif age < 60
-            age_in_days_delta = 365 * 60 - age_in_days
-        elif age < 75
-            age_in_days_delta = 365 * 75 - age_in_days
-        elif age < 90
-            age_in_days_delta = 365 * 90 - age_in_days
-        else
-            age_in_days_delta = 365 * 110 - age_in_days
-
-        if age_in_days_delta <= 0
-            age_in_days_delta = 365
+        // for event in _available_events
+        //     if event._min_age == 0 && event._max_age == -1
+        //         count = count - event._spawn_limit
 
         var step : int
         
-        if count <= 0
+        if count <= 12
             step = 1
         else
-            step = age_in_days_delta / count
+            step = distance / count
 
         if step <= 1
             step = random_int(rand_seed)
-            while step < 1 && step > 11
+            while step < 1 || step > 11
                 step = random_int(rand_seed)
 
         _timestep = step * 90
@@ -219,15 +201,22 @@ class EventController
         while x < 1 || x > 100
             x = random_int(rand_seed)
 
-        var len = length() <| _available_events
-        for i in range(0, len)
-            var chance = _available_events[i]._spawn_chance
-            if _available_events[i] != null && chance != 0 && chance >= x
-                var event_to_spawn : Event? = _available_events[i]
-                _available_events[i]._spawn_limit--
-                return event_to_spawn
+        var candidates : array<Event?>
 
-        return null
+        for event in _available_events
+            var chance = event._spawn_chance
+            if event != null && chance != 0 && chance >= x
+                push(candidates, event)
+
+        if length(candidates) < 1
+            return null
+
+        x = random_int(rand_seed)
+        while x < 0 || x > length(candidates) - 1
+            x = random_int(rand_seed)
+
+        candidates[x]._spawn_limit = candidates[x]._spawn_limit > 0 ? candidates[x]._spawn_limit-1 : 0
+        return candidates[x]
 
 
     def try_get_event_to_spawn_by_id(event_id : int) : Event?
@@ -235,7 +224,7 @@ class EventController
 
         for i in range(0, len-1)
             if event_id == _available_events[i]._id
-                _available_events[i]._spawn_limit--
+                _available_events[i]._spawn_limit = _available_events[i]._spawn_limit > 0 ? _available_events[i]._spawn_limit-1 : 0
                 return _available_events[i]
         
         return null
@@ -247,10 +236,9 @@ class EventController
 
     def get_event_spawned_count(event_id : int) : int
         var count : int = 0
-        var len = length() <| _spawned_events
 
-        for i in range(0, len)
-            if event_id == _spawned_events[i].id
+        for event in _spawned_events
+            if event_id == event.id
                 count++
 
         return count
@@ -270,8 +258,8 @@ class EventController
     def get_possible_events_to_spawn_count() : int
         var count : int = 0
         for event in _available_events
-            count += event._spawn_limit - get_event_spawned_count(event._id)
-
+            count += event._spawn_limit
+        
         return count
 
 
