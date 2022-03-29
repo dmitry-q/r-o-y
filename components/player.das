@@ -15,7 +15,7 @@ class Player
 
     _date_of_birth : Date
     _offset : int = -60
-    _player_params : PlayerParams = [[PlayerParams() health=100, mental_health=100, willpower=6, charisma=5, luck=4 ]]
+    _player_params : PlayerParams = [[PlayerParams() health=100, mental_health=100, willpower=6, charisma=5, luck=9 ]]
     _player_skills : PlayerSkills
     _events_happen : array<tuple<int; Date>>
     _active_effects : array<Effect>
@@ -205,11 +205,11 @@ class Player
         if sign(compare_to) == 0
             return true
 
-        if sign(compare_to) > 0
-            if compare_to > value
+        if sign(compare_to) < 0
+            if value >= abs(compare_to)
                 return false
         else
-            if compare_to <= value
+            if compare_to > value
                 return false
 
         return true
