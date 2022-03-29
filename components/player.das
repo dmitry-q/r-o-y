@@ -15,39 +15,46 @@ class Player
 
     _date_of_birth : Date
     _offset : int = -60
-    _player_params : PlayerParams = [[PlayerParams() health=100, mental_health=100, luck=4 ]]
+    _player_params : PlayerParams = [[PlayerParams() health=100, mental_health=100, willpower=6, charisma=5, luck=4 ]]
     _player_skills : PlayerSkills
     _events_happen : array<tuple<int; Date>>
     _active_effects : array<Effect>
 
+
     def Player(age_in_days: int)
         Player`set(self, age_in_days)
+
 
     def set(age_in_days : int)
         _player_params.age_in_days = age_in_days
         _player_params.age = age_in_days / 365
 
+
     def get_age()
         return _player_params.age
+
 
     def pass_day()
         _player_params.age_in_days++
         _player_params.age = _player_params.age_in_days / 365
 
-    def add_effect(effect : Effect)
-        push(_active_effects, effect)
-        
-        if effect.is_onetime_effect
-            apply_effect(effect)
 
     def update_active_effects()
         var len = length() <| _active_effects
 
-        for i in range(0,  len)
-            if _active_effects[i].starts_at_age <= get_age() && _active_effects[i].is_onetime_effect == false
-                var age_delta = _player_params.age_in_days - _active_effects[i].starts_at_age * 365
-                if _active_effects[i].timestep == 0 || (age_delta > 0 && age_delta % _active_effects[i].timestep == 0)
-                    apply_effect(_active_effects[i])
+        for effect in _active_effects
+            if effect.starts_at_age <= get_age() && effect.is_onetime_effect == false
+
+                var age_delta = _player_params.age_in_days - effect.starts_at_age * 365
+                var started_at_delta = _player_params.age_in_days - effect.started_at
+
+                if (effect.started_at == -1 && age_delta > 0 && age_delta % effect.timestep == 0) || (effect.started_at > -1 && started_at_delta % effect.timestep == 0)
+                    apply_effect(effect)
+
+
+    def add_effect(effect : Effect)
+        push(_active_effects, effect)
+
 
     def apply_effect(effect : Effect)
 
@@ -70,15 +77,24 @@ class Player
         _player_params.mental_health = _player_params.mental_health > 100 ? 100 : _player_params.mental_health
         _player_params.mental_health = _player_params.mental_health < 0 ? 0 : _player_params.mental_health
 
+
     def register_event(event : Event?; date : Date; is_successful : bool)
         var event_happen : tuple<int; Date>
         event_happen._0 = event._id
         event_happen._1 = date
 
         push_clone(_events_happen, event_happen)
-        apply_effect(is_successful ? event._effect : event._effect_on_fail)
 
-    def check_is_event_successful(event : Event?) : bool
+        var effect_to_apply = is_successful ? event._effect : event._effect_on_fail
+        add_effect(effect_to_apply)
+
+        if effect_to_apply.is_onetime_effect
+            apply_effect(effect_to_apply)
+        else
+            effect_to_apply.started_at = _player_params.age_in_days
+
+
+    def validate_player_params(event_params : PlayerParams) : bool
 
         let age = get_age()
         let health = _player_params.health
@@ -94,6 +110,27 @@ class Player
         let agil = _player_params.agility
         let luck = _player_params.luck
 
+        //  p a r a m s
+        if  !validate_value(age, event_params.age) || (
+            !validate_value(health, event_params.health)) || (
+            !validate_value(mental_health, event_params.mental_health)) || (
+            !validate_value(influence, event_params.influence)) || (
+            !validate_value(money, event_params.money)) || (
+            !validate_value(will, event_params.willpower)) || (
+            !validate_value(str, event_params.strength)) || (
+            !validate_value(per, event_params.perception)) || (
+            !validate_value(end, event_params.endurance)) || (
+            !validate_value(charisma, event_params.charisma)) || (
+            !validate_value(intel, event_params.intelligence)) || (
+            !validate_value(agil, event_params.agility)) || (
+            !validate_value(luck, event_params.luck))
+            return false
+
+        return true
+
+
+    def validate_player_skills(event_skills : PlayerSkills)
+    
         let erudition = _player_skills.erudition
         let empathy = _player_skills.empathy
         let rhetoric = _player_skills.rhetoric
@@ -117,59 +154,62 @@ class Player
         let cold_weapons = _player_skills.cold_weapons
         let firearms = _player_skills.firearms
 
-        //  p a r a m s
-        if  !validate_parameter(age, event._required_params_for_success.age) || (
-            !validate_parameter(health, event._required_params_for_success.health)) || (
-            !validate_parameter(mental_health, event._required_params_for_success.mental_health)) || (
-            !validate_parameter(influence, event._required_params_for_success.influence)) || (
-            !validate_parameter(money, event._required_params_for_success.money)) || (
-            !validate_parameter(will, event._required_params_for_success.willpower)) || (
-            !validate_parameter(str, event._required_params_for_success.strength)) || (
-            !validate_parameter(per, event._required_params_for_success.perception)) || (
-            !validate_parameter(end, event._required_params_for_success.endurance)) || (
-            !validate_parameter(charisma, event._required_params_for_success.charisma)) || (
-            !validate_parameter(intel, event._required_params_for_success.intelligence)) || (
-            !validate_parameter(agil, event._required_params_for_success.agility)) || (
-            !validate_parameter(luck, event._required_params_for_success.luck))
-            return false
-
         //  s k i l l s
-        if  !validate_parameter(erudition, event._required_skills_for_success.erudition) || (
-            !validate_parameter(empathy, event._required_skills_for_success.empathy)) || (
-            !validate_parameter(rhetoric, event._required_skills_for_success.rhetoric)) || (
-            !validate_parameter(enterprise, event._required_skills_for_success.enterprise)) || (
-            !validate_parameter(survivalist, event._required_skills_for_success.survivalist)) || (
-            !validate_parameter(design, event._required_skills_for_success.design)) || (
-            !validate_parameter(music, event._required_skills_for_success.music)) || (
-            !validate_parameter(math, event._required_skills_for_success.math)) || (
-            !validate_parameter(native_language, event._required_skills_for_success.native_language)) || (
-            !validate_parameter(foreign_languages, event._required_skills_for_success.foreign_languages)) || (
-            !validate_parameter(literature, event._required_skills_for_success.literature)) || (
-            !validate_parameter(technology, event._required_skills_for_success.technology)) || (
-            !validate_parameter(computer_science, event._required_skills_for_success.computer_science)) || (
-            !validate_parameter(geography, event._required_skills_for_success.geography)) || (
-            !validate_parameter(social_studies, event._required_skills_for_success.social_studies)) || (
-            !validate_parameter(chemistry, event._required_skills_for_success.chemistry)) || (
-            !validate_parameter(athletics, event._required_skills_for_success.athletics)) || (
-            !validate_parameter(swimming, event._required_skills_for_success.swimming)) || (
-            !validate_parameter(driving, event._required_skills_for_success.driving)) || (
-            !validate_parameter(martial_arts, event._required_skills_for_success.martial_arts)) || (
-            !validate_parameter(cold_weapons, event._required_skills_for_success.cold_weapons)) || (
-            !validate_parameter(firearms, event._required_skills_for_success.firearms))
+        if  !validate_value(erudition, event_skills.erudition) || (
+            !validate_value(empathy, event_skills.empathy)) || (
+            !validate_value(rhetoric, event_skills.rhetoric)) || (
+            !validate_value(enterprise, event_skills.enterprise)) || (
+            !validate_value(survivalist, event_skills.survivalist)) || (
+            !validate_value(design, event_skills.design)) || (
+            !validate_value(music, event_skills.music)) || (
+            !validate_value(math, event_skills.math)) || (
+            !validate_value(native_language, event_skills.native_language)) || (
+            !validate_value(foreign_languages, event_skills.foreign_languages)) || (
+            !validate_value(literature, event_skills.literature)) || (
+            !validate_value(technology, event_skills.technology)) || (
+            !validate_value(computer_science, event_skills.computer_science)) || (
+            !validate_value(geography, event_skills.geography)) || (
+            !validate_value(social_studies, event_skills.social_studies)) || (
+            !validate_value(chemistry, event_skills.chemistry)) || (
+            !validate_value(athletics, event_skills.athletics)) || (
+            !validate_value(swimming, event_skills.swimming)) || (
+            !validate_value(driving, event_skills.driving)) || (
+            !validate_value(martial_arts, event_skills.martial_arts)) || (
+            !validate_value(cold_weapons, event_skills.cold_weapons)) || (
+            !validate_value(firearms, event_skills.firearms))
             return false
 
         return true
 
-    def validate_parameter(parameter, compare_to : int) : bool
+
+    def validate_happen_events(required_events : array<int>) : bool
+        var counter = 0
+        var len = length(required_events)
+
+        if required_events[0] == 0
+            return true
+
+        for required in required_events
+            for happen in _events_happen
+                if required == happen._0
+                    counter++
+
+        if counter == len
+            return true
+        
+        return false
+
+
+    def validate_value(value, compare_to : int) : bool
 
         if sign(compare_to) == 0
             return true
 
         if sign(compare_to) > 0
-            if compare_to > parameter
+            if compare_to > value
                 return false
         else
-            if compare_to <= parameter
+            if compare_to <= value
                 return false
 
         return true

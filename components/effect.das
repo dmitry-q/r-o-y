@@ -12,6 +12,7 @@ struct Effect
     skills : PlayerSkills
 
     starts_at_age : int = 0
+    started_at : int = -1
     duration : int = 0
     timestep : int = 0
     is_onetime_effect : bool = true

@@ -27,17 +27,12 @@ class EventController
 
     def initialize_all_events()
         init_baby_pack()
-        _all_events <- [{auto e_0001; e_0002; e_0003; e_0004; e_0005; e_0006; e_0007; e_0009; e_0010}]
+        init_baby_pack_2()
+        _all_events <- [{auto e_0001; e_0002; e_0003; e_0004; e_0005; e_0006; e_0007; e_0009; e_0010; e_0011; e_0012; e_0012_1; e_0012_2; e_0013;
+                        e_0014; e_0015; e_0016}]
 
-        push(_available_events, e_0005)
-        push(_available_events, e_0002)
-        push(_available_events, e_0010)
-        push(_available_events, e_0009)
-        push(_available_events, e_0003)
-        push(_available_events, e_0004)
-        push(_available_events, e_0007)
-        push(_available_events, e_0006)
-        push(_available_events, e_0001)
+        add_events_fit_by_age(_player->get_age())
+        update_available_events()
         return
 
 
@@ -54,9 +49,12 @@ class EventController
 
     def on_event_happen(event : EventViewData)
         var event_example = get_event_by_id(event.id)
-        var is_success = _player->check_is_event_successful(event_example)
+        var is_success = _player->validate_player_params(event_example._required_params_for_success) && (
+                         _player->validate_player_skills(event_example._required_skills_for_success))
+
         _player->register_event(event_example, event.spawned_at, is_success)
         _event_view->remove_from_render(event.spawned_at)
+        update_available_events()
         game_is_paused = true
         var fit_description = is_success ? event_example._description.on_success : event_example._description.on_fail
         var fit_effect_description = is_success ? event_example._effect_description.on_success : event_example._effect_description.on_fail
@@ -82,9 +80,26 @@ class EventController
 
 
     def update_available_events()
+        _available_events <- validate_available_events()
         order_available_events()
         update_timestep()
         return
+
+    def add_events_fit_by_age(age : int)
+        for event in _all_events
+            if event._min_age <= age && (event._max_age >= age || event._max_age == -1)
+                _available_events |> push(event)
+
+
+    def validate_available_events() : array<Event?>
+        var new_array : array<Event?>
+        for event in _available_events
+            if event._happen_limit > get_event_happen_count(event._id) && event._spawn_limit > 0
+                if _player->validate_happen_events(event._required_events_ids) && (
+                        _player->validate_player_params(event._required_params_for_spawn) && _player->validate_player_skills(event._required_skills_for_spawn))
+                    new_array |> push(event)
+
+        return <- new_array
 
 
     def on_timestep_pass() // int[2] : ids
@@ -100,6 +115,7 @@ class EventController
 
         var spawned_event : EventViewData = spawn_event(0, first_spot_index)
         if spawned_event.id == 0
+            update_timestep()
             return
 
         push_event_to_render(spawned_event)
@@ -114,10 +130,61 @@ class EventController
                 var pairing_event = spawn_event(event_to_pair._id, first_spot_index == 0 ? 1 : 0)
                 push_event_to_render(pairing_event)
                 return
+
+        
         return
 
 
     def update_timestep()
+
+        var rand_seed: int4
+        randomize_seed(rand_seed)
+
+        var age = _player->get_age()
+        var age_in_days = _player._player_params.age_in_days
+        var count = get_possible_events_to_spawn_count()
+        var age_in_days_delta = 0
+
+        if age < 1
+            age_in_days_delta = 365 - age_in_days
+        elif age < 4
+            age_in_days_delta = 365 * 4 - age_in_days
+        elif age < 7
+            age_in_days_delta = 365 * 7 - age_in_days
+        elif age < 13
+            age_in_days_delta = 365 * 13 - age_in_days
+        elif age < 20
+            age_in_days_delta = 365 * 20 - age_in_days
+        elif age < 23
+            age_in_days_delta = 365 * 13 - age_in_days
+        elif age < 35
+            age_in_days_delta = 365 * 35 - age_in_days
+        elif age < 60
+            age_in_days_delta = 365 * 60 - age_in_days
+        elif age < 75
+            age_in_days_delta = 365 * 75 - age_in_days
+        elif age < 90
+            age_in_days_delta = 365 * 90 - age_in_days
+        else
+            age_in_days_delta = 365 * 110 - age_in_days
+
+        if age_in_days_delta <= 0
+            age_in_days_delta = 365
+
+        var step : int
+        
+        if count <= 0
+            step = 1
+        else
+            step = age_in_days_delta / count
+
+        if step <= 1
+            step = random_int(rand_seed)
+            while step < 1 && step > 11
+                step = random_int(rand_seed)
+
+        _timestep = step * 90
+
         return
 
 
@@ -158,7 +225,6 @@ class EventController
             if _available_events[i] != null && chance != 0 && chance >= x
                 var event_to_spawn : Event? = _available_events[i]
                 _available_events[i]._spawn_limit--
-                try_erase_event_from_available(i)
                 return event_to_spawn
 
         return null
@@ -179,14 +245,6 @@ class EventController
         return
 
 
-    def try_erase_event_from_available(index : int)
-        if _available_events[index] == null
-            return
-        if _available_events[index]._happen_limit <= get_event_happen_count(_available_events[index]._id) || (
-                _available_events[index]._spawn_limit <= 0)
-            erase(_available_events, index)
-
-
     def get_event_spawned_count(event_id : int) : int
         var count : int = 0
         var len = length() <| _spawned_events
@@ -205,6 +263,14 @@ class EventController
         for i in range(0, len)
             if event_id == _player._events_happen[i]._0
                 count++
+
+        return count
+
+    
+    def get_possible_events_to_spawn_count() : int
+        var count : int = 0
+        for event in _available_events
+            count += event._spawn_limit - get_event_spawned_count(event._id)
 
         return count
 
