@@ -13,8 +13,19 @@ require content/start_effects
 options debugger            // uncomment for debug in VS Code
 require daslib/debug        // uncomment for debug in VS Code
 
-let REGULAR_TEXT_COLOR: uint = 0xA9F5EB
-let UI_BG_COLOR: uint = 0x243D39
+let REGULAR_TEXT_COLOR : uint = 0xA9F5EB
+let UI_BG_COLOR : uint = 0x243D39
+
+let BG_COLOR_WINTER : uint = 0x788A87
+let BG_COLOR_SPRING : uint = 0x3C6660
+let BG_COLOR_SUMMER : uint = 0x3C6642
+let BG_COLOR_AUTUMN : uint = 0x533E2F
+var current_bg_color : uint
+
+enum Weather
+    NO
+    RAIN
+    SNOW
 
 var RAND_SEED: int4
 var animation_state : int = 0
@@ -30,11 +41,11 @@ def initialize
     set_resolution(1920, 1080)
     randomize_seed(RAND_SEED)
     apply_start_effects()
-    event_controller->initialize_all_events()
     event_controller._event_view <- event_view
     event_controller._event_modal = event_modal
     event_controller._player = player
     player._date_of_birth = start_date
+    event_controller->initialize_all_events()
     handle_music(current_date, player._date_of_birth, player->get_age())
     return
 
@@ -64,7 +75,7 @@ def act(dt: float)
     if event_scroll_out_timer >= 1080.0 / SCROLL_SPEED
         event_scroll_out_timer = 0.0
 
-    if event_controller._timestep_timer >= 360.0 / SCROLL_SPEED
+    if event_controller._timestep_timer >= float(event_controller._timestep) / SCROLL_SPEED
         event_controller->on_timestep_pass()
 
     return
@@ -75,22 +86,34 @@ def act(dt: float)
 def draw
     var width = get_screen_width()
     fill_rect(0, 0, 280, get_screen_height(), UI_BG_COLOR)
-    fill_rect(280, 0, get_screen_width(), get_screen_height(), 0x3C6660)
+
+    if current_date.month < 2 || current_date.month > 10
+        current_bg_color = BG_COLOR_WINTER
+    elif current_date.month < 5 && current_date.month > 1
+        current_bg_color = BG_COLOR_SPRING
+    elif current_date.month < 8 && current_date.month > 4
+        current_bg_color = BG_COLOR_SUMMER
+    else
+        current_bg_color = BG_COLOR_AUTUMN
+    
+    fill_rect(280, 0, get_screen_width(), get_screen_height(), current_bg_color)
 
     fill_rect(1640, 0, 279, get_screen_height(), UI_BG_COLOR)
-    //line(280, 0, 280, 1080, REGULAR_TEXT_COLOR)
-    //line(1640, 0, 1640, 1080, REGULAR_TEXT_COLOR)
+    line(280, 0, 280, 1080, REGULAR_TEXT_COLOR)
+    line(1640, 0, 1640, 1080, REGULAR_TEXT_COLOR)
 
     render_road()
-    //render_rain()
     event_controller->update_view()
     render_dates()
     render_info()
 
-    fill_circle(width/2  + player._offset, 920, 30, 0xCCCC92)
+    //fill_rect(width/2 + player._offset - 30, 920, 60, 60, 0xD61C4B)
+
+    fill_circle(width/2 + player._offset, 920, 30, 0xCCCC92)
+
     //fill_circle(1075 + player_offset, 921, 13, 0xCCCC92)
     //fill_circle(1125 + player_offset, 921, 13, 0xCCCC92)
-    //dfill_rect(1074 + player_offset, 875, 52, 60, 0x272626)
+
 
     fill_rect(width/2 - 30 + player._offset, 951, 60, 60, 0xD61C4B)
 
@@ -100,6 +123,11 @@ def draw
     if animation_state == 1
         fill_rect(width/2 - 30 + player._offset, 1011, 25, 35, 0x114CCA)
         fill_rect(width/2 + 5 + player._offset, 1011, 25, 15, 0x1B346E)
+
+    if current_bg_color == BG_COLOR_WINTER
+        render_weather(Weather SNOW)
+    elif current_bg_color == BG_COLOR_AUTUMN
+        render_weather(Weather RAIN)
 
     if event_modal._is_enabled
         event_modal->render_event_modal(510, 100, 900, 900)
@@ -151,18 +179,22 @@ def render_road()
     fill_rect(x1, 0, 280, get_screen_height(),  0x524A47) //0x6E564A
     fill_rect(x2, 0, 5, get_screen_height(),  0xFCF6F4)
 
-def render_rain()
-    for i in range(0, 255)
+def render_weather(weather : Weather)
+    for i in range(0, 95)
         var x : int = random_int(RAND_SEED)
         var y : int = random_int(RAND_SEED)
     
-        while x < 280 || x > get_screen_width()
+        while x < 282 || x > get_screen_width() - 282
             x = random_int(RAND_SEED)
         
         while y < 0 || y > get_screen_height()
             y = random_int(RAND_SEED)
 
-        line(x, y, x, y+15, 0xA1A1A1)
+        if weather == Weather RAIN
+            line(x, y, x, y+105, 0xA1A1A1)
+        
+        elif weather == Weather SNOW
+            fill_circle(x, y, 4, 0xFFFFFF)
 
 def animate_character()
     if animation_state < 1

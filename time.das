@@ -13,7 +13,7 @@ var time_jerk : float = 0.0
 
 var TIME_SUM : float = 0.0
 
-var start_date : Date <- set_start_date(0, 0, 1970)
+var start_date : Date <- set_start_date(0, 9, 1970)
 var current_date : Date = start_date
 var date_scroll_out_timer : float = 0.0
 var event_scroll_out_timer : float = 0.0
