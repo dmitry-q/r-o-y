@@ -18,6 +18,7 @@ struct EventViewData
     spawned_at : Date
     spawn_spot : int = 0
     icon : ImageHandle
+    log_message : string = ""
 
 struct EventDescription
     on_success : string = ""

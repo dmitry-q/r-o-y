@@ -21,8 +21,9 @@ class EventModal
     _effect_description : string = "Random effect"
     _is_enabled : bool = false
     _continue_button : Button?
-    _icon_id : int
     _icon_to_render : ImageHandle
+    _on_death : lambda<() : void>
+
     
     def EventModal()
         var button : Button? = new Button()
@@ -33,7 +34,7 @@ class EventModal
         _continue_button = continue_button
 
 
-    def show(title, description, effect_description : string; icon_id : int; icon : ImageHandle)
+    def show(title, description, effect_description : string; icon_id : int; icon : ImageHandle; is_dead : bool)
         set_sound_volume(playing_music, 0.03)
         _title = to_upper(title)
         _description = description
@@ -41,6 +42,7 @@ class EventModal
         _icon_to_render = icon
         _is_enabled = true
         _continue_button._is_enabled = true
+        _continue_button._on_click <- _on_death
         return
 
 
@@ -83,7 +85,7 @@ class EventModal
 
         render_icon(_icon_to_render, x + 64, y + 72, 72.0)
 
-        _continue_button->render_button(x + width - 275, y + height - 80, 250, 55, "ДАЛЕЕ")
+        _continue_button->render_button(x + width - 280, y + height - 80, 250, 55, "ДАЛЕЕ")
         
         text_out(x + 52, y + height - 168, _effect_description, 0xA9F5EB)
 

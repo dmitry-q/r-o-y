@@ -5,6 +5,7 @@ require random
 require components/player
 require components/event_view
 require components/event_modal
+require components/game_over
 require components/sound_collection
 require event_controller
 require event
@@ -33,21 +34,34 @@ var player = new Player(0)
 var event_controller = new EventController()
 var event_view = new EventView()
 var event_modal = new EventModal()
+var game_over_modal = new GameOver()
 
 // 'initialize' runs once when game starts and every hot-reload
 [export]
 def initialize
     set_window_title("As It Is")
     set_resolution(1920, 1080)
+    set_vsync_enabled(true)
+
     randomize_seed(RAND_SEED)
     apply_start_effects()
     event_controller._event_view <- event_view
     event_controller._event_modal = event_modal
+    event_controller._game_over_modal = game_over_modal
     event_controller._player = player
     player._date_of_birth = start_date
-    event_controller->initialize_all_events()
-    handle_music(current_date, player._date_of_birth, player->get_age())
+    event_controller->initialize()
+
+    player._on_player_death <- @ <| () : void
+        event_controller->show_game_over_modal()
+        play_music_track(11)
+
+    event_modal._on_death <- @ <| () : void
+        invoke(player._on_player_death)
+
+    handle_music(player->get_age())
     return
+
 
 // this function is called to update game data,
 // dt - time elapsed since the previous update (in seconds)
@@ -65,17 +79,15 @@ def act(dt: float)
 
     if date_scroll_out_timer >= 90.0 / SCROLL_SPEED
         update_dates(1)
-        player->pass_day()
-        player->update_active_effects()
+        player->pass_date()
         animate_character()
         event_controller->detect_collision()
-        handle_music(current_date, player._date_of_birth, player->get_age())
         date_scroll_out_timer = 0.0
 
     if event_scroll_out_timer >= 1080.0 / SCROLL_SPEED
         event_scroll_out_timer = 0.0
 
-    if event_controller._timestep_timer >= float(event_controller._timestep) / SCROLL_SPEED
+    if event_controller._timestep_timer >= float(event_controller._timestep / DATE_STEP * 2) / SCROLL_SPEED
         event_controller->on_timestep_pass()
 
     return
@@ -129,6 +141,8 @@ def draw
     elif current_bg_color == BG_COLOR_AUTUMN
         render_weather(Weather RAIN)
 
+    if game_over_modal._is_enabled
+        game_over_modal->render(510, 100, 900, 900)
     if event_modal._is_enabled
         event_modal->render_event_modal(510, 100, 900, 900)
 
@@ -168,6 +182,16 @@ def render_info()
     text_out(x, anchors[3] + y_offset * 6, "Интеллект:     " + string(player._player_params.intelligence), REGULAR_TEXT_COLOR)
     text_out(x, anchors[3] + y_offset * 7, "Ловкость:      " + string(player._player_params.agility), REGULAR_TEXT_COLOR)
     text_out(x, anchors[3] + y_offset * 8, "Удача:         " + string(player._player_params.luck + 0), REGULAR_TEXT_COLOR)
+
+    var i = 0
+    set_font_size(14)
+    for event in event_controller._available_events
+        text_out(1440, 80 + i * 26, event._name + " " + string(event._spawn_limit) + " " + string(event_controller->get_event_spawned_count(event._id)), REGULAR_TEXT_COLOR)
+        i++
+
+    text_out(1440, 40, string(event_controller._timestep / 90), REGULAR_TEXT_COLOR)
+    set_font_size(24)
+
 
 def render_road()
     var width = get_screen_width()

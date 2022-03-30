@@ -1,6 +1,8 @@
+require daslib/media
 require utils/date
 require time
 require date
+require sound_collection
 require player_params
 require player_skills
 require event
@@ -17,9 +19,10 @@ class Player
     _offset : int = -60
     _player_params : PlayerParams = [[PlayerParams() health=100, mental_health=100, willpower=6, charisma=5, luck=9 ]]
     _player_skills : PlayerSkills
-    _events_happen : array<tuple<int; Date>>
+    _events_happen : array<EventViewData>
     _active_effects : array<Effect>
-
+    _is_dead : bool = false
+    _on_player_death: lambda<(): void>
 
     def Player(age_in_days: int)
         Player`set(self, age_in_days)
@@ -34,9 +37,19 @@ class Player
         return _player_params.age
 
 
-    def pass_day()
-        _player_params.age_in_days++
+    def pass_date()
+        var prev_age = _player_params.age
+        _player_params.age_in_days += DATE_STEP
         _player_params.age = _player_params.age_in_days / 365
+
+        if _player_params.age > prev_age
+            handle_music(_player_params.age)
+        
+        if _player_params.health <= 0 || _is_dead
+            invoke(_on_player_death)
+
+        try_react_on_player_death()
+        update_active_effects()
 
 
     def update_active_effects()
@@ -48,7 +61,8 @@ class Player
                 var age_delta = _player_params.age_in_days - effect.starts_at_age * 365
                 var started_at_delta = _player_params.age_in_days - effect.started_at
 
-                if (effect.started_at == -1 && age_delta > 0 && age_delta % effect.timestep == 0) || (effect.started_at > -1 && started_at_delta % effect.timestep == 0)
+                if (effect.started_at == -1 && age_delta > 0 && age_delta % effect.timestep < DATE_STEP) || (
+                    effect.started_at > -1 && started_at_delta % effect.timestep < DATE_STEP)
                     apply_effect(effect)
 
 
@@ -57,9 +71,8 @@ class Player
 
 
     def apply_effect(effect : Effect)
-
-        time_jerk = effect.time_jerk_value
-
+        _is_dead = effect.is_game_over
+        time_jerk = effect.time_jerk_value * float(DATE_STEP)
         _player_params.health += effect.params.health
         _player_params.mental_health += effect.params.mental_health
 
@@ -78,10 +91,12 @@ class Player
         _player_params.mental_health = _player_params.mental_health < 0 ? 0 : _player_params.mental_health
 
 
-    def register_event(event : Event?; date : Date; is_successful : bool)
-        var event_happen : tuple<int; Date>
-        event_happen._0 = event._id
-        event_happen._1 = date
+    def register_event(event : Event?; date : Date; icon : ImageHandle; log_message : string; is_successful : bool)
+        var event_happen : EventViewData
+        event_happen.id = event._id
+        event_happen.spawned_at = date
+        event_happen.icon = icon
+        event_happen.log_message = log_message
 
         push_clone(_events_happen, event_happen)
 
@@ -111,7 +126,7 @@ class Player
         let luck = _player_params.luck
 
         //  p a r a m s
-        if  !validate_value(age, event_params.age) || (
+        if  (!validate_value(age, event_params.age)) || (
             !validate_value(health, event_params.health)) || (
             !validate_value(mental_health, event_params.mental_health)) || (
             !validate_value(influence, event_params.influence)) || (
@@ -136,7 +151,7 @@ class Player
         let rhetoric = _player_skills.rhetoric
         let enterprise = _player_skills.enterprise
         let survivalist = _player_skills.survivalist
-        let design = _player_skills.design
+        let art = _player_skills.art
         let music = _player_skills.music
         let math = _player_skills.math
         let native_language = _player_skills.native_language
@@ -160,7 +175,7 @@ class Player
             !validate_value(rhetoric, event_skills.rhetoric)) || (
             !validate_value(enterprise, event_skills.enterprise)) || (
             !validate_value(survivalist, event_skills.survivalist)) || (
-            !validate_value(design, event_skills.design)) || (
+            !validate_value(art, event_skills.art)) || (
             !validate_value(music, event_skills.music)) || (
             !validate_value(math, event_skills.math)) || (
             !validate_value(native_language, event_skills.native_language)) || (
@@ -191,7 +206,7 @@ class Player
 
         for required in required_events
             for happen in _events_happen
-                if required == happen._0
+                if required == happen.id
                     counter++
 
         if counter == len
@@ -213,3 +228,7 @@ class Player
                 return false
 
         return true
+
+    def try_react_on_player_death()
+        if _player_params.health <= 0 || _is_dead
+            invoke(_on_player_death)

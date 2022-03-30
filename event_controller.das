@@ -6,6 +6,7 @@ require random
 require time
 require components/event_view
 require components/event_modal
+require components/game_over
 require content/events/baby_pack
 require components/sound_collection
 
@@ -18,18 +19,18 @@ class EventController
     _player : Player?
     _event_view : EventView?
     _event_modal : EventModal?
+    _game_over_modal : GameOver?
     _all_events : array<Event?>
     _spawned_events : array<EventViewData>
     _available_events : array<Event?>
     _timestep : int
     _timestep_timer : float = 0.0
 
-
-    def initialize_all_events()
+    def initialize()
         init_baby_pack()
         init_baby_pack_2()
-        _all_events <- [{auto e_0001; e_0002; e_0003; e_0004; e_0005; e_0006; e_0007; e_0009; e_0010; e_0011; e_0012; e_0012_1; e_0012_2; e_0013;
-                        e_0014; e_0015; e_0016}]
+        _all_events <- [{auto e_0001; e_0002; e_0003; e_0004; e_0005; e_0006; e_0007; e_0008; e_0009; e_0010; e_0011; e_0012; e_0012_1; e_0012_2; e_0013;
+                        e_0014; e_0015; e_0016; e_0017; e_0020}]
 
         add_events_fit_by_age(_player->get_age())
         update_available_events()
@@ -49,16 +50,27 @@ class EventController
 
     def on_event_happen(event : EventViewData)
         var event_example = get_event_by_id(event.id)
+
+        if event_example._happen_limit <= get_event_happen_count(event.id)
+            _event_view->remove_from_render(event.spawned_at)
+            return
+
         var is_success = _player->validate_player_params(event_example._required_params_for_success) && (
                          _player->validate_player_skills(event_example._required_skills_for_success))
 
-        _player->register_event(event_example, event.spawned_at, is_success)
+        var fit_log_message = is_success ? event_example._log_message.on_success : event_example._log_message.on_fail
+
+        _player->register_event(event_example, event.spawned_at, event_example._icon, fit_log_message, is_success)
         _event_view->remove_from_render(event.spawned_at)
         update_available_events()
         game_is_paused = true
+
         var fit_description = is_success ? event_example._description.on_success : event_example._description.on_fail
         var fit_effect_description = is_success ? event_example._effect_description.on_success : event_example._effect_description.on_fail
-        _event_modal->show(event_example._name, fit_description, fit_effect_description, event_example._id, event_example._icon)
+        var is_player_dead = _player._is_dead
+        
+        _event_modal->show(event_example._name, fit_description, fit_effect_description, event_example._id, event_example._icon, is_player_dead)
+
         play_sound(collect)
         if is_success
             play_sound(modal_open_neutral, 0.3)
@@ -70,6 +82,10 @@ class EventController
         if game_is_paused
             return
         _event_view->update()
+
+
+    def show_game_over_modal()
+        _game_over_modal->show(_player._events_happen)
 
     
     def push_event_to_render(event : EventViewData)
@@ -95,9 +111,10 @@ class EventController
 
 
     def validate_available_events() : array<Event?>
+        let age = _player->get_age()
         var new_array : array<Event?>
         for event in _available_events
-            if event._happen_limit > get_event_happen_count(event._id) && event._spawn_limit > 0
+            if event._min_age <= age && event._max_age >= age && event._happen_limit > get_event_happen_count(event._id) && event._spawn_limit > 0
                 if _player->validate_happen_events(event._required_events_ids) && (
                         _player->validate_player_params(event._required_params_for_spawn) && _player->validate_player_skills(event._required_skills_for_spawn))
                     new_array |> push(event)
@@ -111,6 +128,8 @@ class EventController
         randomize_seed(rand_seed)
         var first_spot_index : int
         _timestep_timer = 0.0
+
+        validate_available_events()
 
         first_spot_index = -1
         while first_spot_index < 0 || first_spot_index > 1
@@ -249,7 +268,7 @@ class EventController
         var len = length() <| _player._events_happen
 
         for i in range(0, len)
-            if event_id == _player._events_happen[i]._0
+            if event_id == _player._events_happen[i].id
                 count++
 
         return count

@@ -9,6 +9,7 @@ module button public
 class Button
 
     _is_enabled : bool = false
+    _on_click : lambda<() : void>
 
     def render_button(x : int; y : int; width : int; height: int; text: string)
 
@@ -21,6 +22,7 @@ class Button
             text_color = 0xFFFFFF
             if get_mouse_button_up(MB_LEFT)
                 disable()
+                invoke(_on_click)
         else
             text_color = 0x000000
         
