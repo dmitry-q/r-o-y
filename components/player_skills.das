@@ -7,7 +7,7 @@ struct PlayerSkills
     rhetoric : int = 0
     enterprise : int = 0
     survivalist : int = 0
-    design : int = 0
+    art : int = 0
     music : int = 0
 
     math : int = 0
