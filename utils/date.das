@@ -26,6 +26,7 @@ struct Date
     year : int = 1970
 
 let MONTHS_DURATIONS : MonthDuration[] <- initialize_months_duration()
+var DATE_STEP : int = 7
 
 def initialize_months_duration : MonthDuration[]
     var md : MonthDuration[12] = [[
@@ -49,12 +50,14 @@ def initialize_months_duration : MonthDuration[]
 
 def get_next_date(date : Date) : Date
     var next_date = date
+    var expected_day = next_date.day + DATE_STEP
+    var start_month_duration = MONTHS_DURATIONS[next_date.month].duration
 
-    if date.day < MONTHS_DURATIONS[next_date.month].duration - 1
-        next_date.day++
+    if expected_day <= start_month_duration - 1
+        next_date.day = expected_day
     else
         next_date.month++
-        next_date.day = 0
+        next_date.day = expected_day - start_month_duration
     
     if next_date.month > 11
         next_date.year++
