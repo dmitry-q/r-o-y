@@ -22,7 +22,6 @@ class Button
             text_color = 0xFFFFFF
             if get_mouse_button_up(MB_LEFT)
                 disable()
-                invoke(_on_click)
         else
             text_color = 0x000000
         
@@ -39,4 +38,6 @@ class Button
     def disable()
         _is_enabled = false
         play_sound(click)
+        if _on_click != null
+            invoke(_on_click)
         return
