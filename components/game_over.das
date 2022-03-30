@@ -93,6 +93,8 @@ class GameOver
             text_out(x + 83, y + 200 + 32 * msg_y, format_date(_events_happen[i].spawned_at, DateFormat RU) + " - " + _events_happen[i].log_message, 0xA9F5EB)
             i--
             msg_y++
+            if msg_y > 17
+                break
 
         set_font_size(24)
         //_restart_button->render_button(x + width / 2 + 15, y + height - 80, 405, 55, "РЕСТАРТ")
