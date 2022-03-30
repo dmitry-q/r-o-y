@@ -42,7 +42,9 @@ class EventModal
         _icon_to_render = icon
         _is_enabled = true
         _continue_button._is_enabled = true
-        _continue_button._on_click <- _on_death
+
+        if is_dead
+            _continue_button._on_click <- _on_death
         return
 
 
