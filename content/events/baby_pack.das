@@ -32,16 +32,16 @@ module baby_pack public
     // _description : string = ""
     // _effect_description : string = ""
 
-var e_0001 = new Event(1, "СЕРДЕЧНЫЙ ПРИСТУП", EventGroup NO, false, 0, -1, 7, 90, 23, false, 0)
-var e_0002 = new Event(2, "СМЕРТЕЛЬНЫЙ ЯД", EventGroup NO, false, 0, -1, 4, 4, 2, false, 0)
-var e_0003 = new Event(3, "ГНЕВ БОГОВ", EventGroup NO, false, 0, -1, 4, 4, 2, false, 0)
-var e_0004 = new Event(4, "ПОЖАР!", EventGroup NO, false, 0, -1, 4, 8, 5, false, 0)
+var e_0001 = new Event(1, "СЕРДЕЧНЫЙ ПРИСТУП", EventGroup NO, false, 0, 200, 7, 90, 23, false, 0)
+var e_0002 = new Event(2, "СМЕРТЕЛЬНЫЙ ЯД", EventGroup NO, false, 0, 200, 4, 4, 2, false, 0)
+var e_0003 = new Event(3, "ГНЕВ БОГОВ", EventGroup NO, false, 0, 200, 4, 4, 2, false, 0)
+var e_0004 = new Event(4, "ПОЖАР!", EventGroup NO, false, 0, 200, 18, 18, 7, false, 0)
 var e_0005 = new Event(5, "ТИХИЙ РЕБЁНОК", EventGroup NO, false, 0, 0, 1, 1, 0, false, 0)
-var e_0006 = new Event(6, "ШУМНЫЙ РЕБЁНОК", EventGroup NO, false, 0, 0, 1, 1, 43, true, 5)
+var e_0006 = new Event(6, "ШУМНЫЙ РЕБЁНОК", EventGroup NO, false, 0, 0, 1, 1, 15, true, 5)
 var e_0007 = new Event(7, "ЮНЫЙ ГИМНАСТ", EventGroup NO, false, 0, 0, 1, 1, 20, false, 0)
 var e_0008 = new Event(8, "БОЛТУН", EventGroup NO, false, 0, 0, 1, 1, 23, false, 0)
-var e_0009 = new Event(9, "ПОТЕРЯ РОДИТЕЛЯ", EventGroup NO, false, 0, 17, 1, 1, 5, false, 0)
-var e_0010 = new Event(10, "ПОТЕРЯ РОДИТЕЛЕЙ", EventGroup NO, false, 0, 17, 1, 1, 3, false, 0)
+var e_0009 = new Event(9, "ПОТЕРЯ РОДИТЕЛЯ", EventGroup NO, false, 0, 17, 1, 18, 5, false, 0)
+var e_0010 = new Event(10, "ПОТЕРЯ РОДИТЕЛЕЙ", EventGroup NO, false, 0, 17, 1, 9, 3, false, 0)
 var e_0011 = new Event(11, "СИЛЬНЫЙ ИСПУГ", EventGroup NO, false, 0, 3, 1, 3, 15, false, 0)
 var e_0012 = new Event(12, "X-MEN", EventGroup NO, false, 0, 3, 1, 1, 3, false, 0)
 var e_0012_1 = new Event(90012, "ПЛОХИЕ ГЕНЫ", EventGroup NO, false, 0, 3, 1, 1, 3, false, 0)
@@ -50,10 +50,11 @@ var e_0013 = new Event(13, "ЭТО ЕЩЁ КТО?", EventGroup NO, false, 0, 3, 
 var e_0014 = new Event(14, "ЦАРЬ ЗВЕРЕЙ", EventGroup NO, false, 0, 3, 1, 6, 15, false, 0)
 var e_0015 = new Event(15, "ОБЖОРА", EventGroup NO, false, 0, 7, 1, 55, 25, false, 0)
 var e_0016 = new Event(16, "STAY HUNGRY", EventGroup NO, false, 0, 1, 1, 1, 32, false, 0)
-var e_0017 = new Event(17, "КУКЛОВОД", EventGroup NO, false, 0, 5, 1, 10, 33, false, 0)
-var e_0018 = new Event(18, "GAME OVER", EventGroup NO, true, 0, -1, 1, 1, 0, false, 0)
-var e_0019 = new Event(19, "РОСКОМНАДЗОР", EventGroup NO, true, 0, -1, 1, 1, 0, false, 0)
-var e_0020 = new Event(20, "ПИЩЕВОЕ ОТРАВЛЕНИЕ", EventGroup NO, false, 0, -1, 100, 250, 15, false, 0)
+var e_0017 = new Event(17, "КУКЛОВОД", EventGroup NO, false, 0, 5, 3, 15, 15, false, 0)
+var e_0020 = new Event(20, "ОТРАВЛЕНИЕ", EventGroup NO, false, 0, 200, 10, 250, 9, false, 0)
+//var e_0018 = new Event(18, "GAME OVER", EventGroup NO, true, 0, -1, 1, 1, 0, false, 0)
+//var e_0019 = new Event(19, "РОСКОМНАДЗОР", EventGroup NO, true, 0, -1, 1, 1, 0, false, 0)
+
 
 def init_baby_pack()
 
@@ -467,23 +468,24 @@ def init_baby_pack()
     
 
 def init_baby_pack_2()
+
     e_0016 -> initialize_deps_and_effects(
         [{auto 0}], 
         [[PlayerParams() age=0]], 
-        [[PlayerParams() health=999]], 
+        [[PlayerParams() health=0]], 
         [[PlayerSkills math=0]],
         [[PlayerSkills math=0]],
         [[Effect() is_onetime_effect=true]],
-        [[Effect() is_onetime_effect=true, params=[[PlayerParams() strength=-1]]]],
+        [[Effect() is_onetime_effect=true, params=[[PlayerParams() strength=-1, intelligence=1]]]],
         [[EventDescription() 
-        on_success="",
-        on_fail="Как выяснилось, вы тот ещё едок. Возможно вам просто не нравится еда, которой вас кормят?"]],
+        on_success="Как выяснилось, вы тот ещё едок. Возможно вам просто не нравится еда, которой вас кормят? Силачом вам с таким аппетитом явно не стать, зато лёгкий голод отлично стимулирует умственные способности!",
+        on_fail=""]],
         [[EventDescription()
-        on_success="",
-        on_fail="Сила: -1"]],
+        on_success="Интеллект: +1, Сила: -1",
+        on_fail=""]],
         [[EventDescription()
-        on_success="",
-        on_fail="Стали плохо есть"]],
+        on_success="Стали плохо есть",
+        on_fail=""]],
         create_managed_image("assets/icons/16.png"),
         [{auto 0}],
         [{auto 0}],
@@ -491,90 +493,50 @@ def init_baby_pack_2()
         [{auto EventGroup NO}]
     )
 
-    // e_0017 -> initialize_deps_and_effects(
-    //     [{auto 0}], 
-    //     [[PlayerParams() age=0]], 
-    //     [[PlayerParams() health=999]], 
-    //     [[PlayerSkills math=0]],
-    //     [[PlayerSkills math=0]],
-    //     [[Effect() is_onetime_effect=true]],
-    //     [[Effect() is_onetime_effect=true, params=[[PlayerParams() mental_health=-30]]]],
-    //     [[EventDescription() 
-    //     on_success="",
-    //     on_fail=""]],
-    //     [[EventDescription()
-    //     on_success="",
-    //     on_fail=""]],
-    //     [[EventDescription()
-    //     on_success="",
-    //     on_fail=""]],
-    //     create_managed_image("assets/icons/17.png"),
-    //     [{auto 0}],
-    //     [{auto 0}],
-    //     [{auto EventGroup NO}],
-    //     [{auto EventGroup NO}]
-    // )
+    e_0017 -> initialize_deps_and_effects(
+        [{auto 0}], 
+        [[PlayerParams() age=0]], 
+        [[PlayerParams() health=0]], 
+        [[PlayerSkills math=0]],
+        [[PlayerSkills math=0]],
+        [[Effect() is_onetime_effect=true, skills=[[PlayerSkills() art=1]]]],
+        [[Effect() is_onetime_effect=true]],
+        [[EventDescription() 
+        on_success="Вас не оттащить от игрушек! Причём вы играете с ними настолько изобретательно и масштабно, что любой театральный режиссёр бы позавидовал.",
+        on_fail=""]],
+        [[EventDescription()
+        on_success="Творчество: +1",
+        on_fail=""]],
+        [[EventDescription()
+        on_success="Обнаружили, что обожаете играть с игрушками",
+        on_fail=""]],
+        create_managed_image("assets/icons/17.png"),
+        [{auto 0}],
+        [{auto 0}],
+        [{auto EventGroup NO}],
+        [{auto EventGroup NO}]
+    )
 
-    // e_0018 -> initialize_deps_and_effects(
-    //     [{auto 0}], 
-    //     [[PlayerParams() age=0]], 
-    //     [[PlayerParams() health=999]], 
-    //     [[PlayerSkills math=0]],
-    //     [[PlayerSkills math=0]],
-    //     [[Effect() is_onetime_effect=true]],
-    //     [[Effect() is_onetime_effect=true, is_game_over=true]],
-    //     [[EventDescription() 
-    //     on_success="",
-    //     on_fail=""]],
-    //     [[EventDescription()
-    //     on_success="",
-    //     on_fail=""]],
-    //     create_managed_image("assets/icons/18.png"),
-    //     [{auto 0}],
-    //     [{auto 0}],
-    //     [{auto EventGroup NO}],
-    //     [{auto EventGroup NO}]
-    // )
-
-
-    // e_0019 -> initialize_deps_and_effects(
-    //     [{auto 0}], 
-    //     [[PlayerParams() age=0]], 
-    //     [[PlayerParams() health=999]], 
-    //     [[PlayerSkills math=0]],
-    //     [[PlayerSkills math=0]],
-    //     [[Effect() is_onetime_effect=true]],
-    //     [[Effect() is_onetime_effect=true, is_game_over=true]],
-    //     [[EventDescription() 
-    //     on_success="После затяжной депрессии вы не нашли другого выхода, кроме как закончить всё здесь и сейчас.",
-    //     on_fail=""]],
-    //     [[EventDescription()
-    //     on_success="",
-    //     on_fail="Здоровье: -100%"]],
-    //     create_managed_image("assets/icons/19.png"),
-    //     [{auto 0}],
-    //     [{auto 0}],
-    //     [{auto EventGroup NO}],
-    //     [{auto EventGroup NO}]
-    // )
-
-    // e_0020 -> initialize_deps_and_effects(
-    //     [{auto 0}], 
-    //     [[PlayerParams() health=2]], 
-    //     [[PlayerParams() health=999]],
-    //     [[PlayerSkills math=0]],
-    //     [[PlayerSkills math=0]],
-    //     [[Effect() is_onetime_effect=true]],
-    //     [[Effect() is_onetime_effect=true, params=[[PlayerParams() health=-1]]]],
-    //     [[EventDescription() 
-    //     on_success="",
-    //     on_fail="Упс! Кажется вы съели что-то не то. Вам следует отнестись к выбору продуктов более ответственно."]],
-    //     [[EventDescription()
-    //     on_success="",
-    //     on_fail="Здоровье: -1"]],
-    //     create_managed_image("assets/icons/20.png"),
-    //     [{auto 0}],
-    //     [{auto 0}],
-    //     [{auto EventGroup NO}],
-    //     [{auto EventGroup NO}]
-    // )
+    e_0020 -> initialize_deps_and_effects(
+        [{auto 0}], 
+        [[PlayerParams() age=0]], 
+        [[PlayerParams() health=-2]],
+        [[PlayerSkills math=0]],
+        [[PlayerSkills math=0]],
+        [[Effect() is_onetime_effect=true]],
+        [[Effect() is_onetime_effect=true, params=[[PlayerParams() health=-1]]]],
+        [[EventDescription() 
+        on_success="Упс! Кажется вы съели что-то не то и отравились. Но учитывая состояние вашего здоровья, вас это сейчас волнует меньше всего.",
+        on_fail="Упс! Кажется вы съели что-то не то. Вам следует отнестись к выбору продуктов более ответственно."]],
+        [[EventDescription()
+        on_success="Нет эффекта",
+        on_fail="Здоровье: -1"]],
+        [[EventDescription()
+        on_success="Чем-то отравились",
+        on_fail="Чем-то отравились"]],
+        create_managed_image("assets/icons/20.png"),
+        [{auto 0}],
+        [{auto 0}],
+        [{auto EventGroup NO}],
+        [{auto EventGroup NO}]
+    )
