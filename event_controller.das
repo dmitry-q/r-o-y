@@ -1,9 +1,9 @@
 require daslib/media
-require date
-require event
-require player
-require random
+require utils/date
 require time
+require random
+require components/player
+require components/event
 require components/event_view
 require components/event_modal
 require components/game_over
