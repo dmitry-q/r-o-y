@@ -174,14 +174,14 @@ class EventController
 
         var step : int
         
-        if count <= 12
+        if count > 12
             step = 1
         else
             step = distance / count
 
         if step <= 1
             step = random_int(rand_seed)
-            while step < 1 || step > 11
+            while step < 2 || step > 11
                 step = random_int(rand_seed)
 
         _timestep = step * 90
