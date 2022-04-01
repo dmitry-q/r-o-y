@@ -21,13 +21,17 @@ class EventController
     _event_view : EventView?
     _event_modal : EventModal?
     _game_over_modal : GameOver?
+
     _all_events : array<Event?>
     _spawned_events : array<EventViewData>
     _available_events : array<Event?>
     _timestep : int
     _timestep_timer : float = 0.0
 
+
     def initialize()
+        _event_view = new EventView()
+        _event_modal = new EventModal()
         var event_package_1 = new StartEventPackage()
         var ext_pack_1 = new ExtEventPackage1()
 
@@ -40,9 +44,17 @@ class EventController
         for event in ext_pack_events
             _all_events |> push(event)
 
+        _event_modal._on_death <- @ <| () : void
+            invoke(_player._on_player_death)
+
         add_events_fit_by_age(_player->get_age())
         update_available_events()
         return
+
+
+    def render()
+        if _event_modal._is_enabled
+            _event_modal->render_event_modal(510, 100, 900, 900)
 
 
     def detect_collision() : bool
@@ -63,8 +75,8 @@ class EventController
             _event_view->remove_from_render(event.spawned_at)
             return
 
-        var is_success = _player->validate_player_params(event_example._required_params_for_success) && (
-                         _player->validate_player_skills(event_example._required_skills_for_success))
+        var is_success = _player->validate_params(event_example._required_params_for_success) && (
+                         _player->validate_skills(event_example._required_skills_for_success))
 
         var fit_log_message = is_success ? event_example._log_message.on_success : event_example._log_message.on_fail
 
@@ -75,9 +87,8 @@ class EventController
 
         var fit_description = is_success ? event_example._description.on_success : event_example._description.on_fail
         var fit_effect_description = is_success ? event_example._effect_description.on_success : event_example._effect_description.on_fail
-        var is_player_dead = _player._is_dead
-        
-        _event_modal->show(event_example._name, fit_description, fit_effect_description, event_example._id, event_example._icon, is_player_dead)
+
+        _event_modal->show(event_example._name, fit_description, fit_effect_description, event_example._id, event_example._icon, _player._is_dead)
 
         play_sound(collect)
         if is_success
@@ -110,6 +121,7 @@ class EventController
         update_timestep()
         return
 
+
     def add_events_fit_by_age(age : int)
         for event in _all_events
             if event._min_age <= age && (event._max_age >= age || event._max_age == -1)
@@ -124,7 +136,7 @@ class EventController
         for event in _available_events
             if event._min_age <= age && event._max_age >= age && event._happen_limit > get_event_happen_count(event._id) && event._spawn_limit > 0
                 if _player->validate_happen_events(event._required_events_ids) && (
-                        _player->validate_player_params(event._required_params_for_spawn) && _player->validate_player_skills(event._required_skills_for_spawn))
+                        _player->validate_params(event._required_params_for_spawn) && _player->validate_skills(event._required_skills_for_spawn))
                     new_array |> push(event)
 
         return <- new_array
@@ -172,7 +184,7 @@ class EventController
         randomize_seed(rand_seed)
 
         var age = _player->get_age()
-        var age_in_days = _player._player_params.age_in_days
+        var age_in_days = _player._params.age_in_days
         var count = get_possible_events_to_spawn_count()
         var distance = 365
 

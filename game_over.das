@@ -27,6 +27,15 @@ class GameOver
     _menu_button : Button?
     _icon_to_render : ImageHandle
     _events_happen : array<EventViewData>
+    _x, _y, _width, _height : int
+
+
+    def initialize(x, y, width, height : int)
+        _x = x
+        _y = y
+        _width = width
+        _height = height
+
 
     def GameOver()
         var restart_button : Button? = new Button()
@@ -41,25 +50,20 @@ class GameOver
         _menu_button._on_click <- @ <| () : void
             invoke(set_current_scene, "main_menu")
 
+
     def show(events_happen : array<EventViewData>)
         set_sound_volume(playing_music, 0.03)
         _is_enabled = true
         _restart_button._is_enabled = true
-        _menu_button._is_enabled = true
+        _menu_button->enable()
         _events_happen := events_happen
+        game_is_paused = true
         return
 
 
-    def render(x : int; y : int; width : int; height: int)
-
-        if !_restart_button._is_enabled || !_menu_button._is_enabled
-            _is_enabled = false
-            game_is_paused = false
-            set_sound_volume(playing_music, DEFAULT_MUSIC_VOLUME)
+    def render()
+        if !_is_enabled
             return
-        else
-            game_is_paused = true
-
         var border_color = 0xA9F5EB
         var color = 0x243D39
         var bg_color = make_color32(0, 0, 0, 180)
@@ -70,20 +74,20 @@ class GameOver
 
         disable_alpha_blend()
 
-        fill_rect(x, y, width, height, border_color)
-        fill_rect(x+2, y+2, width-4, height-4, color)
+        fill_rect(_x, _y, _width, _height, border_color)
+        fill_rect(_x+2, _y+2, _width-4, _height-4, color)
 
-        fill_rect(x+30, y+140, width-58, 2, border_color)
+        fill_rect(_x+30, _y+140, _width-58, 2, border_color)
         set_font_size(72)
 
-        text_out(x + 235, y+30, _title, 0xA9F5EB)
+        text_out(_x + 235, _y+30, _title, 0xA9F5EB)
 
         set_font_size(24)
 
-        fill_rect(x+30, y+180, width-58, height-290, border_color)
-        fill_rect(x+32, y+182, width-62, height-294, 0x162523)
+        fill_rect(_x+30, _y+180, _width-58, _height-290, border_color)
+        fill_rect(_x+32, _y+182, _width-62, _height-294, 0x162523)
 
-        render_icon(_icon_to_render, x + 64, y + 72, 75.0)
+        render_icon(_icon_to_render, _x + 64, _y + 72, 75.0)
 
         set_font_size(18)
 
@@ -91,8 +95,8 @@ class GameOver
         var msg_y = 0
         
         while i >= 0
-            render_icon(_events_happen[i].icon, x + 83, y + 236 + 32 * msg_y, 20.0)
-            text_out(x + 83, y + 200 + 32 * msg_y, format_date(_events_happen[i].spawned_at, DateFormat RU) + " - " + _events_happen[i].log_message, 0xA9F5EB)
+            render_icon(_events_happen[i].icon, _x + 83, _y + 236 + 32 * msg_y, 20.0)
+            text_out(_x + 83, _y + 200 + 32 * msg_y, format_date(_events_happen[i].spawned_at, DateFormat RU) + " - " + _events_happen[i].log_message, 0xA9F5EB)
             i--
             msg_y++
             if msg_y > 17
@@ -100,5 +104,5 @@ class GameOver
 
         set_font_size(24)
         //_restart_button->render_button(x + width / 2 + 15, y + height - 80, 405, 55, "РЕСТАРТ")
-        _menu_button->render_button(x + 30, y + height - 80, 840, 55, t("quit"), 2) //x + width / 2 + 15
+        _menu_button->render_button(_x + 30, _y + _height - 80, 840, 55, t("quit"), 2) //x + width / 2 + 15
         //_restart_button->render_button(x + width - 280, y + height - 80, 250, 55, "ВЫЙТИ")

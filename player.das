@@ -19,8 +19,9 @@ class Player
 
     _date_of_birth : Date
     _offset : int = -60
-    _player_params : PlayerParams
-    _player_skills : PlayerSkills
+    _animation_state : int = 0
+    _params : PlayerParams
+    _skills : PlayerSkills
     _events_happen : array<EventViewData>
     _active_effects : array<Effect>
     _is_dead : bool = false
@@ -31,26 +32,48 @@ class Player
 
 
     def set(age_in_days : int)
-        _player_params := params_to_set
-        _player_params.age_in_days = age_in_days
-        _player_params.age = age_in_days / 365
+        _params := params_to_set
+        _params.age_in_days = age_in_days
+        _params.age = age_in_days / 365
+
+
+    def act()
+        try_react_on_player_death()
+
+
+    def render()
+        let w = get_screen_width()
+        let h = get_screen_height()
+        fill_circle(w/2 + _offset, 920, 30, 0xCCCC92)
+        fill_rect(w/2 - 30 + _offset, 951, 60, 60, 0xD61C4B)
+
+        if _animation_state == 0
+            fill_rect(w/2 + 5 + _offset, 1011, 25, 35, 0x114CCA)
+            fill_rect(w/2 - 30 + _offset, 1011, 25, 15, 0x1B346E)
+        if _animation_state == 1
+            fill_rect(w/2 - 30 + _offset, 1011, 25, 35, 0x114CCA)
+            fill_rect(w/2 + 5 + _offset, 1011, 25, 15, 0x1B346E)
+
+    
+    def animate()
+        if _animation_state < 1
+            _animation_state++
+        else
+            _animation_state = 0
+
 
     def get_age()
-        return _player_params.age
+        return _params.age
 
 
     def pass_date()
-        var prev_age = _player_params.age
-        _player_params.age_in_days += date_step
-        _player_params.age = _player_params.age_in_days / 365
+        var prev_age = _params.age
+        _params.age_in_days += date_step
+        _params.age = _params.age_in_days / 365
 
-        if _player_params.age > prev_age
-            update_music(_player_params.age)
-        
-        if _player_params.health <= 0 || _is_dead
-            invoke(_on_player_death)
+        if _params.age > prev_age
+            update_music(_params.age)
 
-        try_react_on_player_death()
         update_active_effects()
 
 
@@ -60,8 +83,8 @@ class Player
         for effect in _active_effects
             if effect.starts_at_age <= get_age() && effect.is_onetime_effect == false
 
-                var age_delta = _player_params.age_in_days - effect.starts_at_age * 365
-                var started_at_delta = _player_params.age_in_days - effect.started_at
+                var age_delta = _params.age_in_days - effect.starts_at_age * 365
+                var started_at_delta = _params.age_in_days - effect.started_at
 
                 if (effect.started_at == -1 && age_delta > 0 && age_delta % effect.timestep < date_step) || (
                     effect.started_at > -1 && started_at_delta % effect.timestep < date_step)
@@ -76,60 +99,60 @@ class Player
         _is_dead = effect.is_game_over
         if effect.time_jerk_value > -1.0
             time_jerk = effect.time_jerk_value
-        _player_params.health += effect.params.health
-        _player_params.mental_health += effect.params.mental_health
-        _player_params.influence += effect.params.influence
-        _player_params.money += effect.params.money
+        _params.health += effect.params.health
+        _params.mental_health += effect.params.mental_health
+        _params.influence += effect.params.influence
+        _params.money += effect.params.money
 
-        _player_params.willpower += effect.params.willpower
-        _player_params.strength += effect.params.strength
-        _player_params.perception += effect.params.perception
-        _player_params.endurance += effect.params.endurance
-        _player_params.charisma += effect.params.charisma
-        _player_params.intelligence += effect.params.intelligence
-        _player_params.agility += effect.params.agility
-        _player_params.luck += effect.params.luck
+        _params.willpower += effect.params.willpower
+        _params.strength += effect.params.strength
+        _params.perception += effect.params.perception
+        _params.endurance += effect.params.endurance
+        _params.charisma += effect.params.charisma
+        _params.intelligence += effect.params.intelligence
+        _params.agility += effect.params.agility
+        _params.luck += effect.params.luck
 
-        _player_skills.erudition += effect.skills.erudition
-        _player_skills.empathy += effect.skills.empathy
-        _player_skills.rhetoric += effect.skills.rhetoric
-        _player_skills.enterprise += effect.skills.enterprise
-        _player_skills.survivalist += effect.skills.survivalist
-        _player_skills.art += effect.skills.art
-        _player_skills.math += effect.skills.math
-        _player_skills.native_language += effect.skills.native_language
-        _player_skills.foreign_languages += effect.skills.foreign_languages
-        _player_skills.physics += effect.skills.physics
-        _player_skills.literature += effect.skills.literature
-        _player_skills.technology += effect.skills.technology
-        _player_skills.computer_science += effect.skills.computer_science
-        _player_skills.geography += effect.skills.geography
-        _player_skills.social_studies += effect.skills.social_studies
-        _player_skills.chemistry += effect.skills.chemistry
-        _player_skills.athletics += effect.skills.athletics
-        _player_skills.swimming += effect.skills.swimming
-        _player_skills.driving += effect.skills.driving
-        _player_skills.martial_arts += effect.skills.martial_arts
-        _player_skills.cold_weapons += effect.skills.cold_weapons
-        _player_skills.firearms += effect.skills.firearms
+        _skills.erudition += effect.skills.erudition
+        _skills.empathy += effect.skills.empathy
+        _skills.rhetoric += effect.skills.rhetoric
+        _skills.enterprise += effect.skills.enterprise
+        _skills.survivalist += effect.skills.survivalist
+        _skills.art += effect.skills.art
+        _skills.math += effect.skills.math
+        _skills.native_language += effect.skills.native_language
+        _skills.foreign_languages += effect.skills.foreign_languages
+        _skills.physics += effect.skills.physics
+        _skills.literature += effect.skills.literature
+        _skills.technology += effect.skills.technology
+        _skills.computer_science += effect.skills.computer_science
+        _skills.geography += effect.skills.geography
+        _skills.social_studies += effect.skills.social_studies
+        _skills.chemistry += effect.skills.chemistry
+        _skills.athletics += effect.skills.athletics
+        _skills.swimming += effect.skills.swimming
+        _skills.driving += effect.skills.driving
+        _skills.martial_arts += effect.skills.martial_arts
+        _skills.cold_weapons += effect.skills.cold_weapons
+        _skills.firearms += effect.skills.firearms
 
-        _player_params.health = _player_params.health > 100 ? 100 : _player_params.health
-        _player_params.health = _player_params.health < 0 ? 0 : _player_params.health
-        _player_params.mental_health = _player_params.mental_health > 100 ? 100 : _player_params.mental_health
-        _player_params.mental_health = _player_params.mental_health < 0 ? 0 : _player_params.mental_health
+        _params.health = _params.health > 100 ? 100 : _params.health
+        _params.health = _params.health < 0 ? 0 : _params.health
+        _params.mental_health = _params.mental_health > 100 ? 100 : _params.mental_health
+        _params.mental_health = _params.mental_health < 0 ? 0 : _params.mental_health
 
         var rand_seed: int4
         randomize_seed(rand_seed)
 
         var s_money_delta = effect.spend_money_range[1]-effect.spend_money_range[0]
-        var max_threshold = clamp(_player_params.intelligence + _player_skills.enterprise, 0, 10)
+        var max_threshold = clamp(_params.intelligence + _skills.enterprise, 0, 10)
         var money_to_spend = -1
 
         while money_to_spend < effect.spend_money_range[0] || money_to_spend > effect.spend_money_range[1]
             money_to_spend = random_int(rand_seed)
 
         money_to_spend = money_to_spend / 10 * (10 - max_threshold)
-        _player_params.money -= money_to_spend
+        _params.money -= money_to_spend
 
 
     def register_event(event : Event?; date : Date; icon : ImageHandle; log_message : string; is_successful : bool)
@@ -147,24 +170,24 @@ class Player
         if effect_to_apply.is_onetime_effect
             apply_effect(effect_to_apply)
         else
-            effect_to_apply.started_at = _player_params.age_in_days
+            effect_to_apply.started_at = _params.age_in_days
 
 
-    def validate_player_params(event_params : PlayerParams) : bool
+    def validate_params(event_params : PlayerParams) : bool
 
         let age = get_age()
-        let health = _player_params.health
-        let mental_health = _player_params.mental_health
-        let influence = _player_params.influence
-        let money = _player_params.money
-        let will = _player_params.willpower
-        let str = _player_params.strength
-        let per = _player_params.perception
-        let end = _player_params.endurance
-        let charisma = _player_params.charisma
-        let intel = _player_params.intelligence
-        let agil = _player_params.agility
-        let luck = _player_params.luck
+        let health = _params.health
+        let mental_health = _params.mental_health
+        let influence = _params.influence
+        let money = _params.money
+        let will = _params.willpower
+        let str = _params.strength
+        let per = _params.perception
+        let end = _params.endurance
+        let charisma = _params.charisma
+        let intel = _params.intelligence
+        let agil = _params.agility
+        let luck = _params.luck
 
         //  p a r a m s
         if  (!validate_value(age, event_params.age)) || (
@@ -185,30 +208,30 @@ class Player
         return true
 
 
-    def validate_player_skills(event_skills : PlayerSkills)
+    def validate_skills(event_skills : PlayerSkills)
     
-        let erudition = _player_skills.erudition
-        let empathy = _player_skills.empathy
-        let rhetoric = _player_skills.rhetoric
-        let enterprise = _player_skills.enterprise
-        let survivalist = _player_skills.survivalist
-        let art = _player_skills.art
-        let music = _player_skills.music
-        let math = _player_skills.math
-        let native_language = _player_skills.native_language
-        let foreign_languages = _player_skills.foreign_languages
-        let literature = _player_skills.literature
-        let technology = _player_skills.technology
-        let computer_science = _player_skills.computer_science
-        let geography = _player_skills.geography
-        let social_studies = _player_skills.social_studies
-        let chemistry = _player_skills.chemistry
-        let athletics = _player_skills.athletics
-        let swimming = _player_skills.swimming
-        let driving = _player_skills.driving
-        let martial_arts = _player_skills.martial_arts
-        let cold_weapons = _player_skills.cold_weapons
-        let firearms = _player_skills.firearms
+        let erudition = _skills.erudition
+        let empathy = _skills.empathy
+        let rhetoric = _skills.rhetoric
+        let enterprise = _skills.enterprise
+        let survivalist = _skills.survivalist
+        let art = _skills.art
+        let music = _skills.music
+        let math = _skills.math
+        let native_language = _skills.native_language
+        let foreign_languages = _skills.foreign_languages
+        let literature = _skills.literature
+        let technology = _skills.technology
+        let computer_science = _skills.computer_science
+        let geography = _skills.geography
+        let social_studies = _skills.social_studies
+        let chemistry = _skills.chemistry
+        let athletics = _skills.athletics
+        let swimming = _skills.swimming
+        let driving = _skills.driving
+        let martial_arts = _skills.martial_arts
+        let cold_weapons = _skills.cold_weapons
+        let firearms = _skills.firearms
 
         //  s k i l l s
         if  !validate_value(erudition, event_skills.erudition) || (
@@ -271,5 +294,5 @@ class Player
         return true
 
     def try_react_on_player_death()
-        if _player_params.health <= 0 || _is_dead
+        if _params.health <= 0 || _is_dead
             invoke(_on_player_death)

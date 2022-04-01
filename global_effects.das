@@ -1,4 +1,4 @@
-module start_effects public
+module global_effects public
 
 require player_params
 require date
