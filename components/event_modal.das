@@ -5,6 +5,7 @@ require strings
 require daslib/strings_boost
 require event_view
 require sound_collection
+require globals
 
 
 module event_modal public
@@ -58,7 +59,7 @@ class EventModal
         else
             game_is_paused = true
 
-        if get_key_up(VK_RETURN)
+        if get_key_up(VK_RETURN) || get_key_up(VK_SPACE)
             _continue_button->disable()
             return
 
@@ -87,7 +88,7 @@ class EventModal
 
         render_icon(_icon_to_render, x + 64, y + 72, 72.0)
 
-        _continue_button->render_button(x + width - 280, y + height - 80, 250, 55, "ДАЛЕЕ")
+        _continue_button->render_button(x + width - 280, y + height - 80, 250, 55, t("next"), 0)
         
         text_out(x + 52, y + height - 168, _effect_description, 0xA9F5EB)
 
@@ -98,7 +99,9 @@ class EventModal
         for i in range(0, length(words) + 1) // Do smth with latin symbols length
             if i == length(words)
                 text_out(x + 52, y + 200 + 32 * row_index, new_row, 0xA9F5EB)
-            elif length(replace(new_row, " ", "")) / 2 + length(words[i]) < DESCRIPTION_ROW_LIMIT
+            elif lang == Language RU && length(replace(new_row, " ", "")) / 2 + length(words[i]) < DESCRIPTION_ROW_LIMIT
+                new_row += words[i] + " "
+            elif lang == Language EN && length(new_row) + length(words[i]) < DESCRIPTION_ROW_LIMIT
                 new_row += words[i] + " "
             else
                 text_out(x + 52, y + 200 + 32 * row_index, new_row, 0xA9F5EB)
