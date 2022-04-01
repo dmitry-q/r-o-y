@@ -1,14 +1,15 @@
 require daslib/media
-require utils/date
 require time
 require random
+require components/date
 require components/player
 require components/event
 require components/event_view
 require components/event_modal
 require components/game_over
-require content/events/baby_pack
 require components/sound_collection
+require content/events/start_pack
+require content/events/extension_pack_1
 
 
 module event_controller public
@@ -27,10 +28,17 @@ class EventController
     _timestep_timer : float = 0.0
 
     def initialize()
-        init_baby_pack()
-        init_baby_pack_2()
-        _all_events <- [{auto e_0001; e_0002; e_0003; e_0004; e_0005; e_0006; e_0007; e_0008; e_0009; e_0010; e_0011; e_0012; e_0012_1; e_0012_2; e_0013;
-                        e_0014; e_0015; e_0016; e_0017; e_0020}]
+        var start_pack = new StartEventPackage()
+        var ext_pack_1 = new ExtEventPackage1()
+
+        start_pack->initialize()
+        ext_pack_1->initialize()
+
+        _all_events <- start_pack->get_events()
+
+        var ext_pack_events <- ext_pack_1->get_events()
+        for event in ext_pack_events
+            _all_events |> push(event)
 
         add_events_fit_by_age(_player->get_age())
         update_available_events()
@@ -181,7 +189,7 @@ class EventController
 
         if step <= 1
             step = random_int(rand_seed)
-            while step < 2 || step > 11
+            while step < 3 || step > 11
                 step = random_int(rand_seed)
 
         _timestep = step * 90
