@@ -1,5 +1,5 @@
 require daslib/media
-require utils/date
+require date
 require time
 require date
 require sound_collection
@@ -8,7 +8,9 @@ require player_skills
 require event
 require effect
 require math
-
+require random
+require globals
+require constants
 
 module player public
 
@@ -17,7 +19,7 @@ class Player
 
     _date_of_birth : Date
     _offset : int = -60
-    _player_params : PlayerParams = [[PlayerParams() health=100, mental_health=100, willpower=6, charisma=5, luck=9 ]]
+    _player_params : PlayerParams
     _player_skills : PlayerSkills
     _events_happen : array<EventViewData>
     _active_effects : array<Effect>
@@ -29,9 +31,9 @@ class Player
 
 
     def set(age_in_days : int)
+        _player_params := params_to_set
         _player_params.age_in_days = age_in_days
         _player_params.age = age_in_days / 365
-
 
     def get_age()
         return _player_params.age
@@ -72,9 +74,12 @@ class Player
 
     def apply_effect(effect : Effect)
         _is_dead = effect.is_game_over
-        time_jerk = effect.time_jerk_value * float(DATE_STEP)
+        if effect.time_jerk_value > -1.0
+            time_jerk = effect.time_jerk_value
         _player_params.health += effect.params.health
         _player_params.mental_health += effect.params.mental_health
+        _player_params.influence += effect.params.influence
+        _player_params.money += effect.params.money
 
         _player_params.willpower += effect.params.willpower
         _player_params.strength += effect.params.strength
@@ -85,10 +90,46 @@ class Player
         _player_params.agility += effect.params.agility
         _player_params.luck += effect.params.luck
 
+        _player_skills.erudition += effect.skills.erudition
+        _player_skills.empathy += effect.skills.empathy
+        _player_skills.rhetoric += effect.skills.rhetoric
+        _player_skills.enterprise += effect.skills.enterprise
+        _player_skills.survivalist += effect.skills.survivalist
+        _player_skills.art += effect.skills.art
+        _player_skills.math += effect.skills.math
+        _player_skills.native_language += effect.skills.native_language
+        _player_skills.foreign_languages += effect.skills.foreign_languages
+        _player_skills.physics += effect.skills.physics
+        _player_skills.literature += effect.skills.literature
+        _player_skills.technology += effect.skills.technology
+        _player_skills.computer_science += effect.skills.computer_science
+        _player_skills.geography += effect.skills.geography
+        _player_skills.social_studies += effect.skills.social_studies
+        _player_skills.chemistry += effect.skills.chemistry
+        _player_skills.athletics += effect.skills.athletics
+        _player_skills.swimming += effect.skills.swimming
+        _player_skills.driving += effect.skills.driving
+        _player_skills.martial_arts += effect.skills.martial_arts
+        _player_skills.cold_weapons += effect.skills.cold_weapons
+        _player_skills.firearms += effect.skills.firearms
+
         _player_params.health = _player_params.health > 100 ? 100 : _player_params.health
         _player_params.health = _player_params.health < 0 ? 0 : _player_params.health
         _player_params.mental_health = _player_params.mental_health > 100 ? 100 : _player_params.mental_health
         _player_params.mental_health = _player_params.mental_health < 0 ? 0 : _player_params.mental_health
+
+        var rand_seed: int4
+        randomize_seed(rand_seed)
+
+        var s_money_delta = effect.spend_money_range[1]-effect.spend_money_range[0]
+        var max_threshold = clamp(_player_params.intelligence + _player_skills.enterprise, 0, 10)
+        var money_to_spend = -1
+
+        while money_to_spend < effect.spend_money_range[0] || money_to_spend > effect.spend_money_range[1]
+            money_to_spend = random_int(rand_seed)
+
+        money_to_spend = money_to_spend / 10 * (10 - max_threshold)
+        _player_params.money -= money_to_spend
 
 
     def register_event(event : Event?; date : Date; icon : ImageHandle; log_message : string; is_successful : bool)
