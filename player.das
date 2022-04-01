@@ -2,7 +2,7 @@ require daslib/media
 require date
 require time
 require date
-require sound_collection
+require sound_manager
 require player_params
 require player_skills
 require event
@@ -41,11 +41,11 @@ class Player
 
     def pass_date()
         var prev_age = _player_params.age
-        _player_params.age_in_days += DATE_STEP
+        _player_params.age_in_days += date_step
         _player_params.age = _player_params.age_in_days / 365
 
         if _player_params.age > prev_age
-            handle_music(_player_params.age)
+            update_music(_player_params.age)
         
         if _player_params.health <= 0 || _is_dead
             invoke(_on_player_death)
@@ -63,8 +63,8 @@ class Player
                 var age_delta = _player_params.age_in_days - effect.starts_at_age * 365
                 var started_at_delta = _player_params.age_in_days - effect.started_at
 
-                if (effect.started_at == -1 && age_delta > 0 && age_delta % effect.timestep < DATE_STEP) || (
-                    effect.started_at > -1 && started_at_delta % effect.timestep < DATE_STEP)
+                if (effect.started_at == -1 && age_delta > 0 && age_delta % effect.timestep < date_step) || (
+                    effect.started_at > -1 && started_at_delta % effect.timestep < date_step)
                     apply_effect(effect)
 
 

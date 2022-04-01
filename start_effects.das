@@ -1,14 +1,16 @@
-require components/effect
-require components/player_params
-require components/date
-
 module start_effects public
+
+require player_params
+require date
+require globals
+require effect
+
 
 let DEFAULT_TIME_JERK_EFFECT : Effect <- [[Effect()
     starts_at_age=0,
     timestep=1,
     is_onetime_effect=false,
-    time_jerk_value= 0.1864 / 12775.0 * float(DATE_STEP)//0.1864 12775.0
+    time_jerk_value= 0.1864 / 12775.0 * float(date_step)//0.1864 12775.0
 ]];
 
 let DEFAULT_AGING : Effect <- [[Effect()

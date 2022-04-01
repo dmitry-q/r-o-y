@@ -1,12 +1,12 @@
 require daslib/media
-require components/scene
-require components/globals
+require scene
+require globals
 require main_menu
 require game
 
+//options debugger
+//require daslib/debug
 
-//options debugger            // uncomment for debug in VS Code
-//require daslib/debug        // uncomment for debug in VS Code
 
 var scenes : table<string; Scene?>
 var current_scene : Scene?

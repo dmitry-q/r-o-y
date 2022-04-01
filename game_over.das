@@ -6,7 +6,7 @@ require daslib/strings_boost
 require event
 require event_view
 require event_modal
-require sound_collection
+require sound_manager
 require date
 require time
 require globals

@@ -1,14 +1,10 @@
 require daslib/media
 require math
-require components/date
+require date
 
 
 module time public
 
-
-enum DateFormat
-    ENG
-    RU
 
 var SCROLL_SPEED : float = 250.0
 var SCROLL_ACCELERATION : float = 1.00
@@ -50,16 +46,3 @@ def update_speed()
         SCROLL_ACCELERATION += time_jerk
 
     SCROLL_SPEED = pow(250.0, SCROLL_ACCELERATION)
-
-
-def format_date(date: Date; format: DateFormat)
-    var result : string
-    let zero_day = date.day > 8 ? "" : "0"
-    let zero_month = date.month > 8 ? "" : "0"
-
-    if format == DateFormat RU
-        result = zero_day + string(date.day + 1) + "/" + zero_month + string(date.month + 1) + "/" + string(date.year)
-    else
-        result = zero_month + string(date.month + 1) + "/" + zero_day + string(date.day + 1) + "/" + string(date.year)
-
-    return result

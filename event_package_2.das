@@ -1,10 +1,10 @@
 require daslib/media
-require components/event
-require components/effect
-require components/player_params
-require components/player_skills
+require event
+require effect
+require player_params
+require player_skills
 
-module extension_pack_1 public
+module event_package_2 public
 
 
 class ExtEventPackage1
@@ -33,6 +33,7 @@ class ExtEventPackage1
         var e_0032 = new Event(32, "ПОЧТИ ТАРЗАН", EventGroup NO, false, 4, 12, 1, 5, 5, false, 0)
         var e_0033 = new Event(33, "ДРУЗЬЯ-СОСЕДИ", EventGroup NO, false, 4, 12, 5, 13, 12, false, 0)
         var e_0050 = new Event(50, "БОЕЦ", EventGroup SPORT, false, 7, 19, 1, 6, 6, false, 0)
+        
         // var e_0012 = new Event(12, "X-MEN", EventGroup NO, false, 0, 3, 1, 1, 3, false, 0)
         // var e_0012_1 = new Event(90012, "ПЛОХИЕ ГЕНЫ", EventGroup NO, false, 0, 3, 1, 1, 3, false, 0)
         // var e_0012_2 = new Event(90012, "ПЛОХИЕ ГЕНЫ", EventGroup NO, false, 0, 3, 1, 1, 2, false, 0)

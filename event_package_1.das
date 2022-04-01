@@ -1,11 +1,11 @@
 require daslib/media
-require components/event
-require components/effect
-require components/player_params
-require components/player_skills
-require components/globals
+require event
+require effect
+require player_params
+require player_skills
+require globals
 
-module start_pack public
+module event_package_1 public
 
 
 class StartEventPackage

@@ -1,6 +1,13 @@
 require daslib/media
+require globals
 
 module date public
+
+
+enum DateFormat
+    ENG
+    RU
+
 
 enum Month
     JANUARY
@@ -16,17 +23,20 @@ enum Month
     NOVEMBER
     DECEMBER
 
+
 struct MonthDuration
     month : Month = Month JANUARY
     duration : int = 31
+
 
 struct Date
     day : int = 0
     month : int = 0
     year : int = 1970
 
+
 let MONTHS_DURATIONS : MonthDuration[] <- initialize_months_duration()
-let DATE_STEP : int = 7
+
 
 def initialize_months_duration : MonthDuration[]
     var md : MonthDuration[12] = [[
@@ -50,7 +60,7 @@ def initialize_months_duration : MonthDuration[]
 
 def get_next_date(date : Date) : Date
     var next_date = date
-    var expected_day = next_date.day + DATE_STEP
+    var expected_day = next_date.day + date_step
     var start_month_duration = MONTHS_DURATIONS[next_date.month].duration
 
     if expected_day <= start_month_duration - 1
@@ -64,3 +74,16 @@ def get_next_date(date : Date) : Date
         next_date.month = 0
 
     return next_date
+
+
+def format_date(date: Date; format: DateFormat)
+    var result : string
+    let zero_day = date.day > 8 ? "" : "0"
+    let zero_month = date.month > 8 ? "" : "0"
+
+    if format == DateFormat RU
+        result = zero_day + string(date.day + 1) + "/" + zero_month + string(date.month + 1) + "/" + string(date.year)
+    else
+        result = zero_month + string(date.month + 1) + "/" + zero_day + string(date.day + 1) + "/" + string(date.year)
+
+    return result

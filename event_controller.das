@@ -1,15 +1,15 @@
 require daslib/media
 require time
 require random
-require components/date
-require components/player
-require components/event
-require components/event_view
-require components/event_modal
-require components/game_over
-require components/sound_collection
-require content/events/start_pack
-require content/events/extension_pack_1
+require date
+require player
+require event
+require event_view
+require event_modal
+require game_over
+require sound_manager
+require event_package_1
+require event_package_2
 
 
 module event_controller public
@@ -28,13 +28,13 @@ class EventController
     _timestep_timer : float = 0.0
 
     def initialize()
-        var start_pack = new StartEventPackage()
+        var event_package_1 = new StartEventPackage()
         var ext_pack_1 = new ExtEventPackage1()
 
-        start_pack->initialize()
+        event_package_1->initialize()
         ext_pack_1->initialize()
 
-        _all_events <- start_pack->get_events()
+        _all_events <- event_package_1->get_events()
 
         var ext_pack_events <- ext_pack_1->get_events()
         for event in ext_pack_events

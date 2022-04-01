@@ -1,10 +1,10 @@
 require daslib/media
-require components/scene
-require components/button
-require components/globals
-require components/sound_collection
-require components/menu_modal
-require components/player_params
+require scene
+require button
+require globals
+require sound_manager
+require menu_modal
+require player_params
 require constants
 
 module main_menu public

@@ -2,19 +2,19 @@ require daslib/media
 require time
 require random
 require constants
-require components/scene
-require components/date
-require components/player
-require components/event_view
-require components/event_modal
-require components/button
-require components/game_over
-require components/sound_collection
+require scene
+require date
+require player
+require event_view
+require event_modal
+require button
+require game_over
+require sound_manager
 require event_controller
 require event
 require constants
 require globals
-require content/start_effects
+require start_effects
 
 
 module game public
@@ -78,7 +78,7 @@ class Game : Scene
 
         game_is_paused = false
         apply_start_effects()
-        handle_music(player->get_age())
+        update_music(player->get_age())
 
 
     def finalize
@@ -110,7 +110,7 @@ class Game : Scene
         if event_scroll_out_timer >= 1080.0 / SCROLL_SPEED
             event_scroll_out_timer = 0.0
 
-        if event_controller._timestep_timer >= float(event_controller._timestep / DATE_STEP) / SCROLL_SPEED
+        if event_controller._timestep_timer >= float(event_controller._timestep / date_step) / SCROLL_SPEED
             event_controller->on_timestep_pass()
 
 

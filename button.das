@@ -1,4 +1,4 @@
-require sound_collection
+require sound_manager
 require daslib/media
 require math
 require globals

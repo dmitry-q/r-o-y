@@ -4,7 +4,7 @@ require button
 require strings
 require daslib/strings_boost
 require event_view
-require sound_collection
+require sound_manager
 require globals
 
 

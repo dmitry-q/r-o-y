@@ -10,13 +10,18 @@ var set_current_scene : lambda<(name : string) : void>
 var params_to_set : PlayerParams = [[PlayerParams() health=100, mental_health=100, willpower=4, strength=4, perception=4, endurance=4, charisma=4, intelligence=4, agility=4, luck=4]]
 var lang : Language
 
+var date_step : int = 7
+
+
 var dict_RU : table<string; string>
 var dict_EN : table<string; string>
+
 
 def t(str : string) : string
     if lang == Language RU
         return dict_RU[(str)]
     return dict_EN[(str)]
+
 
 def initialize_locales_RU() : table<string; string>
 

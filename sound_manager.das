@@ -2,21 +2,22 @@ require daslib/media
 require date
 
 
-module sound_collection public
+module sound_manager public
 
-
-let DEFAULT_MUSIC_VOLUME : float = 0.12
 
 let click <- create_managed_sound("assets/sfx/click.mp3")
 let modal_open_fail <- create_managed_sound("assets/sfx/modal_open_fail.mp3")
 let modal_open_neutral <- create_managed_sound("assets/sfx/modal_open_neutral.mp3")
 let collect <- create_managed_sound("assets/sfx/collect.wav")
 
+let DEFAULT_MUSIC_VOLUME : float = 0.12
+
 var current_music : PcmSound
 var playing_music : PlayingSoundHandle
 var current_track_index : int
 
-def handle_music(age : int)
+
+def update_music(age : int)
 
     var track : int 
 
@@ -48,13 +49,17 @@ def handle_music(age : int)
 
     play_music_track(track)
 
+
 def play_music_track(track : int)
+
     delete(current_music)
     current_music <- create_sound("assets/music/{track}.mp3")
     playing_music = current_music |> play_sound_loop(DEFAULT_MUSIC_VOLUME)
     current_track_index = track
 
+
 def play_music_track_delayed(track : int; delay : float)
+
     delete(current_music)
     current_music <- create_sound("assets/music/{track}.mp3")
     //playing_music = current_music |> play_sound_loop(DEFAULT_MUSIC_VOLUME)

@@ -1,7 +1,6 @@
-require time
-require date
 require player_params
 require player_skills
+require date
 
 module effect public
 
