@@ -26,7 +26,7 @@ struct Date
     year : int = 1970
 
 let MONTHS_DURATIONS : MonthDuration[] <- initialize_months_duration()
-var DATE_STEP : int = 7
+let DATE_STEP : int = 7
 
 def initialize_months_duration : MonthDuration[]
     var md : MonthDuration[12] = [[
