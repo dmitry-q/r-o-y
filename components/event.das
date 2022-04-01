@@ -2,7 +2,7 @@ require daslib/media
 require player_params
 require player_skills
 require effect
-require utils/date
+require date
 
 module event public
 

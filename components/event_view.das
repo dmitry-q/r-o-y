@@ -1,5 +1,5 @@
 require daslib/media
-require utils/date
+require date
 require time
 require event
 

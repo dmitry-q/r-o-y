@@ -1,5 +1,5 @@
-require date
 require daslib/media
+require date
 
 
 module sound_collection public
