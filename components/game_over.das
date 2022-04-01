@@ -7,8 +7,9 @@ require event
 require event_view
 require event_modal
 require sound_collection
-require utils/date
+require date
 require time
+require globals
 
 module game_over public
 
@@ -19,14 +20,14 @@ var is_game_over : bool = false
 
 class GameOver
 
-    _title : string = "КОНЕЦ ИГРЫ"
+    _title : string = t("gameover")
     _is_enabled : bool
 
     _restart_button : Button?
     _menu_button : Button?
     _icon_to_render : ImageHandle
     _events_happen : array<EventViewData>
-    
+
     def GameOver()
         var restart_button : Button? = new Button()
         var menu_button : Button? = new Button()
@@ -37,7 +38,8 @@ class GameOver
         _restart_button = restart_button
         _menu_button = menu_button
         _icon_to_render = create_managed_image("assets/icons/18.png")
-
+        _menu_button._on_click <- @ <| () : void
+            invoke(set_current_scene, "main_menu")
 
     def show(events_happen : array<EventViewData>)
         set_sound_volume(playing_music, 0.03)
@@ -98,5 +100,5 @@ class GameOver
 
         set_font_size(24)
         //_restart_button->render_button(x + width / 2 + 15, y + height - 80, 405, 55, "РЕСТАРТ")
-        _restart_button->render_button(x + 30, y + height - 80, 840, 55, "ВЫХОД") //x + width / 2 + 15
+        _menu_button->render_button(x + 30, y + height - 80, 840, 55, t("quit"), 2) //x + width / 2 + 15
         //_restart_button->render_button(x + width - 280, y + height - 80, 250, 55, "ВЫЙТИ")
