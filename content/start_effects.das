@@ -1,5 +1,6 @@
 require components/effect
 require components/player_params
+require components/date
 
 module start_effects public
 
@@ -7,19 +8,55 @@ let DEFAULT_TIME_JERK_EFFECT : Effect <- [[Effect()
     starts_at_age=0,
     timestep=1,
     is_onetime_effect=false,
-    time_jerk_value=0.0000145
+    time_jerk_value= 0.1864 / 12775.0 * float(DATE_STEP)//0.1864 12775.0
 ]];
 
 let DEFAULT_AGING : Effect <- [[Effect()
     starts_at_age=36,
     timestep=365,
     is_onetime_effect=false,
-    params = [[PlayerParams() health = -1, intelligence = 0]]
+    params = [[PlayerParams() health = -1]]
 ]];
 
-let DEFAULT_DEMENTIA  : Effect <- [[Effect()
+let DEFAULT_DEMENTIA : Effect <- [[Effect()
     starts_at_age=60,
     timestep=2190,
     is_onetime_effect=false,
-    params = [[PlayerParams() health = 0, intelligence = -1]]
+    params = [[PlayerParams() intelligence = -1]]
+]];
+
+
+let POCKET_MONEY_CHILD : Effect <- [[Effect()
+    starts_at_age=7,
+    timestep=7,
+    duration=365*6,
+    is_onetime_effect=false,
+    params = [[PlayerParams() money = 20]]
+]];
+
+
+let POCKET_MONEY_TEENAGER : Effect <- [[Effect()
+    starts_at_age=13,
+    timestep=7,
+    duration=365*7,
+    is_onetime_effect=false,
+    params = [[PlayerParams() money = 90]]
+]];
+
+
+let SPEND_POCKET_MONEY_CHILD : Effect <- [[Effect()
+    starts_at_age=7,
+    timestep=7,
+    duration=365*6,
+    is_onetime_effect=false,
+    spend_money_range=[[int[2] 0; 30]]
+]];
+
+
+let SPEND_POCKET_MONEY_TEENAGER : Effect <- [[Effect()
+    starts_at_age=13,
+    timestep=7,
+    duration=365*7,
+    is_onetime_effect=false,
+    spend_money_range=[[int[2] 0; 155]]
 ]];
