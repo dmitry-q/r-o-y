@@ -1,5 +1,5 @@
 require time
-require utils/date
+require date
 require player_params
 require player_skills
 
@@ -19,4 +19,5 @@ struct Effect
     is_game_over : bool = false
     deactivate_effects : int[3]
 
-    time_jerk_value : float = 0.0
+    spend_money_range : int[2]
+    time_jerk_value : float = -1.0
