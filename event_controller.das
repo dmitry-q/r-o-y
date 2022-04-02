@@ -34,16 +34,16 @@ class EventController
         _event_view = new EventView()
         _event_modal = new EventModal()
         var event_package_1 = new StartEventPackage()
-        //var ext_pack_1 = new ExtEventPackage1()
+        var ext_pack_1 = new ExtEventPackage1()
 
         event_package_1->initialize()
-        //ext_pack_1->initialize()
+        ext_pack_1->initialize()
 
         _all_events <- event_package_1->get_events()
 
-        // var ext_pack_events <- ext_pack_1->get_events()
-        // for event in ext_pack_events
-        //     _all_events |> push(event)
+        var ext_pack_events <- ext_pack_1->get_events()
+        for event in ext_pack_events
+            _all_events |> push(event)
 
         _event_modal._on_death <- @ <| () : void
             invoke(_player._on_player_death)
