@@ -23,7 +23,6 @@ class MainMenu : Scene
     _params_titles : array<string>
     _free_points : int = 0
     _params_input : table<int; int>
-    _params_to_apply : PlayerParams
 
     def override initialize()
         let w = get_screen_width()
@@ -32,16 +31,8 @@ class MainMenu : Scene
         play_music_track(0)
         set_antialiasing(4)
 
-        _params_to_apply = [[PlayerParams() health=100, mental_health=100, willpower=4, strength=4, perception=4, endurance=4, charisma=4, intelligence=4, agility=4, luck=4]]
+        _params_input <- params_to_set
         _params_titles <- [{auto t("params.will"); t("params.str"); t("params.per"); t("params.end"); t("params.cha"); t("params.int"); t("params.agi"); t("params.luck")}]
-        _params_input[0] = 4
-        _params_input[1] = 4
-        _params_input[2] = 4
-        _params_input[3] = 4
-        _params_input[4] = 4
-        _params_input[5] = 4
-        _params_input[6] = 4
-        _params_input[7] = 4
 
         var main_modal = new MenuModal()
         var main_modal_buttons : array<Button?>
@@ -157,10 +148,10 @@ class MainMenu : Scene
                 continue
             if i % 2 > 0
                 _modals[3]._buttons[i]._on_click <- @ <| () : void
-                    invoke(_increment_param, i / 2)
+                    invoke(_increment_param, i / 2 + 6)
             else
                 _modals[3]._buttons[i]._on_click <- @ <| () : void
-                    invoke(_decrement_param, i / 2)
+                    invoke(_decrement_param, i / 2 + 6)
 
         // OTHER
         _show_next_modal <- @ <| (step : int) : void
@@ -256,7 +247,7 @@ class MainMenu : Scene
                     x_offset = 400
                     button_text = "+"
                     text_out(w / 2 - 160, 360 + y_offset, _params_titles[title_index], REGULAR_TEXT_COLOR)
-                    text_out(w / 2 - 300, 360 + y_offset, string(_params_input[title_index]), REGULAR_TEXT_COLOR)
+                    text_out(w / 2 - 300, 360 + y_offset, string(_params_input[title_index+6]), REGULAR_TEXT_COLOR)
                 
                 button->render_button(w / 2 - 225 + x_offset, 355 + y_offset, 50, 50, button_text, 1)
                 i++
@@ -280,13 +271,4 @@ class MainMenu : Scene
 
 
     def submit_params
-        _params_to_apply.willpower = _params_input[0]
-        _params_to_apply.strength = _params_input[1]
-        _params_to_apply.perception = _params_input[2]
-        _params_to_apply.endurance = _params_input[3]
-        _params_to_apply.charisma = _params_input[4]
-        _params_to_apply.intelligence = _params_input[5]
-        _params_to_apply.agility = _params_input[6]
-        _params_to_apply.luck = _params_input[7]
-
-        params_to_set = _params_to_apply
+        params_to_set <- _params_input

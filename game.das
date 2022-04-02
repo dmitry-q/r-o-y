@@ -5,6 +5,7 @@ require constants
 require scene
 require date
 require player
+require player_params
 require event_view
 require event_modal
 require button
@@ -104,7 +105,7 @@ class Game : Scene
         if event_scroll_out_timer >= 1080.0 / SCROLL_SPEED
             event_scroll_out_timer = 0.0
 
-        if _event_controller._timestep_timer >= float(_event_controller._timestep / date_step) / SCROLL_SPEED
+        if _event_controller._timestep_timer >= float(float(_event_controller._timestep)) / 3.5 / SCROLL_SPEED
             _event_controller->on_timestep_pass()
 
 
@@ -162,24 +163,24 @@ class Game : Scene
 
         set_font_size(24)
 
-        text_out(x, anchors[1] + y_offset * 1, t("hp") + "" + string(_player._params.health) + "/100", REGULAR_TEXT_COLOR)
-        text_out(x, anchors[1] + y_offset * 2, t("pp") + "" + string(_player._params.mental_health) + "/100", REGULAR_TEXT_COLOR)
+        text_out(x, anchors[1] + y_offset * 1, t("hp") + "" + string(_player._params[pk(ParamKey HEALTH)]) + "/100", REGULAR_TEXT_COLOR)
+        text_out(x, anchors[1] + y_offset * 2, t("pp") + "" + string(_player._params[pk(ParamKey MENTAL)]) + "/100", REGULAR_TEXT_COLOR)
         
         text_out(x, anchors[2] + y_offset * 1, t("age") + "" + string(_player->get_age()), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[2] + y_offset * 2, t("money") + "" + string(_player._params.money), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[2] + y_offset * 3, t("infl") + "" + string(_player._params.influence), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[2] + y_offset * 2, t("money") + "" + string(_player._params[pk(ParamKey MONEY)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[2] + y_offset * 3, t("infl") + "" + string(_player._params[pk(ParamKey INFLUENCE)]), REGULAR_TEXT_COLOR)
         //text_out(1440, 170, "Speed: " + string(SCROLL_SPEED), REGULAR_TEXT_COLOR)
         //text_out(1440, 200, "Acc: " + string(SCROLL_ACCELERATION), REGULAR_TEXT_COLOR)
         //text_out(1440, 230, "Jerk: " + string(time_jerk), REGULAR_TEXT_COLOR)
         //text_out(1500, 200, "Time Passed: " + string(TIME_SUM), 0xA1A1A1)
-        text_out(x, anchors[3] + y_offset * 1, t("will") + "" + string(_player._params.willpower), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[3] + y_offset * 2, t("str") + "" + string(_player._params.strength), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[3] + y_offset * 3, t("per") + "" + string(_player._params.perception), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[3] + y_offset * 4, t("end") + "" + string(_player._params.endurance), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[3] + y_offset * 5, t("cha") + "" + string(_player._params.charisma), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[3] + y_offset * 6, t("int") + "" + string(_player._params.intelligence), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[3] + y_offset * 7, t("agi") + "" + string(_player._params.agility), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[3] + y_offset * 8, t("luck") + "" + string(_player._params.luck), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[3] + y_offset * 1, t("will") + "" + string(_player._params[pk(ParamKey WILLPOWER)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[3] + y_offset * 2, t("str") + "" + string(_player._params[pk(ParamKey STRENGHT)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[3] + y_offset * 3, t("per") + "" + string(_player._params[pk(ParamKey PERCEPTION)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[3] + y_offset * 4, t("end") + "" + string(_player._params[pk(ParamKey ENDURANCE)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[3] + y_offset * 5, t("cha") + "" + string(_player._params[pk(ParamKey CHARISMA)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[3] + y_offset * 6, t("int") + "" + string(_player._params[pk(ParamKey INTELLIGENCE)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[3] + y_offset * 7, t("agi") + "" + string(_player._params[pk(ParamKey AGILITY)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[3] + y_offset * 8, t("luck") + "" + string(_player._params[pk(ParamKey LUCK)]), REGULAR_TEXT_COLOR)
 
 
         set_font_size(12)

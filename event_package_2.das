@@ -51,12 +51,12 @@ class ExtEventPackage1
       
         _events[0] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() age=1]],
-            [[PlayerParams() health=999]],
+            {{ pk(ParamKey AGE)=>1 }},
+            {{ pk(ParamKey HEALTH)=>999 }},
             [[PlayerSkills math=0]],
             [[PlayerSkills math=0]],
             [[Effect() is_onetime_effect=true]],
-            [[Effect() is_onetime_effect=true, params=[[PlayerParams() health=-10]]]],
+            [[Effect() is_onetime_effect=true, params<-{{ pk(ParamKey HEALTH)=>-10 }}]],
             [[EventDescription()
             on_success="",
             on_fail="Тяжёлая болезнь приковывает вас к постели на пару недель. Будем надеяться, что вы поправитесь."]],
@@ -75,8 +75,8 @@ class ExtEventPackage1
 
         _events[1] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() intelligence=3, charisma=5]],
-            [[PlayerParams() age=0]], 
+            {{ pk(ParamKey INTELLIGENCE)=>3; pk(ParamKey CHARISMA)=>5 }},
+            {{ pk(ParamKey AGE)=>0 }}, 
             [[PlayerSkills math=0]],
             [[PlayerSkills math=0]],
             [[Effect() is_onetime_effect=true, skills=[[PlayerSkills() enterprise=1, art=1]]]],
@@ -100,12 +100,12 @@ class ExtEventPackage1
       
         _events[2] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() age=4]],
-            [[PlayerParams() strength=5]],
+            {{ pk(ParamKey AGE)=>4 }},
+            {{ pk(ParamKey STRENGHT)=>5 }},
             [[PlayerSkills math=0]],
             [[PlayerSkills math=0]],
-            [[Effect() is_onetime_effect=true, skills=[[PlayerSkills() martial_arts=1]], params=[[PlayerParams() influence=1]]]],
-            [[Effect() is_onetime_effect=true, params=[[PlayerParams() mental_health=-1, health=-1]]]],
+            [[Effect() is_onetime_effect=true, skills=[[PlayerSkills() martial_arts=1]], params<-{{ pk(ParamKey INFLUENCE)=>1 }}]],
+            [[Effect() is_onetime_effect=true, params<-{{ pk(ParamKey HEALTH)=>-1; pk(ParamKey MENTAL)=>-1 }}]],
             [[EventDescription() 
             on_success="Приходя домой со ссадинами и синяками, вы объясняете родителям, что тот ребёнок первый начал. Однако, между делом отмечаете, что выглядит он сейчас гораздо хуже.",
             on_fail="Вас побил другой ребёнок, пока вы гуляли на улице. Кто начал первым - спорный вопрос, но все вокруг вам постоянно говорят, что драться - плохо. Может быть стоит прислушаться?"]],
@@ -125,8 +125,8 @@ class ExtEventPackage1
   
         _events[3] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() age=4]],
-            [[PlayerParams() health=0]],
+            {{ pk(ParamKey AGE)=>4 }},
+            {{ pk(ParamKey HEALTH)=>0 }}, 
             [[PlayerSkills math=0]],
             [[PlayerSkills math=0]],
             [[Effect() is_onetime_effect=true, skills=[[PlayerSkills() athletics=1, swimming=1]]]],
@@ -149,9 +149,9 @@ class ExtEventPackage1
 
         _events[4] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() age=4]],
-            [[PlayerParams() health=999]],
-            [[PlayerSkills swimming=0]],
+            {{ pk(ParamKey AGE)=>4 }},
+            {{ pk(ParamKey HEALTH)=>999 }},
+            [[PlayerSkills swimming=-1]],
             [[PlayerSkills math=0]],
             [[Effect() is_onetime_effect=true]],
             [[Effect() is_onetime_effect=true, is_game_over=true]],
@@ -174,8 +174,8 @@ class ExtEventPackage1
 
         _events[5] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() age=4]],
-            [[PlayerParams() health=0]],
+            {{ pk(ParamKey AGE)=>4 }},
+            {{ pk(ParamKey HEALTH)=>0 }},
             [[PlayerSkills rhetoric=1]],
             [[PlayerSkills math=0]],
             [[Effect() is_onetime_effect=true, skills=[[PlayerSkills() rhetoric=1]]]],
@@ -199,8 +199,8 @@ class ExtEventPackage1
 
         _events[6] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() charisma=4]],
-            [[PlayerParams() health=0]],
+            {{ pk(ParamKey CHARISMA)=>4 }},
+            {{ pk(ParamKey HEALTH)=>0 }}, 
             [[PlayerSkills art=1]],
             [[PlayerSkills math=0]],
             [[Effect() is_onetime_effect=true, skills=[[PlayerSkills() art=1, rhetoric=1]]]],
@@ -223,8 +223,8 @@ class ExtEventPackage1
 
         _events[7] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() intelligence=2]],
-            [[PlayerParams() health=0]],
+            {{ pk(ParamKey INTELLIGENCE)=>2 }},
+            {{ pk(ParamKey HEALTH)=>0 }}, 
             [[PlayerSkills math=0]],
             [[PlayerSkills math=0]],
             [[Effect() is_onetime_effect=true, skills=[[PlayerSkills() erudition=1]]]],
@@ -247,11 +247,11 @@ class ExtEventPackage1
 
         _events[8] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() agility=2]],
-            [[PlayerParams() health=0]],
+            {{ pk(ParamKey AGILITY)=>2 }},
+            {{ pk(ParamKey HEALTH)=>0 }}, 
             [[PlayerSkills math=0]],
             [[PlayerSkills math=0]],
-            [[Effect() is_onetime_effect=true, params=[[PlayerParams() agility=1]]]],
+            [[Effect() is_onetime_effect=true, params<-{{ pk(ParamKey AGILITY)=>1 }}]],
             [[Effect() is_onetime_effect=true]],
             [[EventDescription()
             on_success="Вы знали, что есть люди, которые будучи взрослыми не умеют завязывать шнурки? У всех свои причуды. Но вы теперь умеете, вы молодец.",
@@ -272,11 +272,11 @@ class ExtEventPackage1
 
         _events[9] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() agility=4]],
-            [[PlayerParams() health=0]],
+            {{ pk(ParamKey AGILITY)=>4 }},
+            {{ pk(ParamKey HEALTH)=>0 }}, 
             [[PlayerSkills math=0]],
             [[PlayerSkills math=0]],
-            [[Effect() is_onetime_effect=true, params=[[PlayerParams() agility=1]]]],
+            [[Effect() is_onetime_effect=true, params<-{{ pk(ParamKey AGILITY)=>1 }}]],
             [[Effect() is_onetime_effect=true]],
             [[EventDescription()
             on_success="Вы научились очень ловко лазить по деревьям. Своеобразный навык. Но поживём-увидим, к чему он вас в дальнейшем приведёт.",
@@ -297,11 +297,11 @@ class ExtEventPackage1
 
         _events[10] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() charisma=4]],
-            [[PlayerParams() health=0]],
+            {{ pk(ParamKey CHARISMA)=>4 }}, 
+            {{ pk(ParamKey HEALTH)=>0 }}, 
             [[PlayerSkills math=0]],
             [[PlayerSkills math=0]],
-            [[Effect() is_onetime_effect=true, params=[[PlayerParams() influence=1]], skills=[[PlayerSkills() empathy=1]]]],
+            [[Effect() is_onetime_effect=true, params<-{{ pk(ParamKey INFLUENCE)=>1 }}, skills=[[PlayerSkills() empathy=1]]]],
             [[Effect() is_onetime_effect=true]],
             [[EventDescription()
             on_success="Вы часто гуляете в окрестностях своего жилища. И вот в ходе очередной такой прогулки вы знакомитесь с одним из ваших будущих хороших друзей.",
@@ -322,8 +322,8 @@ class ExtEventPackage1
         
         _events[11] -> initialize_deps_and_effects(
             [{auto 0}],
-            [[PlayerParams() strength=2, endurance=4]], 
-            [[PlayerParams() health=0]], 
+            {{ pk(ParamKey STRENGHT)=>2; pk(ParamKey ENDURANCE)=>4 }}, 
+            {{ pk(ParamKey HEALTH)=>0 }}, 
             [[PlayerSkills math=0]],
             [[PlayerSkills math=0]],
             [[Effect() is_onetime_effect=false, timestep=365, skills=[[PlayerSkills() martial_arts=1]]]],

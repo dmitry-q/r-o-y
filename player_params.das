@@ -1,5 +1,26 @@
 module player_params public
 
+enum ParamKey
+    AGE_IN_DAYS
+    AGE
+    HEALTH
+    MENTAL
+    INFLUENCE
+    MONEY
+    WILLPOWER
+    STRENGHT
+    PERCEPTION
+    ENDURANCE
+    CHARISMA
+    INTELLIGENCE
+    AGILITY
+    LUCK
+
+
+def pk(param : ParamKey) : int
+    return int(param)
+
+
 struct PlayerParams
 
     age_in_days : int = 0

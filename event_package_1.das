@@ -54,11 +54,11 @@ class StartEventPackage
 
         _events[0] -> initialize_deps_and_effects( // СЕРДЕЧНЫЙ ПРИСТУП
             [{auto 15}],
-            [[PlayerParams() health=-30]], 
-            [[PlayerParams() luck=5]],
+            {{ pk(ParamKey HEALTH)=>-30 }}, 
+            {{ pk(ParamKey LUCK)=>5 }}, 
             [[PlayerSkills math=0]],
             [[PlayerSkills math=0]],
-            [[Effect() is_onetime_effect=true, params=[[PlayerParams() health=-15]]]],
+            [[Effect() is_onetime_effect=true, params<-{{ pk(ParamKey HEALTH)=>-15 }}]],
             [[Effect() is_onetime_effect=true, is_game_over=true]],
             [[EventDescription() 
             on_success= t("desc.s=1"),
@@ -78,11 +78,11 @@ class StartEventPackage
         
         _events[1] -> initialize_deps_and_effects( // СМЕРТЕЛЬНЫЙ ЯД
             [{auto 0}], 
-            [[PlayerParams() age=0]], 
-            [[PlayerParams() luck=9]], 
+            {{ pk(ParamKey AGE)=>0 }}, 
+            {{ pk(ParamKey LUCK)=>9 }}, 
             [[PlayerSkills math=0]], 
             [[PlayerSkills math=0]],
-            [[Effect() is_onetime_effect=true, params=[[PlayerParams() health=-25]]]],
+            [[Effect() is_onetime_effect=true, params<-{{ pk(ParamKey HEALTH)=>-2 }}]],
             [[Effect() is_onetime_effect=true, is_game_over=true]],
             [[EventDescription() 
             on_success="Всё произошло так быстро, что вы даже не успели осознать, что за смертоносное существо вас отравило. Ядовитая змея? Может быть паук или ужасный листолаз? К величайшему удивлению всех вокруг, вы чудом сумели выкарабкаться с того света, хоть и не без вреда для здоровья.",
@@ -102,11 +102,11 @@ class StartEventPackage
             
         _events[2] -> initialize_deps_and_effects( // ГНЕВ БОГОВ
             [{auto 0}], 
-            [[PlayerParams() age=0]], 
-            [[PlayerParams() luck=10]], 
+            {{ pk(ParamKey AGE)=>0 }}, 
+            {{ pk(ParamKey LUCK)=>10 }}, 
             [[PlayerSkills math=0]], 
             [[PlayerSkills math=0]],
-            [[Effect() is_onetime_effect=true, params=[[PlayerParams() health=-35]]]],
+            [[Effect() is_onetime_effect=true, params<-{{ pk(ParamKey HEALTH)=>-35 }}]],
             [[Effect() is_onetime_effect=true, is_game_over=true]],
             [[EventDescription() 
             on_success="В вас ударила молния! Шансы выжить при таком событии стремятся к нулю, однако вам это каким-то чудом удалось! Чудовищные ожоги останутся с вами на всю жизнь, но зато мало кто может похвастаться победой в схватке с Перуном или Зевсом. Так что можете собой гордиться!",
@@ -126,11 +126,11 @@ class StartEventPackage
 
         _events[3] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() age=0]], 
-            [[PlayerParams() luck=4, perception=5]], 
+            {{ pk(ParamKey AGE)=>0 }}, 
+            {{ pk(ParamKey LUCK)=>4; pk(ParamKey PERCEPTION)=>5 }}, 
             [[PlayerSkills math=0]],
             [[PlayerSkills math=0]],
-            [[Effect() is_onetime_effect=true, params=[[PlayerParams() money=-3000]]]],
+            [[Effect() is_onetime_effect=true, params<-{{ pk(ParamKey MONEY)=>-3000 }}]],
             [[Effect() is_onetime_effect=true, is_game_over=true]],
             [[EventDescription() 
             on_success="В вашем доме начался пожар. К счастью вам повезло и вы успели почувствовать запах дыма. После чего спешно покинули своё жилище. Пожарные подоспели вовремя, но часть вашего имущества спасти не удалось.",
@@ -150,8 +150,8 @@ class StartEventPackage
 
         _events[4] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() age=0]], 
-            [[PlayerParams() age=0]], 
+            {{ pk(ParamKey AGE)=>0 }},
+            {{ pk(ParamKey AGE)=>0 }},
             [[PlayerSkills math=0]],
             [[PlayerSkills math=0]],
             [[Effect() is_onetime_effect=true]],
@@ -174,8 +174,8 @@ class StartEventPackage
 
         _events[5] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() age=0]], 
-            [[PlayerParams() age=0]], 
+            {{ pk(ParamKey AGE)=>0 }},
+            {{ pk(ParamKey AGE)=>0 }},
             [[PlayerSkills math=0]],
             [[PlayerSkills math=0]],
             [[Effect() is_onetime_effect=true]],
@@ -198,11 +198,11 @@ class StartEventPackage
         
         _events[6] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() agility=5]], 
-            [[PlayerParams() age=0]], 
+            {{ pk(ParamKey AGILITY)=>5 }},
+            {{ pk(ParamKey AGE)=>0 }},
             [[PlayerSkills math=0]],
             [[PlayerSkills math=0]],
-            [[Effect() is_onetime_effect=true, params=[[PlayerParams() agility=1]]]],
+            [[Effect() is_onetime_effect=true, params<-{{ pk(ParamKey AGILITY)=>1 }}]],
             [[Effect() is_onetime_effect=true]],
             [[EventDescription() 
             on_success="В столь юном возрасте вы уже научились крутить сальто. Не без помощи взрослых, конечно, которые держат вас за руки :) Каждый раз, когда взрослые играют с вами подобным образом - вы приходите в величайший восторг и развиваете вашу гибкость и подвижность.",
@@ -222,8 +222,8 @@ class StartEventPackage
 
         _events[7] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() age=0]], 
-            [[PlayerParams() age=0]], 
+            {{ pk(ParamKey AGE)=>0 }},
+            {{ pk(ParamKey AGE)=>0 }},
             [[PlayerSkills math=0]],
             [[PlayerSkills math=0]],
             [[Effect() is_onetime_effect=true, skills=[[PlayerSkills() rhetoric=1]]]],
@@ -246,12 +246,12 @@ class StartEventPackage
             
         _events[8] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() age=0]], 
-            [[PlayerParams() health=999]], 
+            {{ pk(ParamKey AGE)=>0 }},
+            {{ pk(ParamKey HEALTH)=>999 }},
             [[PlayerSkills math=0]],
             [[PlayerSkills math=0]],
             [[Effect() is_onetime_effect=true]],
-            [[Effect() is_onetime_effect=true, params=[[PlayerParams() mental_health=-15]]]],
+            [[Effect() is_onetime_effect=true, params<-{{ pk(ParamKey MENTAL)=>-15 }}]],
             [[EventDescription() 
             on_success="",
             on_fail="К сожалению один из ваших родителей трагически погибает. Столь ранняя потеря непременно отразится на вашей психике."]],
@@ -270,12 +270,12 @@ class StartEventPackage
 
         _events[9] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() age=0]], 
-            [[PlayerParams() health=999]], 
+            {{ pk(ParamKey AGE)=>0 }},
+            {{ pk(ParamKey HEALTH)=>999 }},
             [[PlayerSkills math=0]],
             [[PlayerSkills math=0]],
             [[Effect() is_onetime_effect=true]],
-            [[Effect() is_onetime_effect=true, params=[[PlayerParams() mental_health=-30]]]],
+            [[Effect() is_onetime_effect=true, params<-{{ pk(ParamKey MENTAL)=>-30 }}]],
             [[EventDescription() 
             on_success="",
             on_fail="Ваши родители трагически погибают в автокатастрофе. Горе съедает вас, но вы ничего не можете с этим поделать. Только время сможет как-то подлатать вашу душевную рану."]],
@@ -294,12 +294,12 @@ class StartEventPackage
 
         _events[10] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() age=0]], 
-            [[PlayerParams() health=999]], 
+            {{ pk(ParamKey AGE)=>0 }},
+            {{ pk(ParamKey HEALTH)=>999 }}, 
             [[PlayerSkills math=0]],
             [[PlayerSkills math=0]],
             [[Effect() is_onetime_effect=true]],
-            [[Effect() is_onetime_effect=true, params=[[PlayerParams() mental_health=-10, charisma=-1]]]],
+            [[Effect() is_onetime_effect=true, params<-{{ pk(ParamKey MENTAL)=>-10; pk(ParamKey CHARISMA)=>-1 }}]],
             [[EventDescription() 
             on_success="",
             on_fail="Кто-то или что-то вас очень сильно напугало. Это оставит след на вашей психике и сделает вас более замкнутым в будущем. Возможно."]],
@@ -318,11 +318,11 @@ class StartEventPackage
         
         _events[11] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() luck=9]], 
-            [[PlayerParams() age=0]], 
+            {{ pk(ParamKey LUCK)=>9 }},
+            {{ pk(ParamKey AGE)=>0 }},
             [[PlayerSkills math=0]],
             [[PlayerSkills math=0]],
-            [[Effect() is_onetime_effect=true, params=[[PlayerParams() strength=3]]]],
+            [[Effect() is_onetime_effect=true, params<-{{ pk(ParamKey STRENGHT)=>3 }}]],
             [[Effect() is_onetime_effect=true]],
             [[EventDescription() 
             on_success="Вы родились с редкой генетической мутацией, которая потенциально может сделать вас физически-сильнее 95% людей.",
@@ -342,12 +342,12 @@ class StartEventPackage
 
         _events[12] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() luck=-4]], 
-            [[PlayerParams() health=999]], 
+            {{ pk(ParamKey LUCK)=>-4 }},
+            {{ pk(ParamKey HEALTH)=>999 }}, 
             [[PlayerSkills math=0]],
             [[PlayerSkills math=0]],
             [[Effect() is_onetime_effect=true]],
-            [[Effect() is_onetime_effect=false, timestep=365, params=[[PlayerParams() mental_health=-2]]]],
+            [[Effect() is_onetime_effect=false, timestep=365, params<-{{ pk(ParamKey MENTAL)=>-2 }}]],
             [[EventDescription() 
             on_success="",
             on_fail="Вам не повезло родиться с генетической болезнью, которая непременно отразится на вашем психическом состоянии в будущем."]],
@@ -366,12 +366,12 @@ class StartEventPackage
 
         _events[13] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() luck=-5]], 
-            [[PlayerParams() health=999]], 
+            {{ pk(ParamKey LUCK)=>-5 }}, 
+            {{ pk(ParamKey HEALTH)=>999 }}, 
             [[PlayerSkills math=0]],
             [[PlayerSkills math=0]],
             [[Effect() is_onetime_effect=true]],
-            [[Effect() is_onetime_effect=true, params=[[PlayerParams() health=-35, strength=-2, endurance=-2 ]]]],
+            [[Effect() is_onetime_effect=true, params<-{{ pk(ParamKey HEALTH)=>-35; pk(ParamKey STRENGHT)=>-2; pk(ParamKey ENDURANCE)=>-2 }}]],
             [[EventDescription() 
             on_success="",
             on_fail="Вам крупно не повезло родиться с генетической болезнью, которая сильно снижает ваши физические возможности."]],
@@ -390,8 +390,8 @@ class StartEventPackage
 
         _events[14] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() age=0]], 
-            [[PlayerParams() health=0]], 
+            {{ pk(ParamKey AGE)=>0 }},
+            {{ pk(ParamKey AGE)=>0 }}, 
             [[PlayerSkills math=0]],
             [[PlayerSkills math=0]],
             [[Effect() is_onetime_effect=true, skills=[[PlayerSkills() empathy=1]]]],
@@ -414,12 +414,12 @@ class StartEventPackage
 
         _events[15] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() age=0]], 
-            [[PlayerParams() willpower=6]],
+            {{ pk(ParamKey AGE)=>0 }},
+            {{ pk(ParamKey WILLPOWER)=>5 }},
             [[PlayerSkills math=0]],
             [[PlayerSkills math=0]],
-            [[Effect() is_onetime_effect=true, params=[[PlayerParams() willpower=1]], skills=[[PlayerSkills() empathy=-1]]]],
-            [[Effect() is_onetime_effect=true, params=[[PlayerParams() mental_health=-3]]]],
+            [[Effect() is_onetime_effect=true, params<-{{ pk(ParamKey WILLPOWER)=>1 }}, skills=[[PlayerSkills() empathy=-1]]]],
+            [[Effect() is_onetime_effect=true, params<-{{ pk(ParamKey MENTAL)=>-3 }}]],
             [[EventDescription() 
             on_success="Вы вступаете в неравную битву со своим домашним животным. Несмотря на свой юный возраст вы показываете свой характер и выходите из неё победителем. Взрослые объяснили вам, что бить животных - нехорошо. Но вы всё равно ужасно собой гордитесь.",
             on_fail="Вы вступаете в неравную битву со своим домашним животным и терпите сокрушительное поражение. Какое-то время вы будете сторониться этих лохматых чудовищ."]],
@@ -441,12 +441,12 @@ class StartEventPackage
 
         _events[16] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() age=0]], 
-            [[PlayerParams() health=999]], 
+            {{ pk(ParamKey AGE)=>0 }}, 
+            {{ pk(ParamKey HEALTH)=>999 }}, 
             [[PlayerSkills math=0]],
             [[PlayerSkills math=0]],
             [[Effect() is_onetime_effect=true]],
-            [[Effect() is_onetime_effect=false, timestep=730, params=[[PlayerParams() health=-1]]]],
+            [[Effect() is_onetime_effect=false, timestep=730, params<-{{ pk(ParamKey HEALTH)=>-1 }}]],
             [[EventDescription() 
             on_success="",
             on_fail="С малых лет вы питаете неподдельную страсть к различной вредной еде. Будьте осторожны! Фастфуд, чипсы и сладкое - не совсем то, что нужно молодому растущему организму."]],
@@ -465,11 +465,11 @@ class StartEventPackage
 
         _events[17] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() age=0]], 
-            [[PlayerParams() health=0]], 
+            {{ pk(ParamKey AGE)=>0 }},  
+            {{ pk(ParamKey AGE)=>0 }}, 
             [[PlayerSkills math=0]],
             [[PlayerSkills math=0]],
-            [[Effect() is_onetime_effect=true, params=[[PlayerParams() strength=-1, intelligence=1]]]],
+            [[Effect() is_onetime_effect=true, params<-{{ pk(ParamKey STRENGHT)=>-1; pk(ParamKey INTELLIGENCE)=>1 }}]],
             [[Effect() is_onetime_effect=true]],
             [[EventDescription() 
             on_success="Как выяснилось, вы тот ещё едок. Возможно вам просто не нравится еда, которой вас кормят? Силачом вам с таким аппетитом явно не стать, зато лёгкий голод отлично стимулирует умственные способности!",
@@ -489,8 +489,8 @@ class StartEventPackage
 
         _events[18] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() age=0]], 
-            [[PlayerParams() health=0]], 
+            {{ pk(ParamKey AGE)=>0 }}, 
+            {{ pk(ParamKey AGE)=>0 }}, 
             [[PlayerSkills math=0]],
             [[PlayerSkills math=0]],
             [[Effect() is_onetime_effect=true, skills=[[PlayerSkills() art=1]]]],
@@ -513,12 +513,12 @@ class StartEventPackage
 
         _events[19] -> initialize_deps_and_effects(
             [{auto 0}], 
-            [[PlayerParams() age=0]], 
-            [[PlayerParams() health=-2]],
+            {{ pk(ParamKey AGE)=>0 }}, 
+            {{ pk(ParamKey HEALTH)=>-2 }},
             [[PlayerSkills math=0]],
             [[PlayerSkills math=0]],
             [[Effect() is_onetime_effect=true]],
-            [[Effect() is_onetime_effect=true, params=[[PlayerParams() health=-1]]]],
+            [[Effect() is_onetime_effect=true, params<-{{ pk(ParamKey HEALTH)=>-1 }}]],
             [[EventDescription() 
             on_success="Упс! Кажется вы съели что-то не то и отравились. Но учитывая состояние вашего здоровья, вас это сейчас волнует меньше всего.",
             on_fail="Упс! Кажется вы съели что-то не то. Вам следует отнестись к выбору продуктов более ответственно."]],

@@ -3,6 +3,7 @@ require time
 require random
 require date
 require player
+require player_params
 require event
 require event_view
 require event_modal
@@ -33,16 +34,16 @@ class EventController
         _event_view = new EventView()
         _event_modal = new EventModal()
         var event_package_1 = new StartEventPackage()
-        var ext_pack_1 = new ExtEventPackage1()
+        //var ext_pack_1 = new ExtEventPackage1()
 
         event_package_1->initialize()
-        ext_pack_1->initialize()
+        //ext_pack_1->initialize()
 
         _all_events <- event_package_1->get_events()
 
-        var ext_pack_events <- ext_pack_1->get_events()
-        for event in ext_pack_events
-            _all_events |> push(event)
+        // var ext_pack_events <- ext_pack_1->get_events()
+        // for event in ext_pack_events
+        //     _all_events |> push(event)
 
         _event_modal._on_death <- @ <| () : void
             invoke(_player._on_player_death)
@@ -184,7 +185,7 @@ class EventController
         randomize_seed(rand_seed)
 
         var age = _player->get_age()
-        var age_in_days = _player._params.age_in_days
+        var age_in_days = _player._params[pk(ParamKey AGE_IN_DAYS)]
         var count = get_possible_events_to_spawn_count()
         var distance = 365
 
@@ -197,9 +198,9 @@ class EventController
         if count > 12
             step = 1
         else
-            step = distance / count
+            step = count != 0 ? distance / count : 1
 
-        if step <= 1
+        if step < 2
             step = random_int(rand_seed)
             while step < 3 || step > 11
                 step = random_int(rand_seed)

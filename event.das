@@ -43,8 +43,8 @@ class Event
     _spawn_chance : int = 25
 
     _required_events_ids : array<int>
-    _required_params_for_spawn : PlayerParams
-    _required_params_for_success : PlayerParams
+    _required_params_for_spawn : table<int; int>
+    _required_params_for_success : table<int; int>
     _required_skills_for_spawn : PlayerSkills
     _required_skills_for_success : PlayerSkills
 
@@ -109,8 +109,8 @@ class Event
 
     def initialize_deps_and_effects(
         required_events_ids : array<int>;
-        required_params_for_spawn : PlayerParams;
-        required_params_for_success : PlayerParams;
+        required_params_for_spawn : table<int; int>;
+        required_params_for_success : table<int; int>;
         required_skills_for_spawn : PlayerSkills;
         required_skills_for_success : PlayerSkills;
         effect : Effect;
@@ -125,12 +125,12 @@ class Event
         unlock_event_groups : array<EventGroup>
     )
         _required_events_ids := required_events_ids
-        _required_params_for_spawn = required_params_for_spawn
-        _required_params_for_success = required_params_for_success
+        _required_params_for_spawn := required_params_for_spawn
+        _required_params_for_success := required_params_for_success
         _required_skills_for_spawn = required_skills_for_spawn
         _required_skills_for_success = required_skills_for_success
-        _effect = effect
-        _effect_on_fail = effect_on_fail
+        _effect := effect
+        _effect_on_fail := effect_on_fail
         _description = description
         _effect_description = effect_description
         _log_message = log_message

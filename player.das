@@ -20,7 +20,7 @@ class Player
     _date_of_birth : Date
     _offset : int = -60
     _animation_state : int = 0
-    _params : PlayerParams
+    _params : table<int; int>
     _skills : PlayerSkills
     _events_happen : array<EventViewData>
     _active_effects : array<Effect>
@@ -32,9 +32,12 @@ class Player
 
 
     def set(age_in_days : int)
-        _params := params_to_set
-        _params.age_in_days = age_in_days
-        _params.age = age_in_days / 365
+        _offset = 60
+        _params <- params_to_set
+        _params[pk(ParamKey HEALTH)] = 100
+        _params[pk(ParamKey MENTAL)] = 100
+        _params[pk(ParamKey AGE_IN_DAYS)] = age_in_days
+        _params[pk(ParamKey AGE)] = age_in_days / 365
 
 
     def act()
@@ -63,16 +66,16 @@ class Player
 
 
     def get_age()
-        return _params.age
+        return _params[pk(ParamKey AGE)]
 
 
     def pass_date()
-        var prev_age = _params.age
-        _params.age_in_days += date_step
-        _params.age = _params.age_in_days / 365
+        var prev_age = _params[pk(ParamKey AGE)]
+        _params[pk(ParamKey AGE_IN_DAYS)] += date_step
+        _params[pk(ParamKey AGE)] = _params[pk(ParamKey AGE_IN_DAYS)] / 365
 
-        if _params.age > prev_age
-            update_music(_params.age)
+        if _params[pk(ParamKey AGE)] > prev_age
+            update_music(_params[pk(ParamKey AGE)])
 
         update_active_effects()
 
@@ -83,8 +86,8 @@ class Player
         for effect in _active_effects
             if effect.starts_at_age <= get_age() && effect.is_onetime_effect == false
 
-                var age_delta = _params.age_in_days - effect.starts_at_age * 365
-                var started_at_delta = _params.age_in_days - effect.started_at
+                var age_delta = _params[pk(ParamKey AGE_IN_DAYS)] - effect.starts_at_age * 365
+                var started_at_delta = _params[pk(ParamKey AGE_IN_DAYS)] - effect.started_at
 
                 if (effect.started_at == -1 && age_delta > 0 && age_delta % effect.timestep < date_step) || (
                     effect.started_at > -1 && started_at_delta % effect.timestep < date_step)
@@ -92,26 +95,18 @@ class Player
 
 
     def add_effect(effect : Effect)
-        push(_active_effects, effect)
+        push_clone(_active_effects, effect)
 
 
     def apply_effect(effect : Effect)
         _is_dead = effect.is_game_over
         if effect.time_jerk_value > -1.0
             time_jerk = effect.time_jerk_value
-        _params.health += effect.params.health
-        _params.mental_health += effect.params.mental_health
-        _params.influence += effect.params.influence
-        _params.money += effect.params.money
 
-        _params.willpower += effect.params.willpower
-        _params.strength += effect.params.strength
-        _params.perception += effect.params.perception
-        _params.endurance += effect.params.endurance
-        _params.charisma += effect.params.charisma
-        _params.intelligence += effect.params.intelligence
-        _params.agility += effect.params.agility
-        _params.luck += effect.params.luck
+        var ep := effect.params
+        for x in each_enum(ParamKey AGE)
+            var increment = ep[int(x)]
+            _params[int(x)] += increment
 
         _skills.erudition += effect.skills.erudition
         _skills.empathy += effect.skills.empathy
@@ -136,23 +131,23 @@ class Player
         _skills.cold_weapons += effect.skills.cold_weapons
         _skills.firearms += effect.skills.firearms
 
-        _params.health = _params.health > 100 ? 100 : _params.health
-        _params.health = _params.health < 0 ? 0 : _params.health
-        _params.mental_health = _params.mental_health > 100 ? 100 : _params.mental_health
-        _params.mental_health = _params.mental_health < 0 ? 0 : _params.mental_health
+        _params[pk(ParamKey HEALTH)] = _params[pk(ParamKey HEALTH)] > 100 ? 100 : _params[pk(ParamKey HEALTH)]
+        _params[pk(ParamKey HEALTH)] = _params[pk(ParamKey HEALTH)] < 0 ? 0 : _params[pk(ParamKey HEALTH)]
+        _params[pk(ParamKey MENTAL)] = _params[pk(ParamKey MENTAL)] > 100 ? 100 : _params[pk(ParamKey MENTAL)]
+        _params[pk(ParamKey MENTAL)] = _params[pk(ParamKey MENTAL)] < 0 ? 0 : _params[pk(ParamKey MENTAL)]
 
         var rand_seed: int4
         randomize_seed(rand_seed)
 
         var s_money_delta = effect.spend_money_range[1]-effect.spend_money_range[0]
-        var max_threshold = clamp(_params.intelligence + _skills.enterprise, 0, 10)
+        var max_threshold = clamp(_params[pk(ParamKey INTELLIGENCE)] + _skills.enterprise, 0, 10)
         var money_to_spend = -1
 
         while money_to_spend < effect.spend_money_range[0] || money_to_spend > effect.spend_money_range[1]
             money_to_spend = random_int(rand_seed)
 
         money_to_spend = money_to_spend / 10 * (10 - max_threshold)
-        _params.money -= money_to_spend
+        _params[pk(ParamKey MONEY)] -= money_to_spend
 
 
     def register_event(event : Event?; date : Date; icon : ImageHandle; log_message : string; is_successful : bool)
@@ -164,46 +159,24 @@ class Player
 
         push_clone(_events_happen, event_happen)
 
-        var effect_to_apply = is_successful ? event._effect : event._effect_on_fail
+        var effect_to_apply := is_successful ? event._effect : event._effect_on_fail
         add_effect(effect_to_apply)
 
         if effect_to_apply.is_onetime_effect
             apply_effect(effect_to_apply)
         else
-            effect_to_apply.started_at = _params.age_in_days
+            effect_to_apply.started_at = _params[pk(ParamKey AGE_IN_DAYS)]
 
 
-    def validate_params(event_params : PlayerParams) : bool
+    def validate_params(event_params : table<int; int>) : bool
+        var ep := event_params
 
-        let age = get_age()
-        let health = _params.health
-        let mental_health = _params.mental_health
-        let influence = _params.influence
-        let money = _params.money
-        let will = _params.willpower
-        let str = _params.strength
-        let per = _params.perception
-        let end = _params.endurance
-        let charisma = _params.charisma
-        let intel = _params.intelligence
-        let agil = _params.agility
-        let luck = _params.luck
+        for x in each_enum(ParamKey AGE)
+            var value = _params[int(x)]
+            var compare_to = ep[int(x)]
 
-        //  p a r a m s
-        if  (!validate_value(age, event_params.age)) || (
-            !validate_value(health, event_params.health)) || (
-            !validate_value(mental_health, event_params.mental_health)) || (
-            !validate_value(influence, event_params.influence)) || (
-            !validate_value(money, event_params.money)) || (
-            !validate_value(will, event_params.willpower)) || (
-            !validate_value(str, event_params.strength)) || (
-            !validate_value(per, event_params.perception)) || (
-            !validate_value(end, event_params.endurance)) || (
-            !validate_value(charisma, event_params.charisma)) || (
-            !validate_value(intel, event_params.intelligence)) || (
-            !validate_value(agil, event_params.agility)) || (
-            !validate_value(luck, event_params.luck))
-            return false
+            if !validate_value(_params[int(x)], compare_to)
+                return false
 
         return true
 
@@ -294,5 +267,5 @@ class Player
         return true
 
     def try_react_on_player_death()
-        if _params.health <= 0 || _is_dead
+        if _params[int(ParamKey HEALTH)] <= 0 || _is_dead
             invoke(_on_player_death)

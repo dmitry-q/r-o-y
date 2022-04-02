@@ -17,14 +17,14 @@ let DEFAULT_AGING : Effect <- [[Effect()
     starts_at_age=36,
     timestep=365,
     is_onetime_effect=false,
-    params = [[PlayerParams() health = -1]]
+    params <- {{ pk(ParamKey HEALTH)=>1 }}
 ]];
 
 let DEFAULT_DEMENTIA : Effect <- [[Effect()
     starts_at_age=60,
     timestep=2190,
     is_onetime_effect=false,
-    params = [[PlayerParams() intelligence = -1]]
+    params <- {{ pk(ParamKey INTELLIGENCE)=>-1 }}
 ]];
 
 
@@ -33,7 +33,7 @@ let POCKET_MONEY_CHILD : Effect <- [[Effect()
     timestep=7,
     duration=365*6,
     is_onetime_effect=false,
-    params = [[PlayerParams() money = 20]]
+    params <- {{ pk(ParamKey MONEY)=>20 }}
 ]];
 
 
@@ -42,7 +42,7 @@ let POCKET_MONEY_TEENAGER : Effect <- [[Effect()
     timestep=7,
     duration=365*7,
     is_onetime_effect=false,
-    params = [[PlayerParams() money = 90]]
+    params <- {{ pk(ParamKey MONEY)=>90 }}
 ]];
 
 

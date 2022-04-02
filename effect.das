@@ -7,7 +7,7 @@ module effect public
 struct Effect
 
     id : int
-    params : PlayerParams
+    params : table<int; int>
     skills : PlayerSkills
 
     starts_at_age : int = 0

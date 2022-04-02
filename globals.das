@@ -7,9 +7,16 @@ enum Language
     EN = 1
 
 var set_current_scene : lambda<(name : string) : void>
-var params_to_set : PlayerParams = [[PlayerParams() health=100, mental_health=100, willpower=4, strength=4, perception=4, endurance=4, charisma=4, intelligence=4, agility=4, luck=4]]
+var params_to_set : table<int; int> <- {{   pk(ParamKey WILLPOWER)=>4;
+                                            pk(ParamKey STRENGHT)=>4;
+                                            pk(ParamKey PERCEPTION)=>4;
+                                            pk(ParamKey ENDURANCE)=>4;
+                                            pk(ParamKey CHARISMA)=>4;
+                                            pk(ParamKey INTELLIGENCE)=>4;
+                                            pk(ParamKey AGILITY)=>4;
+                                            pk(ParamKey LUCK)=>4
+                                        }}
 var lang : Language
-
 var date_step : int = 7
 
 
