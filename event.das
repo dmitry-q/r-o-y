@@ -45,8 +45,8 @@ class Event
     _required_events_ids : array<int>
     _required_params_for_spawn : table<int; int>
     _required_params_for_success : table<int; int>
-    _required_skills_for_spawn : PlayerSkills
-    _required_skills_for_success : PlayerSkills
+    _required_skills_for_spawn : table<int; int>
+    _required_skills_for_success : table<int; int>
 
     _effect : Effect
     _effect_on_fail : Effect
@@ -111,8 +111,8 @@ class Event
         required_events_ids : array<int>;
         required_params_for_spawn : table<int; int>;
         required_params_for_success : table<int; int>;
-        required_skills_for_spawn : PlayerSkills;
-        required_skills_for_success : PlayerSkills;
+        required_skills_for_spawn : table<int; int>;
+        required_skills_for_success : table<int; int>;
         effect : Effect;
         effect_on_fail : Effect;
         description : EventDescription;
@@ -127,8 +127,8 @@ class Event
         _required_events_ids := required_events_ids
         _required_params_for_spawn := required_params_for_spawn
         _required_params_for_success := required_params_for_success
-        _required_skills_for_spawn = required_skills_for_spawn
-        _required_skills_for_success = required_skills_for_success
+        _required_skills_for_spawn := required_skills_for_spawn
+        _required_skills_for_success := required_skills_for_success
         _effect := effect
         _effect_on_fail := effect_on_fail
         _description = description

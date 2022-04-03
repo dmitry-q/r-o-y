@@ -7,14 +7,14 @@ enum Language
     EN = 1
 
 var set_current_scene : lambda<(name : string) : void>
-var params_to_set : table<int; int> <- {{   pk(ParamKey WILLPOWER)=>4;
-                                            pk(ParamKey STRENGHT)=>4;
-                                            pk(ParamKey PERCEPTION)=>4;
-                                            pk(ParamKey ENDURANCE)=>4;
-                                            pk(ParamKey CHARISMA)=>4;
-                                            pk(ParamKey INTELLIGENCE)=>4;
-                                            pk(ParamKey AGILITY)=>4;
-                                            pk(ParamKey LUCK)=>4
+var params_to_set : table<int; int> <- {{   pk(PK WIL)=>4;
+                                            pk(PK STR)=>4;
+                                            pk(PK PER)=>4;
+                                            pk(PK END)=>4;
+                                            pk(PK CHA)=>4;
+                                            pk(PK INT)=>4;
+                                            pk(PK AGI)=>4;
+                                            pk(PK LUC)=>4
                                         }}
 var lang : Language
 var date_step : int = 7
@@ -45,7 +45,7 @@ def initialize_locales_RU() : table<string; string>
     dict_RU["params.cha"] = "ХАРИЗМА"
     dict_RU["params.int"] = "ИНТЕЛЛЕКТ"
     dict_RU["params.agi"] = "ЛОВКОСТЬ"
-    dict_RU["params.luck"] = "УДАЧА"
+    dict_RU["params.LUC"] = "УДАЧА"
 
     dict_RU["today"] = "Сегодня"
     dict_RU["next"] = "ДАЛЕЕ"
@@ -55,7 +55,7 @@ def initialize_locales_RU() : table<string; string>
     dict_RU["hp"] = "Здоровье: "
     dict_RU["pp"] = "Психика:  "
     dict_RU["age"] = "Возраст:  "
-    dict_RU["money"] = "Деньги:   "
+    dict_RU["MON"] = "Деньги:   "
     dict_RU["infl"] = "Влияние:  "
 
     dict_RU["will"] = "Воля:          "
@@ -65,7 +65,7 @@ def initialize_locales_RU() : table<string; string>
     dict_RU["cha"] = "Харизма:       "
     dict_RU["int"] = "Интеллект:     "
     dict_RU["agi"] = "Ловкость:      "
-    dict_RU["luck"] = "Удача:         "
+    dict_RU["LUC"] = "Удача:         "
 
     dict_RU["s.eru"] = "Эрудиция:            "
     dict_RU["s.emp"] = "Эмпатия:             "
@@ -80,7 +80,7 @@ def initialize_locales_RU() : table<string; string>
     dict_RU["s.phy"] = "Физика:              "
     dict_RU["s.lit"] = "Литература:          "
     dict_RU["s.tec"] = "Технологии:          "
-    dict_RU["s.inf"] = "Информатика:         "
+    dict_RU["s.csc"] = "Информатика:         "
     dict_RU["s.geo"] = "География:           "
     dict_RU["s.soc"] = "Социальные науки:    "
     dict_RU["s.che"] = "Химия:               "
@@ -111,34 +111,34 @@ def initialize_locales_EN() : table<string; string>
     dict_EN["params.available"] = "AVAILABLE"
     dict_EN["params.start"] = "START"
 
-    dict_EN["params.will"] = "WILLPOWER"
-    dict_EN["params.str"] = "STRENGHT"
-    dict_EN["params.per"] = "PERCEPTION"
-    dict_EN["params.end"] = "ENDURANCE"
-    dict_EN["params.cha"] = "CHARISMA"
-    dict_EN["params.int"] = "INTELLIGENCE"
-    dict_EN["params.agi"] = "AGILITY"
-    dict_EN["params.luck"] = "LUCK"
+    dict_EN["params.will"] = "WIL"
+    dict_EN["params.str"] = "STR"
+    dict_EN["params.per"] = "PER"
+    dict_EN["params.end"] = "END"
+    dict_EN["params.cha"] = "CHA"
+    dict_EN["params.int"] = "INT"
+    dict_EN["params.agi"] = "AGI"
+    dict_EN["params.LUC"] = "LUC"
 
     dict_EN["today"] = " Today"
     dict_EN["next"] = "PROCEED"
     dict_EN["gameover"] = "GAME OVER"
     dict_EN["quit"] = "BACK TO MAIN MENU"
 
-    dict_EN["hp"] = "Health: "
-    dict_EN["pp"] = "Mental: "
+    dict_EN["hp"] = "HP: "
+    dict_EN["pp"] = "MH: "
     dict_EN["age"] = "Age:        "
-    dict_EN["money"] = "Money:      "
-    dict_EN["infl"] = "Influence:  "
+    dict_EN["MON"] = "MON:      "
+    dict_EN["infl"] = "INF:  "
 
-    dict_EN["will"] = "Willpower:    "
+    dict_EN["will"] = "WIL:    "
     dict_EN["str"] = "Strength:     "
-    dict_EN["per"] = "Perception:   "
-    dict_EN["end"] = "Endurance:    "
-    dict_EN["cha"] = "Charisma:     "
-    dict_EN["int"] = "Intelligence: "
-    dict_EN["agi"] = "Agility:      "
-    dict_EN["luck"] = "Luck:         "
+    dict_EN["per"] = "PER:   "
+    dict_EN["end"] = "END:    "
+    dict_EN["cha"] = "CHA:     "
+    dict_EN["int"] = "INT: "
+    dict_EN["agi"] = "AGI:      "
+    dict_EN["LUC"] = "LUC:         "
 
     dict_EN["s.eru"] = "Erudition:           "
     dict_EN["s.emp"] = "Empathy:             "
@@ -153,7 +153,7 @@ def initialize_locales_EN() : table<string; string>
     dict_EN["s.phy"] = "Physics:             "
     dict_EN["s.lit"] = "Literature:          "
     dict_EN["s.tec"] = "Technologies:        "
-    dict_EN["s.inf"] = "Computer science:    "
+    dict_EN["s.csc"] = "Computer science:    "
     dict_EN["s.geo"] = "Geography:           "
     dict_EN["s.soc"] = "Social studies:      "
     dict_EN["s.che"] = "Chemistry:           "
@@ -166,9 +166,9 @@ def initialize_locales_EN() : table<string; string>
 
     // E V E N T S
     dict_EN["name=1"] = "HEART ATTACK"
-    dict_EN["desc.s=1"] = "Your cardiovascular system is failing you. Luckily, the ambulance arrives on time and saves your life."
+    dict_EN["desc.s=1"] = "Your cardiovascular system is failing you. LUCily, the ambulance arrives on time and saves your life."
     dict_EN["desc.f=1"] = "Your cardiovascular system fails you and you die of a heart attack. The ambulance did not have time to save you."
-    dict_EN["edesc.s=1"] = "Health: -15"
+    dict_EN["edesc.s=1"] = "HP: -15"
     dict_EN["edesc.f=1"] = "You died"
     dict_EN["log.s=1"] = "Survived a heart attack"
     dict_EN["log.f=1"] = "Died of a heart attack"

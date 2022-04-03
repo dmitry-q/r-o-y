@@ -8,7 +8,7 @@ struct Effect
 
     id : int
     params : table<int; int>
-    skills : PlayerSkills
+    skills : table<int; int>
 
     starts_at_age : int = 0
     started_at : int = -1
@@ -18,5 +18,5 @@ struct Effect
     is_game_over : bool = false
     deactivate_effects : int[3]
 
-    spend_money_range : int[2]
+    spend_MON_range : int[2]
     time_jerk_value : float = -1.0

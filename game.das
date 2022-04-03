@@ -6,6 +6,7 @@ require scene
 require date
 require player
 require player_params
+require player_skills
 require event_view
 require event_modal
 require button
@@ -163,61 +164,61 @@ class Game : Scene
 
         set_font_size(24)
 
-        text_out(x, anchors[1] + y_offset * 1, t("hp") + "" + string(_player._params[pk(ParamKey HEALTH)]) + "/100", REGULAR_TEXT_COLOR)
-        text_out(x, anchors[1] + y_offset * 2, t("pp") + "" + string(_player._params[pk(ParamKey MENTAL)]) + "/100", REGULAR_TEXT_COLOR)
+        text_out(x, anchors[1] + y_offset * 1, t("hp") + "" + string(_player._params[pk(PK HP)]) + "/100", REGULAR_TEXT_COLOR)
+        text_out(x, anchors[1] + y_offset * 2, t("pp") + "" + string(_player._params[pk(PK MH)]) + "/100", REGULAR_TEXT_COLOR)
         
         text_out(x, anchors[2] + y_offset * 1, t("age") + "" + string(_player->get_age()), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[2] + y_offset * 2, t("money") + "" + string(_player._params[pk(ParamKey MONEY)]), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[2] + y_offset * 3, t("infl") + "" + string(_player._params[pk(ParamKey INFLUENCE)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[2] + y_offset * 2, t("MON") + "" + string(_player._params[pk(PK MON)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[2] + y_offset * 3, t("infl") + "" + string(_player._params[pk(PK INF)]), REGULAR_TEXT_COLOR)
         //text_out(1440, 170, "Speed: " + string(SCROLL_SPEED), REGULAR_TEXT_COLOR)
         //text_out(1440, 200, "Acc: " + string(SCROLL_ACCELERATION), REGULAR_TEXT_COLOR)
         //text_out(1440, 230, "Jerk: " + string(time_jerk), REGULAR_TEXT_COLOR)
         //text_out(1500, 200, "Time Passed: " + string(TIME_SUM), 0xA1A1A1)
-        text_out(x, anchors[3] + y_offset * 1, t("will") + "" + string(_player._params[pk(ParamKey WILLPOWER)]), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[3] + y_offset * 2, t("str") + "" + string(_player._params[pk(ParamKey STRENGHT)]), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[3] + y_offset * 3, t("per") + "" + string(_player._params[pk(ParamKey PERCEPTION)]), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[3] + y_offset * 4, t("end") + "" + string(_player._params[pk(ParamKey ENDURANCE)]), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[3] + y_offset * 5, t("cha") + "" + string(_player._params[pk(ParamKey CHARISMA)]), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[3] + y_offset * 6, t("int") + "" + string(_player._params[pk(ParamKey INTELLIGENCE)]), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[3] + y_offset * 7, t("agi") + "" + string(_player._params[pk(ParamKey AGILITY)]), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[3] + y_offset * 8, t("luck") + "" + string(_player._params[pk(ParamKey LUCK)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[3] + y_offset * 1, t("will") + "" + string(_player._params[pk(PK WIL)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[3] + y_offset * 2, t("str") + "" + string(_player._params[pk(PK STR)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[3] + y_offset * 3, t("per") + "" + string(_player._params[pk(PK PER)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[3] + y_offset * 4, t("end") + "" + string(_player._params[pk(PK END)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[3] + y_offset * 5, t("cha") + "" + string(_player._params[pk(PK CHA)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[3] + y_offset * 6, t("int") + "" + string(_player._params[pk(PK INT)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[3] + y_offset * 7, t("agi") + "" + string(_player._params[pk(PK AGI)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[3] + y_offset * 8, t("LUC") + "" + string(_player._params[pk(PK LUC)]), REGULAR_TEXT_COLOR)
 
 
         set_font_size(12)
 
-        text_out(x, anchors[4] + y_offset / 2  * 1 + 1, t("s.eru") + "" + string(_player._skills.erudition), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[4] + y_offset / 2  * 2 + 2, t("s.emp") + "" + string(_player._skills.empathy), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[4] + y_offset / 2  * 3 + 3, t("s.rhe") + "" + string(_player._skills.rhetoric), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[4] + y_offset / 2  * 4 + 4, t("s.ent") + "" + string(_player._skills.enterprise), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[4] + y_offset / 2  * 5 + 5, t("s.sur") + "" + string(_player._skills.survivalist), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[4] + y_offset / 2  * 6 + 6, t("s.art") + "" + string(_player._skills.art), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[4] + y_offset / 2  * 7 + 7, t("s.mus") + "" + string(_player._skills.music), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[4] + y_offset / 2  * 8 + 8, t("s.mat") + "" + string(_player._skills.math), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[4] + y_offset / 2  * 9 + 9, t("s.nla") + "" + string(_player._skills.native_language), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[4] + y_offset / 2  * 10 + 10, t("s.fla") + "" + string(_player._skills.foreign_languages), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[4] + y_offset / 2  * 11 + 11, t("s.phy") + "" + string(_player._skills.physics), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[4] + y_offset / 2  * 12 + 12, t("s.lit") + "" + string(_player._skills.literature), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[4] + y_offset / 2  * 13 + 13, t("s.tec") + "" + string(_player._skills.technology), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[4] + y_offset / 2  * 14 + 14, t("s.inf") + "" + string(_player._skills.computer_science), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[4] + y_offset / 2  * 15 + 15, t("s.geo") + "" + string(_player._skills.geography), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[4] + y_offset / 2  * 16 + 16, t("s.soc") + "" + string(_player._skills.social_studies), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[4] + y_offset / 2  * 17 + 17, t("s.che") + "" + string(_player._skills.chemistry), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[4] + y_offset / 2  * 18 + 18, t("s.ath") + "" + string(_player._skills.athletics), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[4] + y_offset / 2  * 19 + 19, t("s.swi") + "" + string(_player._skills.swimming), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[4] + y_offset / 2  * 20 + 20, t("s.dri") + "" + string(_player._skills.driving), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[4] + y_offset / 2  * 21 + 21, t("s.mar") + "" + string(_player._skills.martial_arts), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[4] + y_offset / 2  * 22 + 22, t("s.cwe") + "" + string(_player._skills.cold_weapons), REGULAR_TEXT_COLOR)
-        text_out(x, anchors[4] + y_offset / 2  * 23 + 23, t("s.fir") + "" + string(_player._skills.firearms), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[4] + y_offset / 2  * 1 + 1, t("s.eru") + "" + string(_player._skills[ps(PS ERU)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[4] + y_offset / 2  * 2 + 2, t("s.emp") + "" + string(_player._skills[ps(PS EMP)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[4] + y_offset / 2  * 3 + 3, t("s.rhe") + "" + string(_player._skills[ps(PS RHE)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[4] + y_offset / 2  * 4 + 4, t("s.ent") + "" + string(_player._skills[ps(PS ENT)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[4] + y_offset / 2  * 5 + 5, t("s.sur") + "" + string(_player._skills[ps(PS SUR)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[4] + y_offset / 2  * 6 + 6, t("s.art") + "" + string(_player._skills[ps(PS ART)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[4] + y_offset / 2  * 7 + 7, t("s.mus") + "" + string(_player._skills[ps(PS MUS)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[4] + y_offset / 2  * 8 + 8, t("s.mat") + "" + string(_player._skills[ps(PS MAT)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[4] + y_offset / 2  * 9 + 9, t("s.nla") + "" + string(_player._skills[ps(PS NLA)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[4] + y_offset / 2  * 10 + 10, t("s.fla") + "" + string(_player._skills[ps(PS FLA)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[4] + y_offset / 2  * 11 + 11, t("s.phy") + "" + string(_player._skills[ps(PS PHY)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[4] + y_offset / 2  * 12 + 12, t("s.lit") + "" + string(_player._skills[ps(PS LIT)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[4] + y_offset / 2  * 13 + 13, t("s.tec") + "" + string(_player._skills[ps(PS TEC)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[4] + y_offset / 2  * 14 + 14, t("s.csc") + "" + string(_player._skills[ps(PS CSC)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[4] + y_offset / 2  * 15 + 15, t("s.geo") + "" + string(_player._skills[ps(PS GEO)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[4] + y_offset / 2  * 16 + 16, t("s.soc") + "" + string(_player._skills[ps(PS SOC)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[4] + y_offset / 2  * 17 + 17, t("s.che") + "" + string(_player._skills[ps(PS CHE)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[4] + y_offset / 2  * 18 + 18, t("s.ath") + "" + string(_player._skills[ps(PS ATH)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[4] + y_offset / 2  * 19 + 19, t("s.swi") + "" + string(_player._skills[ps(PS SWI)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[4] + y_offset / 2  * 20 + 20, t("s.dri") + "" + string(_player._skills[ps(PS DRI)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[4] + y_offset / 2  * 21 + 21, t("s.mar") + "" + string(_player._skills[ps(PS MAR)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[4] + y_offset / 2  * 22 + 22, t("s.cwe") + "" + string(_player._skills[ps(PS CWE)]), REGULAR_TEXT_COLOR)
+        text_out(x, anchors[4] + y_offset / 2  * 23 + 23, t("s.fir") + "" + string(_player._skills[ps(PS FIR)]), REGULAR_TEXT_COLOR)
 
         set_font_size(30)
         set_font_name("sans")
         menu_button->render_button(1580, 24, 42, 42, "X", 1)
 
-        // var i = 0
-        // set_font_size(14)
-        // for event in event_controller._available_events
-        //     text_out(1440, 80 + i * 26, event._name + " " + string(event._spawn_limit) + " " + string(event_controller->get_event_spawned_count(event._id)), REGULAR_TEXT_COLOR)
-        //     i++
+        var i = 0
+        set_font_size(14)
+        for event in _event_controller._available_events
+            text_out(1440, 80 + i * 26, event._name + " " + string(event._spawn_limit) + " " + string(_event_controller->get_event_spawned_count(event._id)), REGULAR_TEXT_COLOR)
+            i++
 
         // text_out(1440, 40, string(event_controller._timestep / 90), REGULAR_TEXT_COLOR)
         set_font_name("mono")
@@ -269,7 +270,7 @@ class Game : Scene
         _player->add_effect(DEFAULT_TIME_JERK_EFFECT)
         _player->add_effect(DEFAULT_AGING)
         _player->add_effect(DEFAULT_DEMENTIA)
-        _player->add_effect(POCKET_MONEY_CHILD)
-        _player->add_effect(POCKET_MONEY_TEENAGER)
-        _player->add_effect(SPEND_POCKET_MONEY_CHILD)
-        _player->add_effect(SPEND_POCKET_MONEY_TEENAGER)
+        _player->add_effect(POCKET_MON_CHILD)
+        _player->add_effect(POCKET_MON_TEENAGER)
+        _player->add_effect(SPEND_POCKET_MON_CHILD)
+        _player->add_effect(SPEND_POCKET_MON_TEENAGER)

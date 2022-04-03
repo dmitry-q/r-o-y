@@ -31,8 +31,13 @@ class MainMenu : Scene
         play_music_track(0)
         set_antialiasing(4)
 
-        _params_input <- params_to_set
-        _params_titles <- [{auto t("params.will"); t("params.str"); t("params.per"); t("params.end"); t("params.cha"); t("params.int"); t("params.agi"); t("params.luck")}]
+
+        for x in each_enum(PK AGE)
+            if int(x) < 6
+                continue
+            _params_input[int(x)] = 4
+
+        _params_titles <- [{auto t("params.will"); t("params.str"); t("params.per"); t("params.end"); t("params.cha"); t("params.int"); t("params.agi"); t("params.LUC")}]
 
         var main_modal = new MenuModal()
         var main_modal_buttons : array<Button?>

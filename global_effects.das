@@ -17,48 +17,48 @@ let DEFAULT_AGING : Effect <- [[Effect()
     starts_at_age=36,
     timestep=365,
     is_onetime_effect=false,
-    params <- {{ pk(ParamKey HEALTH)=>1 }}
+    params <- {{ pk(PK HP)=>-1 }}
 ]];
 
 let DEFAULT_DEMENTIA : Effect <- [[Effect()
     starts_at_age=60,
     timestep=2190,
     is_onetime_effect=false,
-    params <- {{ pk(ParamKey INTELLIGENCE)=>-1 }}
+    params <- {{ pk(PK INT)=>-1 }}
 ]];
 
 
-let POCKET_MONEY_CHILD : Effect <- [[Effect()
+let POCKET_MON_CHILD : Effect <- [[Effect()
     starts_at_age=7,
     timestep=7,
     duration=365*6,
     is_onetime_effect=false,
-    params <- {{ pk(ParamKey MONEY)=>20 }}
+    params <- {{ pk(PK MON)=>20 }}
 ]];
 
 
-let POCKET_MONEY_TEENAGER : Effect <- [[Effect()
+let POCKET_MON_TEENAGER : Effect <- [[Effect()
     starts_at_age=13,
     timestep=7,
     duration=365*7,
     is_onetime_effect=false,
-    params <- {{ pk(ParamKey MONEY)=>90 }}
+    params <- {{ pk(PK MON)=>90 }}
 ]];
 
 
-let SPEND_POCKET_MONEY_CHILD : Effect <- [[Effect()
+let SPEND_POCKET_MON_CHILD : Effect <- [[Effect()
     starts_at_age=7,
     timestep=7,
     duration=365*6,
     is_onetime_effect=false,
-    spend_money_range=[[int[2] 0; 30]]
+    spend_MON_range=[[int[2] 0; 30]]
 ]];
 
 
-let SPEND_POCKET_MONEY_TEENAGER : Effect <- [[Effect()
+let SPEND_POCKET_MON_TEENAGER : Effect <- [[Effect()
     starts_at_age=13,
     timestep=7,
     duration=365*7,
     is_onetime_effect=false,
-    spend_money_range=[[int[2] 0; 155]]
+    spend_MON_range=[[int[2] 0; 155]]
 ]];

@@ -76,8 +76,7 @@ class EventController
             _event_view->remove_from_render(event.spawned_at)
             return
 
-        var is_success = _player->validate_params(event_example._required_params_for_success) && (
-                         _player->validate_skills(event_example._required_skills_for_success))
+        var is_success = _player->validate_happen_event(event_example)
 
         var fit_log_message = is_success ? event_example._log_message.on_success : event_example._log_message.on_fail
 
@@ -136,21 +135,20 @@ class EventController
         var new_array : array<Event?>
         for event in _available_events
             if event._min_age <= age && event._max_age >= age && event._happen_limit > get_event_happen_count(event._id) && event._spawn_limit > 0
-                if _player->validate_happen_events(event._required_events_ids) && (
-                        _player->validate_params(event._required_params_for_spawn) && _player->validate_skills(event._required_skills_for_spawn))
+                if _player->validate_required_events(event._required_events_ids) && _player->validate_event_to_spawn(event)
                     new_array |> push(event)
 
         return <- new_array
 
 
-    def on_timestep_pass() // int[2] : ids
+    def on_timestep_pass()
 
         var rand_seed: int4
         randomize_seed(rand_seed)
         var first_spot_index : int
         _timestep_timer = 0.0
 
-        validate_available_events()
+        _available_events <- validate_available_events()
 
         first_spot_index = -1
         while first_spot_index < 0 || first_spot_index > 1
@@ -185,7 +183,7 @@ class EventController
         randomize_seed(rand_seed)
 
         var age = _player->get_age()
-        var age_in_days = _player._params[pk(ParamKey AGE_IN_DAYS)]
+        var AID = _player._params[pk(PK AID)]
         var count = get_possible_events_to_spawn_count()
         var distance = 365
 
