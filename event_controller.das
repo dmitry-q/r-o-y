@@ -28,9 +28,13 @@ class EventController
     _available_events : array<Event?>
     _timestep : int
     _timestep_timer : float = 0.0
+    _is_event_happen_today : bool = false
+    _rand_seed: int4
 
 
     def initialize()
+        randomize_seed(_rand_seed)
+
         _event_view = new EventView()
         _event_modal = new EventModal()
         var event_package_1 = new StartEventPackage()
@@ -59,11 +63,14 @@ class EventController
 
 
     def detect_collision() : bool
-        for se in _spawned_events
-            var date = se.spawned_at
-            if date.day == current_date.day && date.month == current_date.month && date.year == current_date.year
+        for se in _event_view._events
+            let date = se.spawned_at
+            let dist = 1011 - se.pos.y
+            if se.id != 0 && dist < 34 && dist > 0
+                //if date.day == current_date.day && date.month == current_date.month && date.year == current_date.year
                 if sign(sign(_player._offset) + 1) == se.spawn_spot
                     on_event_happen(se)
+                    _is_event_happen_today = true
                     return true
 
         return false
@@ -108,10 +115,7 @@ class EventController
 
     
     def push_event_to_render(event : EventViewData)
-        var event_to_render : tuple<EventViewData; int>
-        event_to_render._0 = event
-        event_to_render._1 = event.spawn_spot
-        _event_view->push_to_render(event_to_render)
+        _event_view->push_to_render(event)
 
 
     def update_available_events()
@@ -178,10 +182,6 @@ class EventController
 
 
     def update_timestep()
-
-        var rand_seed: int4
-        randomize_seed(rand_seed)
-
         var age = _player->get_age()
         var AID = _player._params[pk(PK AID)]
         var count = get_possible_events_to_spawn_count()
@@ -199,9 +199,9 @@ class EventController
             step = count != 0 ? distance / count : 1
 
         if step < 2
-            step = random_int(rand_seed)
+            step = random_int(_rand_seed)
             while step < 3 || step > 11
-                step = random_int(rand_seed)
+                step = random_int(_rand_seed)
 
         _timestep = step * 90
 

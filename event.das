@@ -19,6 +19,7 @@ struct EventViewData
     spawn_spot : int = 0
     icon : ImageHandle
     log_message : string = ""
+    pos : int2
 
 struct EventDescription
     on_success : string = ""

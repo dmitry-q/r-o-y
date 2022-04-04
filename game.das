@@ -95,12 +95,15 @@ class Game : Scene
         event_scroll_out_timer += dt
         _event_controller._timestep_timer += dt
 
+        if !_event_controller._is_event_happen_today
+            _event_controller->detect_collision()
+
         if date_scroll_out_timer >= 90.0 / SCROLL_SPEED
             update_speed()
             update_dates(1)
             _player->pass_date()
             _player->animate()
-            _event_controller->detect_collision()
+            _event_controller._is_event_happen_today = false
             date_scroll_out_timer = 0.0
 
         if event_scroll_out_timer >= 1080.0 / SCROLL_SPEED

@@ -34,7 +34,7 @@ class MainMenu : Scene
 
         for x in each_enum(PK AGE)
             if int(x) < 6
-                continue
+                pass
             _params_input[int(x)] = 4
 
         _params_titles <- [{auto t("params.will"); t("params.str"); t("params.per"); t("params.end"); t("params.cha"); t("params.int"); t("params.agi"); t("params.LUC")}]

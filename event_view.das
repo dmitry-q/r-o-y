@@ -8,44 +8,38 @@ module event_view public
 let default_icon_color = make_color32(255, 255, 255, 255)
 
 class EventView
-    _events : array<tuple<EventViewData; int2>>
+    _events : array<EventViewData>
 
-    def push_to_render(event: tuple<EventViewData; int>)
+    def push_to_render(event: EventViewData)
 
+        var event_to_push = event
         let width = get_screen_width() / 2
-        let height = -34
-        var event_to_push : tuple<EventViewData; int2>
-        event_to_push._0 = event._0
+        event_to_push.pos.y = -34
 
-        if event._1 == 0
-            event_to_push._1 = int2(width - 60, height)
+        if event.spawn_spot == 0
+            event_to_push.pos = int2(width - 60, event_to_push.pos.y)
         else
-            event_to_push._1 = int2(width + 60, height)
+            event_to_push.pos = int2(width + 60, event_to_push.pos.y)
 
         push(_events, event_to_push)
 
 
     def remove_from_render(by_date : Date)
         for e in _events
-            let date = e._0.spawned_at
-            if date.day == current_date.day && date.month == current_date.month && date.year == current_date.year
-                e._0.id = 0
+            let date = e.spawned_at
+            if date.day == by_date.day && date.month == by_date.month && date.year == by_date.year
+                e.id = 0
+
 
     def update()
         let screen_height = get_screen_height()
-        var len = length(_events)
 
-        for i in range(0, len)
-            var width = get_screen_width() / 2
-            var height = int()
-
-            if _events[i]._1.y > screen_height + 34
-                //erase(_events, i)
-                continue
-
-            if _events[i]._0.id != 0
-                _events[i]._1.y = int(float(_events[i]._1.y) + SCROLL_SPEED * get_delta_time())
-                render_icon(_events[i]._0.icon, _events[i]._1.x, _events[i]._1.y, 68.0)
+        for e in _events
+            if e.id != 0
+                e.pos.y = int(float(e.pos.y) + SCROLL_SPEED * get_delta_time())
+                render_icon(e.icon, e.pos.x, e.pos.y, 68.0)
+            if e.pos.y > screen_height + 34
+                remove_from_render(e.spawned_at)
 
 
 def render_icon(icon: ImageHandle; x, y : int; size : float)
