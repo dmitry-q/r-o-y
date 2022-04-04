@@ -41,7 +41,7 @@ class StartEventPackage
         var e_0012_2 = new Event(90012, "ПЛОХИЕ ГЕНЫ", EventGroup NO, false, 0, 3, 1, 1, 2, false, 0)
         var e_0013 = new Event(13, "ЭТО ЕЩЁ КТО?", EventGroup NO, false, 0, 3, 1, 5, 21, false, 0)
         var e_0014 = new Event(14, "ЦАРЬ ЗВЕРЕЙ", EventGroup NO, false, 0, 3, 1, 6, 15, false, 0)
-        var e_0015 = new Event(15, "ЛЮБИТЕЛЬ ФАСТФУДА", EventGroup NO, false, 1, 9, 1, 55, 25, false, 0)
+        var e_0015 = new Event(15, "ЛЮБИТЕЛЬ ФАСТФУДА", EventGroup NO, false, 1, 9, 1, 55, 22, false, 0)
         var e_0016 = new Event(16, "STAY HUNGRY", EventGroup NO, false, 0, 1, 1, 1, 32, false, 0)
         var e_0017 = new Event(17, "КУКЛОВОД", EventGroup NO, false, 0, 5, 3, 15, 15, false, 0)
         var e_0020 = new Event(20, "ОТРАВЛЕНИЕ", EventGroup NO, false, 0, 200, 10, 250, 9, false, 0)
