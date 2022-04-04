@@ -102,7 +102,8 @@ class Player
 
                 if (effect.started_at == -1 && age_delta > 0 && age_delta % effect.timestep < date_step) || (
                     effect.started_at > -1 && started_at_delta % effect.timestep < date_step)
-                    apply_effect(effect)
+                    if effect.duration == -1 || started_at_delta <= effect.starts_at_age * 365 + effect.duration
+                        apply_effect(effect)
 
 
     def add_effect(effect : Effect)
@@ -132,15 +133,18 @@ class Player
         var rand_seed: int4
         randomize_seed(rand_seed)
 
-        var s_MON_delta = effect.spend_MON_range[1]-effect.spend_MON_range[0]
+        if effect.spend_MON_range[0] == -1 && effect.spend_MON_range[1] == -1
+            return
+
+        var s_money_delta = effect.spend_MON_range[1] - effect.spend_MON_range[0]
         var max_threshold = clamp(_params[pk(PK INT)] + _skills[ps(PS ENT)], 0, 10)
-        var MON_to_spend = -1
+        var money_to_spend = -1
 
-        while MON_to_spend < effect.spend_MON_range[0] || MON_to_spend > effect.spend_MON_range[1]
-            MON_to_spend = random_int(rand_seed)
+        while money_to_spend < effect.spend_MON_range[0] || money_to_spend > effect.spend_MON_range[1]
+            money_to_spend = random_int(rand_seed)
 
-        MON_to_spend = MON_to_spend / 10 * (10 - max_threshold)
-        _params[pk(PK MON)] -= MON_to_spend
+        money_to_spend = money_to_spend / 10 * (11 - max_threshold)
+        _params[pk(PK MON)] -= money_to_spend
 
 
     def register_event(event : Event?; date : Date; icon : ImageHandle; log_message : string; is_successful : bool)

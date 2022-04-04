@@ -51,7 +51,7 @@ let SPEND_POCKET_MONEY_CHILD : Effect <- [[Effect()
     timestep=7,
     duration=365*6,
     is_onetime_effect=false,
-    spend_MON_range=[[int[2] 0; 30]]
+    spend_MON_range=[[int[2] 0; 35]]
 ]];
 
 
@@ -60,5 +60,5 @@ let SPEND_POCKET_MONEY_TEENAGER : Effect <- [[Effect()
     timestep=7,
     duration=365*7,
     is_onetime_effect=false,
-    spend_MON_range=[[int[2] 0; 155]]
+    spend_MON_range=[[int[2] 0; 175]]
 ]];

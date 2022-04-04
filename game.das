@@ -175,7 +175,7 @@ class Game : Scene
         text_out(x, anchors[2] + y_offset * 3, t("infl") + "" + string(_player._params[pk(PK INF)]), REGULAR_TEXT_COLOR)
         //text_out(1440, 170, "Speed: " + string(SCROLL_SPEED), REGULAR_TEXT_COLOR)
         //text_out(1440, 200, "Acc: " + string(SCROLL_ACCELERATION), REGULAR_TEXT_COLOR)
-        //text_out(1440, 230, "Jerk: " + string(time_jerk), REGULAR_TEXT_COLOR)
+        text_out(1440, 230, "Jerk: " + string(time_jerk), REGULAR_TEXT_COLOR)
         //text_out(1500, 200, "Time Passed: " + string(TIME_SUM), 0xA1A1A1)
         text_out(x, anchors[3] + y_offset * 1, t("will") + "" + string(_player._params[pk(PK WIL)]), REGULAR_TEXT_COLOR)
         text_out(x, anchors[3] + y_offset * 2, t("str") + "" + string(_player._params[pk(PK STR)]), REGULAR_TEXT_COLOR)
